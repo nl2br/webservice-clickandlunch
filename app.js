@@ -1,18 +1,29 @@
 const http = require('http');
 
-// for every request launch this function
-const server = http.createServer((req,res) => {
-    // process.exit(); // stop the server
-    res.setHeader('Content-type', 'text/html');
-    res.write(`<html><body><h1>hello 1</h1></body></html>`);
-    res.end();
-});
+const express = require('express');
+
+const app = express();
+
+// app.use permet d'ajouter un middleware
+app.use((req, res, next) => {
+    console.log('in the middleware');
+    next(); // permet à la demande (request) de continuer au prochain middleware
+})
+
+app.use((req, res, next) => {
+    console.log('in another middleware');
+    res.send('<h1>Node JS server !</h1>')
+})
+
+// for every request launch this function => app
+const server = http.createServer(app);
 
 // start the process
-server.listen(3000);
+server.listen(3000,"127.0.0.1","NodeJS server launch");
 
 
 /**
  * npm
- * 
+ * --save-dev // only for developement
+ * --save // for all
  */
