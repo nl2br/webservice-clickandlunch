@@ -1,29 +1,42 @@
-const http = require('http');
-
 const express = require('express');
-
 const app = express();
 
-// app.use permet d'ajouter un middleware
-app.use((req, res, next) => {
-    console.log('in the middleware');
-    next(); // permet à la demande (request) de continuer au prochain middleware
-})
+app.use(express.json());
 
-app.use((req, res, next) => {
-    console.log('in another middleware');
-    res.send('<h1>Node JS server !</h1>')
-})
+const dishes = [
+    {id:1, name:'poulet frite'},
+    {id:2, name:'homard riz'},
+    {id:3, name:'steak haricot'}
+];
 
-// for every request launch this function => app
-const server = http.createServer(app);
+app.get('/', (req, res) => {
+    res.send('Home');
+});
 
-// start the process
-server.listen(3000,"127.0.0.1","NodeJS server launch");
+app.get('/api/dishes', (req, res) => {
+    // res.send(req.query) // /api/clients?sortBy=name
+    res.send(dishes);
+});
 
+app.get('/api/dishes/:id', (req, res) => {
+    const dishe = dishes.find(d => d.id === parseInt(req.params.id));
+    if(!dishe) res.status(404).send("this ID dishe don't exist");
+    res.send(dishe);
+});
 
-/**
- * npm
- * --save-dev // only for developement
- * --save // for all
- */
+app.post('/api/dishes', (req, res) => {
+    if(!req.body.name || req.body.name < 3){
+        res.status(400).send('Name is required and have more 3 caracters');
+    }
+    const dishe = {
+        id: dishes.length + 1,
+        name: req.body.name
+    };
+    dishes.push(dishe);
+    res.send(dishe);
+});
+
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+    console.log(`Listening on port ${port}...`);
+});
