@@ -1,17 +1,26 @@
 const express = require('express');
 const router = express.Router();
 const Joi = require('joi');
+// const Dishe = require('../models/dishe');
+const disheController = require('../controllers/disheController');
 
-const dishes = [
-    {id:1, name:'poulet frite'},
-    {id:2, name:'homard riz'},
-    {id:3, name:'steak haricot'}
-];
+router.get('/', disheController.getAllDishes );
 
-router.get('/', (req, res) => {
-    // res.send(req.query) // /api/clients?sortBy=name
-    res.send(dishes);
-});
+// router.get('/', (req, res) => {
+//     Dishe.findAll()
+//         .then(result => {
+//             let dishes = [];
+//             result.forEach(item => {
+//                 dishes.push({
+//                     id: item.dataValues.id, 
+//                     name: item.dataValues.name, 
+//                     shop_id: item.dataValues.shop_id, 
+//                 });
+//             })
+//             res.send(dishes);
+//         })
+//         .catch( err => console.log('error finding all dishes : ', err.message) );
+// });
 
 router.get('/:id', (req, res) => {
     let dishe = isIdDisheExist(parseInt(req.params.id))
