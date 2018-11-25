@@ -1,26 +1,15 @@
 const express = require('express');
 const router = express.Router();
+
+// validation input
 const Joi = require('joi');
-// const Dishe = require('../models/dishe');
+
+// Require controllers modules
 const disheController = require('../controllers/disheController');
 
+// GET request for list of all Dishe items.
 router.get('/', disheController.getAllDishes );
 
-// router.get('/', (req, res) => {
-//     Dishe.findAll()
-//         .then(result => {
-//             let dishes = [];
-//             result.forEach(item => {
-//                 dishes.push({
-//                     id: item.dataValues.id, 
-//                     name: item.dataValues.name, 
-//                     shop_id: item.dataValues.shop_id, 
-//                 });
-//             })
-//             res.send(dishes);
-//         })
-//         .catch( err => console.log('error finding all dishes : ', err.message) );
-// });
 
 router.get('/:id', (req, res) => {
     let dishe = isIdDisheExist(parseInt(req.params.id))
