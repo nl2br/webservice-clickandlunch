@@ -1,10 +1,11 @@
 const express = require('express');
+const http = require('http');
 
-// const sequelize = require('./utils/database');
-// const db = require('./models/');
+// import models
+const models = require('./models');
 
 // import routes
-const homeRouter = require('./routes');
+const homeRouter   = require('./routes');
 const dishesRouter = require('./routes/dishes');
 
 // Launch Express
@@ -15,8 +16,19 @@ app.use(express.json());
 app.use('/', homeRouter);
 app.use('/api/dishes', dishesRouter);
 
+// Create the server
+const server = http.createServer(app);
+
 // Server launch
 const port = process.env.PORT || 3000;
-app.listen(port, () => {
-  console.log(`Listening on port ${port}...`);
-});
+
+// // Sync models with database only if database doesn't exist
+// models.sequelize.sync()
+//   .then( () => {
+    server.listen(port, () => {
+      console.log(`Listening on port ${port}...`);
+    });
+  // })
+  // .catch(err => {
+  //   console.log(err, "Error with Sequelize database")
+  // });

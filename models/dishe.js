@@ -1,5 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
 
+  // Model definition
   const Dishe = sequelize.define('Dishe', {
     id: {
       type: DataTypes.INTEGER,
@@ -11,11 +12,14 @@ module.exports = (sequelize, DataTypes) => {
     id_shop: DataTypes.INTEGER
   });
 
+  // Class Method
   Dishe.associate = function(models) {
-    models.Dishe.belongsTo(models.Shop, {
+
+    Dishe.belongsTo(models.Shop, {
       foreignKey: 'id_shop',
       onDelete: "CASCADE"
     });
+
   };
 
 

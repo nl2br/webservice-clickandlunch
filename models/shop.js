@@ -11,10 +11,12 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   Shop.associate = function(models) {
-    models.Shop.hasMany(models.Dishe, {
+
+    Shop.hasMany(models.Dishe, {
       foreignKey: 'id_shop', 
       as: 'Dishes'
     });
+
   };
 
   return Shop;

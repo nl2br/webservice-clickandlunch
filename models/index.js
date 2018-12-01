@@ -6,11 +6,7 @@ const env       = process.env.NODE_ENV || 'development';
 const config    = require(__dirname + '/../config.json')[env];
 const db        = {};
 
-// if (config.use_env_variable) {
-//   const sequelize = new Sequelize(process.env[config.use_env_variable]);
-// } else {
-  // const sequelize = new Sequelize(config.database, config.username, config.password, config);
-// }
+// TODO faire un bon fichier de config avec les var_ENV
 
 const sequelize = new Sequelize(
   config.database,
@@ -31,31 +27,18 @@ fs
   })
   .forEach(file => {
     const model = sequelize['import'](path.join(__dirname, file));
+    console.log('model',model)
     db[model.name] = model;
   });
 
 Object.keys(db).forEach((modelName) => {
   if (db[modelName].associate) {
+    console.log('assoc !!!!!!!!!!!!!')
     db[modelName].associate(db);
   }
 });
-
-sequelize
-  .authenticate()
-  .then(() => {
-    console.log('Connection has been established successfully.');
-  })
-  .catch((err) => {
-    console.log('Unable to connect to the database:', err);
-  });
-
+Object.keys(db).forEach(item=>{console.log(item)})
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
 module.exports = db;
-
-// Relation definition
-// const Dishe = require('../models/disheModel');
-// const Shop = require('../models/shopModel');
-// Dishe.belongsTo(Shop, {foreignKey: 'id_shop'});
-// Shop.hasMany(Dishe, {foreignKey: 'id_shop', as: 'Dishes'} );
