@@ -7,7 +7,7 @@ const Joi = require('joi');
 // Require controllers modules
 const disheController = require('../controllers/disheController');
 
-// GET request for list of all Dishe items.
+// GET /dishes Request for list of all Dishe items.
 router.get('/', disheController.getAllDishes );
 
 
