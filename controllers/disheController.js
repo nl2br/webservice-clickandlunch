@@ -2,7 +2,7 @@ const models  = require('../models');
 
 /*
 *
-* Functions of the class Dishe
+* Functions definition of the class Dishe
 *
 */
 
