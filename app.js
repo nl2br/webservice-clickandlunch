@@ -7,6 +7,7 @@ const models = require('./models');
 // import routes
 const homeRouter   = require('./routes');
 const dishesRouter = require('./routes/dishes');
+const shopsRouter = require('./routes/shops');
 
 // Launch Express
 const app = express();
@@ -15,6 +16,7 @@ app.use(express.json());
 // Router definition
 app.use('/', homeRouter);
 app.use('/api/dishes', dishesRouter);
+app.use('/api/shops', shopsRouter);
 
 // Create the server
 const server = http.createServer(app);
