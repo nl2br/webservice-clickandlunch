@@ -29,5 +29,8 @@ exports.getAllProducts = (req, res, next) => {
     .then(result => {
       res.status(200).json(result);
     })
-    .catch(err => console.log('error finding all Products : ', err.message));
+    .catch(error => {
+      console.log('error finding all Products : ', error.message)
+      res.status(400).send(error);
+    });
 }

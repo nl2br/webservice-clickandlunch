@@ -7,12 +7,13 @@ const Joi = require('joi');
 // Listing all shop 
 // GET /shops (all)
 exports.getAllShops = (req, res, next) => {
-  Shop.findAndCountAll()
+  Shop.findAll()
     .then(result => {
       res.status(200).json(result);
     })
-    .catch(err => {
-      console.log('error getAllShops', err.message)
+    .catch(error => {
+      console.log('error getAllShops', error.message);
+      res.status(400).send(error);
     })
 };
 
@@ -25,23 +26,35 @@ exports.getShop = (req, res, next) => {
     }
   })
     .then(result => {
+      if (Array.isArray(result) && !result.length) {
+        return res.status(404).send({message: 'No Shop Found for the given id'});
+      }
       res.status(200).json(result);
     })
-    .catch(err => console.log('error getShop : ', err.message));
+    .catch(error => {
+      console.log('error getShop : ', error.message);
+      res.status(400).send(error);
+    });
 };
 
 // Listing all Product items for a given shop 
 // GET /shops/:id/Products (all)
 exports.getAllShopProducts = (req, res, next) => {
-  Product.findAndCountAll({
+  Product.findAll({
     where: {
       shop_id: req.params.id
     }
   })
     .then(result => {
+      if (Array.isArray(result) && !result.length) {
+        return res.status(404).send({message: 'No Products Found for the given id'});
+      }
       res.status(200).json(result);
     })
-    .catch(err => console.log('error getAllShopProducts : ', err.message));
+    .catch(error => {
+      console.log('error getAllShopProducts : ', error.message);
+      res.status(400).send(error);
+    });
 };
 
 // Listing specific Product for a given shop
@@ -51,9 +64,15 @@ exports.getShopSpecificProduct = (req, res, next) => {
     where: { product_id: req.params.productid, shop_id: req.params.shopid },
   })
     .then(result => {
+      if (!result) {
+        return res.status(404).send({message: 'Product or Shop Not Found'});
+      }
       res.status(200).json(result);
     })
-    .catch(err => console.log('error getShopSpecificProduct : ', err.message));
+    .catch(error => {
+      console.log('error getShopSpecificProduct : ', error.message);
+      res.status(400).send(error);
+    });
 };
 
 // Create a new shop

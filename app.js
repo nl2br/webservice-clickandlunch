@@ -15,8 +15,12 @@ app.use(express.json());
 
 // Router definition
 app.use('/', homeRouter);
-app.use('/api/products', productsRouter);
-app.use('/api/shops', shopsRouter);
+app.use('/api/v1/products', productsRouter);
+app.use('/api/v1/shops', shopsRouter);
+// default route if invalid URL input
+app.use((req, res) => {
+  res.status('404').send({message: 'Wrong URL'});
+});
 
 // Create the server
 const server = http.createServer(app);
