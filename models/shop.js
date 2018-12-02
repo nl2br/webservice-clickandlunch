@@ -10,11 +10,11 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
   });
 
-  Shop.associate = function(models) {
+  Shop.associate = function (models) {
 
-    Shop.hasMany(models.Dishe, {
-      foreignKey: 'shop_id', 
-      as: 'Dishe'
+    Shop.hasMany(models.Product, {
+      foreignKey: 'shop_id',
+      as: 'Product'
     });
 
   };

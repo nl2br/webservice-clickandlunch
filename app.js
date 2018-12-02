@@ -5,8 +5,8 @@ const http = require('http');
 const models = require('./models');
 
 // import routes
-const homeRouter   = require('./routes');
-const dishesRouter = require('./routes/dishes');
+const homeRouter = require('./routes');
+const productsRouter = require('./routes/products');
 const shopsRouter = require('./routes/shops');
 
 // Launch Express
@@ -15,7 +15,7 @@ app.use(express.json());
 
 // Router definition
 app.use('/', homeRouter);
-app.use('/api/dishes', dishesRouter);
+app.use('/api/products', productsRouter);
 app.use('/api/shops', shopsRouter);
 
 // Create the server
@@ -27,9 +27,9 @@ const port = process.env.PORT || 3000;
 // // Sync models with database only if database doesn't exist
 // models.sequelize.sync()
 //   .then( () => {
-    server.listen(port, () => {
-      console.log(`Listening on port ${port}...`);
-    });
+server.listen(port, () => {
+  console.log(`Listening on port ${port}...`);
+});
   // })
   // .catch(err => {
   //   console.log(err, "Error with Sequelize database")

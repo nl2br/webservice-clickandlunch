@@ -1,5 +1,5 @@
 const Shop = require('../models').Shop;
-const Dishe = require('../models').Dishe;
+const Product = require('../models').Product;
 
 // validation input
 const Joi = require('joi');
@@ -30,10 +30,10 @@ exports.getShop = (req, res, next) => {
     .catch(err => console.log('error getShop : ', err.message));
 };
 
-// Listing all Dishe items for a given shop 
-// GET /shops/:id/dishes (all)
-exports.getAllShopDishes = (req, res, next) => {
-  Dishe.findAndCountAll({
+// Listing all Product items for a given shop 
+// GET /shops/:id/Products (all)
+exports.getAllShopProducts = (req, res, next) => {
+  Product.findAndCountAll({
     where: {
       shop_id: req.params.id
     }
@@ -41,37 +41,19 @@ exports.getAllShopDishes = (req, res, next) => {
     .then(result => {
       res.status(200).json(result);
     })
-    .catch(err => console.log('error getAllShopDishes : ', err.message));
+    .catch(err => console.log('error getAllShopProducts : ', err.message));
 };
 
-// Listing specific Dishe for a given shop
-// GET /shops/:shopid/dishes/:disheid (all)
-// exports.getShopSpecificDishe = (req, res, next) => {
-//   Shop.findAll({
-//     attributes: [],
-//     where: {
-//       shop_id: req.params.shopid
-//     },
-//     include: [{ 
-//       model: Dishe, 
-//       as: 'Dishe', 
-//       where: { dishe_id: req.params.disheid },
-//     }]
-//   })
-//     .then(result => {
-//       console.log("ce que je veux envoyer", JSON.stringify(result[0].Dishe))
-//       res.status(200).json(result);
-//     })
-//     .catch(err => console.log('error getShopSpecificDishe : ', err.message));
-// };
-exports.getShopSpecificDishe = (req, res, next) => {
-  Dishe.findOne({
-    where: {dishe_id: req.params.disheid, shop_id: req.params.shopid},
+// Listing specific Product for a given shop
+// GET /shops/:shopid/Products/:Productid (all)
+exports.getShopSpecificProduct = (req, res, next) => {
+  Product.findOne({
+    where: { product_id: req.params.productid, shop_id: req.params.shopid },
   })
     .then(result => {
       res.status(200).json(result);
     })
-    .catch(err => console.log('error getShopSpecificDishe : ', err.message));
+    .catch(err => console.log('error getShopSpecificProduct : ', err.message));
 };
 
 // Create a new shop

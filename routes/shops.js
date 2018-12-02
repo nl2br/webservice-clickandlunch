@@ -10,13 +10,13 @@ router.get('/', shopController.getAllShops);
 // GET /shops/:id (all)
 router.get('/:id', shopController.getShop);
 
-// Listing all Dishe items for a given shop 
-// GET /shops/:id/dishes (all)
-router.get('/:id/dishes', shopController.getAllShopDishes);
+// Listing all product items for a given shop 
+// GET /shops/:id/products (all)
+router.get('/:id/products', shopController.getAllShopProducts);
 
-// Listing specific Dishe for a given shop
-// GET /shops/:shopid/dishes/:disheid (all)
-router.get('/:shopid/dishes/:disheid', shopController.getShopSpecificDishe);
+// Listing specific product for a given shop
+// GET /shops/:shopid/products/:productid (all)
+router.get('/:shopid/products/:productid', shopController.getShopSpecificProduct);
 
 // Create a new shop
 // POST /shops (admin, pro user)

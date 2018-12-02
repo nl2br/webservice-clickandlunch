@@ -1,8 +1,8 @@
 module.exports = (sequelize, DataTypes) => {
 
   // Model definition
-  const Dishe = sequelize.define('Dishe', {
-    dishe_id: {
+  const Product = sequelize.define('Product', {
+    product_id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
@@ -13,9 +13,9 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   // Class Method
-  Dishe.associate = function(models) {
+  Product.associate = function (models) {
 
-    Dishe.belongsTo(models.Shop, {
+    Product.belongsTo(models.Shop, {
       foreignKey: 'shop_id',
       onDelete: "CASCADE"
     });
@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
   };
 
 
-  return Dishe;
+  return Product;
 
 }
 
@@ -32,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
 // const Sequelize = require('sequelize');
 // const sequelize = require('../utils/database');
 
-// const Dishe = sequelize.define('dishe', {
+// const product = sequelize.define('product', {
 //   id: {
 //     type: Sequelize.INTEGER,
 //     primaryKey: true,
@@ -43,7 +43,7 @@ module.exports = (sequelize, DataTypes) => {
 //   id_shop: Sequelize.INTEGER
 // });
 
-// module.exports = Dishe;
+// module.exports = product;
 
 
 
@@ -52,10 +52,10 @@ module.exports = (sequelize, DataTypes) => {
 // const { Model } = require('sequelize');
 // const sequelize = require('../utils/database');
 
-// class Dishe extends Model {
+// class product extends Model {
 
 //     get fullName() {
-//         return `Dishe ${this.name} from Shop ${this.id}`;
+//         return `product ${this.name} from Shop ${this.id}`;
 //     }
 
 //     static init(sequelize) {
@@ -78,4 +78,4 @@ module.exports = (sequelize, DataTypes) => {
 //       }
 // }
 
-// module.exports = Dishe;
+// module.exports = product;

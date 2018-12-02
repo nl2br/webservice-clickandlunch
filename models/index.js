@@ -1,10 +1,10 @@
-const fs        = require('fs');
-const path      = require('path');
+const fs = require('fs');
+const path = require('path');
 const Sequelize = require('sequelize');
-const basename  = path.basename(module.filename);
-const env       = process.env.NODE_ENV || 'development';
-const config    = require(__dirname + '/../config.json')[env];
-const db        = {};
+const basename = path.basename(module.filename);
+const env = process.env.NODE_ENV || 'development';
+const config = require(__dirname + '/../config.json')[env];
+const db = {};
 
 // TODO faire un bon fichier de config avec les var_ENV
 
@@ -27,7 +27,7 @@ fs
   })
   .forEach(file => {
     const model = sequelize['import'](path.join(__dirname, file));
-    console.log('model',model)
+    console.log('model', model)
     db[model.name] = model;
   });
 
@@ -37,7 +37,7 @@ Object.keys(db).forEach((modelName) => {
     db[modelName].associate(db);
   }
 });
-Object.keys(db).forEach(item=>{console.log(item)})
+Object.keys(db).forEach(item => { console.log(item) })
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
