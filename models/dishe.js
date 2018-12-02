@@ -2,21 +2,21 @@ module.exports = (sequelize, DataTypes) => {
 
   // Model definition
   const Dishe = sequelize.define('Dishe', {
-    id: {
+    dishe_id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
       allowNull: false
     },
     name: DataTypes.STRING,
-    id_shop: DataTypes.INTEGER
+    shop_id: DataTypes.INTEGER
   });
 
   // Class Method
   Dishe.associate = function(models) {
 
     Dishe.belongsTo(models.Shop, {
-      foreignKey: 'id_shop',
+      foreignKey: 'shop_id',
       onDelete: "CASCADE"
     });
 

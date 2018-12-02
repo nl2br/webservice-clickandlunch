@@ -1,7 +1,7 @@
 module.exports = (sequelize, DataTypes) => {
 
   const Shop = sequelize.define('Shop', {
-    id: {
+    shop_id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
@@ -13,8 +13,8 @@ module.exports = (sequelize, DataTypes) => {
   Shop.associate = function(models) {
 
     Shop.hasMany(models.Dishe, {
-      foreignKey: 'id_shop', 
-      as: 'Dishes'
+      foreignKey: 'shop_id', 
+      as: 'Dishe'
     });
 
   };
