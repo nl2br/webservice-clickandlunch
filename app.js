@@ -1,9 +1,6 @@
 const express = require('express');
 const http = require('http');
 
-// import models
-const models = require('./models');
-
 // import routes
 const homeRouter = require('./routes');
 const productsRouter = require('./routes/products');
@@ -28,13 +25,9 @@ const server = http.createServer(app);
 // Server launch
 const port = process.env.PORT || 3000;
 
-// // Sync models with database only if database doesn't exist
-// models.sequelize.sync()
-//   .then( () => {
 server.listen(port, () => {
   console.log(`Listening on port ${port}...`);
 });
-  // })
-  // .catch(err => {
-  //   console.log(err, "Error with Sequelize database")
-  // });
+
+module.exports = server;
+

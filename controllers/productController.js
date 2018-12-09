@@ -16,7 +16,7 @@ Product.prototype.getFullname = function () {
   return [this.name, this.id_shop].join(' ');
 };
 
-console.log(Product.build({ name: 'maki', id_shop: 1 }).getFullname())
+// console.log(Product.build({ name: 'maki', id_shop: 1 }).getFullname())
 
 /*
 *

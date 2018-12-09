@@ -7,7 +7,6 @@ const config = require(__dirname + '/../config.json')[env];
 const db = {};
 
 // TODO faire un bon fichier de config avec les var_ENV
-
 const sequelize = new Sequelize(
   config.database,
   config.username,
@@ -19,6 +18,7 @@ const sequelize = new Sequelize(
     define: { timestamps: false, freezeTableName: true }
   }
 );
+console.log(`Connected to "${config.database}" database`);
 
 fs
   .readdirSync(__dirname)
@@ -27,17 +27,15 @@ fs
   })
   .forEach(file => {
     const model = sequelize['import'](path.join(__dirname, file));
-    console.log('model', model)
     db[model.name] = model;
   });
 
 Object.keys(db).forEach((modelName) => {
   if (db[modelName].associate) {
-    console.log('assoc !!!!!!!!!!!!!')
     db[modelName].associate(db);
   }
 });
-Object.keys(db).forEach(item => { console.log(item) })
+
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 

@@ -10,7 +10,7 @@
   "test": {
     "username": "root",
     "password": "groot",
-    "database": "clickandlunch",
+    "database": "clickandlunch_test",
     "dialect": "mysql",
     "host": "127.0.0.1",
     "port": "3306"

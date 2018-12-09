@@ -20,6 +20,7 @@ router.get('/:shopid/products/:productid', shopController.getShopSpecificProduct
 
 // Create a new shop
 // POST /shops (admin, pro user)
+router.post('/', shopController.postAddShop);
 
 // Modify details for a given shop
 // PUT /shops/:id (admin, pro user)
