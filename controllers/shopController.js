@@ -7,28 +7,31 @@ const Joi = require('joi');
 // GET /shops (all)
 exports.getAllShops = (req, res, next) => {
   Models.Shop.findAll()
-    .then(result => {
-      res.status(200).json(result);
+    .then(shops => {
+      return res.status(200).json(shops);
     })
     .catch(error => {
       console.log('error getAllShops', error.message);
-      res.status(400).send(error);
+      return res.status(400).send(error);
     })
 };
+
+// Listing all shop for a given City id
+// GET /:id/shops (all)
 
 // Listing shop details for a given shop 
 // GET /shops/:id (all)
 exports.getShop = (req, res, next) => {
   Models.Shop.findByPk(req.params.id)
-    .then(result => {
-      if (!result) {
+    .then(shopDetails => {
+      if (!shopDetails) {
         return res.status(404).send({message: 'No Shop Found for the given id'});
       }
-      res.status(200).json(result);
+      return res.status(200).json(shopDetails);
     })
     .catch(error => {
       console.log('error getShop : ', error.message);
-      res.status(400).send(error);
+      return res.status(400).send(error);
     });
 };
 
@@ -40,15 +43,15 @@ exports.getAllShopProducts = (req, res, next) => {
       shop_id: req.params.id
     }
   })
-    .then(result => {
-      if (Array.isArray(result) && !result.length) {
+    .then(shopProducts => {
+      if (Array.isArray(shopProducts) && !shopProducts.length) {
         return res.status(404).send({message: 'No Products Found for the given id'});
       }
-      res.status(200).json(result);
+      return res.status(200).json(shopProducts);
     })
     .catch(error => {
       console.log('error getAllShopProducts : ', error.message);
-      res.status(400).send(error);
+      return res.status(400).send(error);
     });
 };
 
@@ -58,15 +61,15 @@ exports.getShopSpecificProduct = (req, res, next) => {
   Models.Product.findOne({
     where: { product_id: req.params.productid, shop_id: req.params.shopid },
   })
-    .then(result => {
-      if (!result) {
+    .then(specificProduct => {
+      if (!specificProduct) {
         return res.status(404).send({message: 'Product or Shop Not Found'});
       }
-      res.status(200).json(result);
+      return res.status(200).json(specificProduct);
     })
     .catch(error => {
       console.log('error getShopSpecificProduct : ', error.message);
-      res.status(400).send(error);
+      return res.status(400).send(error);
     });
 };
 
@@ -75,13 +78,13 @@ exports.getShopSpecificProduct = (req, res, next) => {
 exports.postAddShop = (req, res, next) => {
   Models.Shop.create({
     name: req.body.name
-  })
-  .then(result => {
-    res.status(200).json(result);
+  })    
+  .then(newShop => {
+    return res.status(200).json(newShop);
   })
   .catch(error => {
     console.log('error postAddShop : ', error.message);
-    res.status(400).send(error);
+    return res.status(400).send(error);
   })
 
 };

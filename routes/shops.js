@@ -6,6 +6,9 @@ const shopController = require('../controllers/shopController');
 // GET /shops (all)
 router.get('/', shopController.getAllShops);
 
+// Listing all shop for a given City id
+// GET /:id/shops (all)
+
 // Listing shop details for a given shop 
 // GET /shops/:id (all)
 router.get('/:id', shopController.getShop);

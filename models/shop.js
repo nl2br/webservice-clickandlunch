@@ -7,44 +7,25 @@ module.exports = (sequelize, DataTypes) => {
       autoIncrement: true,
       allowNull: false
     },
-    name: DataTypes.STRING,
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false
+    }
   });
 
+  // Class Method
   Shop.associate = function (models) {
-
     Shop.hasMany(models.Product, {
       foreignKey: 'shop_id',
       as: 'Product'
     });
+  };
 
+  // Instance Method
+  Shop.prototype.getFullname = function () {
+    return [this.name, this.shop_id].join(' ');
   };
 
   return Shop;
-
 }
 
-
-
-// const Sequelize = require('sequelize');
-// const sequelize = require('../utils/database');
-
-// const Shop = sequelize.define('shop', {
-//   id: {
-//     type: Sequelize.INTEGER,
-//     primaryKey: true,
-//     autoIncrement: true,
-//     allowNull: false
-//   },
-//   name: Sequelize.STRING,
-// });
-
-// Shop.associate = function (models) {
-
-//   Shop.hasMany(models.Product, {
-//     foreignKey: 'shop_id',
-//     as: 'Product'
-//   });
-
-// };
-
-// module.exports = Shop;
