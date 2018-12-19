@@ -92,19 +92,15 @@ exports.putModifyCustomer = (req, res, next) => {
   
   Models.Customer.findById(req.params.id)
   .then(customer => {
-
-    if(!customer) {return res.status(400).send(error);}
-
-    customer.update({
+    if(!customer) {return res.status(400).send("Customer don't exist");}
+    return customer.update({
       first_name: req.body.firstname,
       last_name: req.body.lastname
-    },
-    {
+    },{
       where: {customer_id: req.params.id},
       returning: true,
       plain: true
     });
-
   })
   .then(updatedCustomer => {
     return res.status(200).json(updatedCustomer);
