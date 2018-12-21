@@ -7,6 +7,8 @@ const productsRouter = require('./routes/products');
 const shopsRouter = require('./routes/shops');
 const customersRouter = require('./routes/customers');
 
+const Models = require('./models');
+
 // Launch Express
 const app = express();
 app.use(express.json());
@@ -27,9 +29,11 @@ const server = http.createServer(app);
 // Server launch
 const port = process.env.PORT || 3000;
 if (process.env.NODE_ENV !== 'test') { // https://blog.campvanilla.com/jest-expressjs-and-the-eaddrinuse-error-bac39356c33a
-  server.listen(port, () => {
-    console.log(`Listening on port ${port}...`);
-  });
-}
-module.exports = server;
+  // Models.sequelize.sync({force:true}).then(function() {
+    server.listen(port, () => {
+      console.log(`Listening on port ${port}...`);
+    });
+  // });
+};
 
+module.exports = server;

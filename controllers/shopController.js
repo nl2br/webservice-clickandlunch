@@ -1,4 +1,87 @@
 const Models = require('../models/');
+const { Shop } = Models;
+
+class Shops {
+  
+  static getAllShops(req, res, next) {
+    Models.Shop.findAll()
+      .then(result => {
+        res.status(200).json(result);
+      })
+      .catch(error => {
+        console.log('error getAllShops', error.message);
+        res.status(400).send(error);
+      }) 
+  }
+
+  static getShop(req, res, next) {
+    Models.Shop.findByPk(req.params.id)
+      .then(result => {
+        if (!result) {
+          return res.status(404).send({message: 'No Shop Found for the given id'});
+        }
+        res.status(200).json(result);
+      })
+      .catch(error => {
+        console.log('error getShop : ', error.message);
+        res.status(400).send(error);
+      });
+  }
+
+  static getAllShopProducts(req, res, next) {
+    Models.Product.findAll({
+      where: {
+        shop_id: req.params.id
+      }
+    })
+      .then(result => {
+        if (Array.isArray(result) && !result.length) {
+          return res.status(404).send({message: 'No Products Found for the given id'});
+        }
+        res.status(200).json(result);
+      })
+      .catch(error => {
+        console.log('error getAllShopProducts : ', error.message);
+        res.status(400).send(error);
+      })
+  }
+
+  static getShopSpecificProduct(req, res, next) {
+    Models.Product.findOne({
+      where: { product_id: req.params.productid, shop_id: req.params.shopid },
+    })
+      .then(result => {
+        if (!result) {
+          return res.status(404).send({message: 'Product or Shop Not Found'});
+        }
+        res.status(200).json(result);
+      })
+      .catch(error => {
+        console.log('error getShopSpecificProduct : ', error.message);
+        res.status(400).send(error);
+      });
+  }
+
+  static postAddShop(req, res, next) {
+    Models.Shop.create({
+      name: req.body.name
+    })
+    .then(result => {
+      res.status(200).json(result);
+    })
+    .catch(error => {
+      console.log('error postAddShop : ', error.message);
+      res.status(400).send(error);
+    })
+  }
+}
+
+module.exports = Shops;
+
+
+
+/*
+const Models = require('../models/');
 
 // validation input
 const Joi = require('joi');
@@ -91,3 +174,5 @@ exports.postAddShop = (req, res, next) => {
 
 // Delete a shop
 // DELETE /shops/:id (admin, pro user)
+
+*/

@@ -90,28 +90,20 @@ exports.postAddCustomer = (req, res, next) => {
 // PUT /Customers/:id (admin, pro user)
 exports.putModifyCustomer = (req, res, next) => {
   
-  Models.Customer.findById(req.params.id)
+  Customer.findById(req.params.id)
   .then(customer => {
-
-    if(!customer) {return res.status(400).send(error);}
-
-    customer.update({
-      first_name: req.body.firstname,
-      last_name: req.body.lastname
-    },
-    {
-      where: {customer_id: req.params.id},
-      returning: true,
-      plain: true
+    //if(!customer) {return res.status(400).send("Can't modify this customer");}
+    return customer.update({
+      first_name: req.body.firstname || customer.first_name,
+      last_name: req.body.lastname || customer.last_name
     });
-
   })
-  .then(updatedCustomer => {
-    return res.status(200).json(updatedCustomer);
+  .then(() => {
+    return res.status(200).send(customer);
   })
   .catch(error => {
     console.log('error putModifyCustomer : ', error.message);
-    return res.status(400).send(error);
+    return res.status(400).send({message: "Error while trying to update the customer", data: error.message);
   })
 
 };

@@ -1,26 +1,26 @@
 const express = require('express');
 const router = express.Router();
-const shopController = require('../controllers/shopController');
+const Shops = require('../controllers/shopController');
 
 // Listing all shop 
 // GET /shops (all)
-router.get('/', shopController.getAllShops);
+router.get('/', Shops.getAllShops);
 
 // Listing shop details for a given shop 
 // GET /shops/:id (all)
-router.get('/:id', shopController.getShop);
+router.get('/:id', Shops.getShop);
 
 // Listing all product items for a given shop 
 // GET /shops/:id/products (all)
-router.get('/:id/products', shopController.getAllShopProducts);
+router.get('/:id/products', Shops.getAllShopProducts);
 
 // Listing specific product for a given shop
 // GET /shops/:shopid/products/:productid (all)
-router.get('/:shopid/products/:productid', shopController.getShopSpecificProduct);
+router.get('/:shopid/products/:productid', Shops.getShopSpecificProduct);
 
 // Create a new shop
 // POST /shops (admin, pro user)
-router.post('/', shopController.postAddShop);
+router.post('/', Shops.postAddShop);
 
 // Modify details for a given shop
 // PUT /shops/:id (admin, pro user)

@@ -9,7 +9,13 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     name: DataTypes.STRING,
-    shop_id: DataTypes.INTEGER
+    shop_id: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: 'Shop',
+        key: 'shop_id'
+      }
+    }
   });
 
   // Class Method
@@ -17,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
 
     Product.belongsTo(models.Shop, {
       foreignKey: 'shop_id',
-      onDelete: "CASCADE"
+      onDelete: 'CASCADE'
     });
 
   };
