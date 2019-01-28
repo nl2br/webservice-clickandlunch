@@ -69,7 +69,7 @@ class Shops {
       name: req.body.name
     })
     .then(result => {
-      res.status(200).json(result);
+      res.status(201).json(result);
     })
     .catch(error => {
       console.log('error postAddShop : ', error.message);
@@ -91,6 +91,23 @@ class Shops {
     .catch(error => {
       console.log('error putShop : ', error.message);
       res.status(400).send({message: "Error while trying to update the shop", data: error.message});
+    });
+  }
+
+  static deleteShop(req, res, next) {
+    Models.Shop.findById(req.params.id)
+    .then(shop => {
+      if(!shop) {return res.status(400).send("this shop don't exist");}
+      return shop.update({
+        deleted: 1
+      })  
+      .then(() => {
+        res.status(200).send(shop);
+      })
+    })
+    .catch(error => {
+      console.log('error deleteShop : ', error.message);
+      res.status(400).send({message: "Error while trying to delete the shop", data: error.message});
     });
   }
 }

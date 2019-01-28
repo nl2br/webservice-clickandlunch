@@ -35,7 +35,7 @@ describe('/api/v1/shops', () => {
     });
   });
 
-  describe('POST /', () => {
+  describe('api post/shops', () => {
     it('Save a shop with valid data', async () => {
       // on enregistre un nouveau shop
       const res = await request(server)
@@ -44,7 +44,7 @@ describe('/api/v1/shops', () => {
       // on le recupère depuis la BDD
       const shop = await Models.Shop.findById(res.body.shop_id)
 
-      expect(res.status).toBe(200);
+      expect(res.status).toBe(201);
       expect(shop).not.toBeNull();
       expect(res.body).toEqual(shop.dataValues);
     });
@@ -60,6 +60,19 @@ describe('/api/v1/shops', () => {
 
       expect(res.status).toBe(200);
       expect(res.body.name).toBe('your shop');
+    });
+  });
+
+  describe('api delete/shops/:id', () => {
+    it('Delete shop with a given id', async () => {
+      const shop = await Models.Shop.create({name: 'my shop'});
+
+      const res = await request(server)
+        .delete('/api/v1/shops/' + shop.get('shop_id'))
+        .send({deleted: 1});
+
+      expect(res.status).toBe(200);
+      expect(res.body.deleted).toBe(true);
     });
   });
 

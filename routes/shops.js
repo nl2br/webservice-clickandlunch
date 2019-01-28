@@ -53,5 +53,6 @@ router.put('/:id', Shops.putShop);
  * @method delete/shops/:id
  * @param {number} shopid id du shop
  */
+router.delete('/:id', Shops.deleteShop)
 
 module.exports = router;
