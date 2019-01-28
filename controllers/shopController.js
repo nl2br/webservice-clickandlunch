@@ -1,4 +1,106 @@
 const Models = require('../models/');
+const { Shop } = Models;
+
+class Shops {
+  
+  static getShops(req, res, next) {
+    Models.Shop.findAll({where: {deleted: 0}})
+      .then(result => {
+        res.status(200).json(result);
+      })
+      .catch(error => {
+        console.log('error getAllShops', error.message);
+        res.status(400).send(error);
+      }) 
+  }
+
+  static getShop(req, res, next) {
+    Models.Shop.findByPk(req.params.id)
+      .then(result => {
+        if (!result) {
+          return res.status(404).send({message: 'No Shop Found for the given id'});
+        }
+        res.status(200).json(result);
+      })
+      .catch(error => {
+        console.log('error getShop : ', error.message);
+        res.status(400).send(error);
+      });
+  }
+
+  static getShopProducts(req, res, next) {
+    Models.Product.findAll({
+      where: {
+        shop_id: req.params.id,
+        deleted: 0
+      }
+    })
+      .then(result => {
+        if (Array.isArray(result) && !result.length) {
+          return res.status(404).send({message: 'No Products Found for the given id'});
+        }
+        res.status(200).json(result);
+      })
+      .catch(error => {
+        console.log('error getAllShopProducts : ', error.message);
+        res.status(400).send(error);
+      })
+  }
+
+  // TODO: tester de virer static, renommer en getProduct et de voir comment le gérer
+  static getShopProduct(req, res, next) {
+    Models.Product.findOne({
+      where: { product_id: req.params.productid, shop_id: req.params.shopid },
+    })
+      .then(result => {
+        if (!result) {
+          return res.status(404).send({message: 'Product or Shop Not Found'});
+        }
+        res.status(200).json(result);
+      })
+      .catch(error => {
+        console.log('error getShopSpecificProduct : ', error.message);
+        res.status(400).send(error);
+      });
+  }
+
+  static postShop(req, res, next) {
+    Models.Shop.create({
+      name: req.body.name
+    })
+    .then(result => {
+      res.status(200).json(result);
+    })
+    .catch(error => {
+      console.log('error postAddShop : ', error.message);
+      res.status(400).send(error);
+    })
+  }
+
+  static putShop(req, res, next) {
+    Models.Shop.findById(req.params.id)
+    .then(shop => {
+      if(!shop) {return res.status(400).send("this shop don't exist");}
+      return shop.update({
+        name: req.body.name || shop.name
+      })  
+      .then(() => {
+        res.status(200).send(shop);
+      })
+    })
+    .catch(error => {
+      console.log('error putShop : ', error.message);
+      res.status(400).send({message: "Error while trying to update the shop", data: error.message});
+    });
+  }
+}
+
+module.exports = Shops;
+
+
+
+/*
+const Models = require('../models/');
 
 // validation input
 const Joi = require('joi');
@@ -94,3 +196,5 @@ exports.postAddShop = (req, res, next) => {
 
 // Delete a shop
 // DELETE /shops/:id (admin, pro user)
+
+*/

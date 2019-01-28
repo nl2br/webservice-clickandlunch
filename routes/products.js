@@ -9,7 +9,7 @@ const productController = require('../controllers/productController');
 
 // Request for list of all product items.
 // GET /products 
-router.get('/', productController.getAllProducts);
+router.get('/', productController.getProducts);
 
 // Request product from the given id.
 // GET /products/:productid

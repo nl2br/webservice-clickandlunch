@@ -1,34 +1,57 @@
+/**
+ * Routes des shops
+ * @module routes/shops
+ * @requires controllers/shopController
+ */
 const express = require('express');
 const router = express.Router();
-const shopController = require('../controllers/shopController');
+const Shops = require('../controllers/shopController');
 
-// Listing all shop 
-// GET /shops (all)
-router.get('/', shopController.getAllShops);
+/**
+ * Listing all shop (all user)
+ * @method get/shops
+ */
+router.get('/', Shops.getShops);
 
-// Listing all shop for a given City id
-// GET /:id/shops (all)
+/**
+ * Listing shop details for a given shop  (all user)
+ * @method get/shops/:id
+ * @param {number} id id du shop
+ */
+router.get('/:id', Shops.getShop);
 
-// Listing shop details for a given shop 
-// GET /shops/:id (all)
-router.get('/:id', shopController.getShop);
+/**
+ * Listing all product items for a given shop  (all user)
+ * @method get/shops/:id/products
+ * @param {number} id id du shop
+ */
+router.get('/:id/products', Shops.getShopProducts);
 
-// Listing all product items for a given shop 
-// GET /shops/:id/products (all)
-router.get('/:id/products', shopController.getAllShopProducts);
+/**
+ * Listing specific product for a given shop  (all user)
+ * @method get/shops/:shopid/products/:productid
+ * @param {number} shopid id du shop
+ * @param {number} productid id du produit
+ */
+router.get('/:shopid/products/:productid', Shops.getShopProduct);
 
-// Listing specific product for a given shop
-// GET /shops/:shopid/products/:productid (all)
-router.get('/:shopid/products/:productid', shopController.getShopSpecificProduct);
+/**
+ * Create a new shop (admin, pro user)
+ * @method post/shops
+ */
+router.post('/', Shops.postShop);
 
-// Create a new shop
-// POST /shops (admin, pro user)
-router.post('/', shopController.postAddShop);
+/**
+ * Modify details for a given shop (admin, pro user)
+ * @method post/shops/:id
+ * @param {number} shopid id du shop
+ */
+router.put('/:id', Shops.putShop);
 
-// Modify details for a given shop
-// PUT /shops/:id (admin, pro user)
-
-// Delete a shop
-// DELETE /shops/:id (admin, pro user)
+/**
+ * Delete a shop (admin, pro user)
+ * @method delete/shops/:id
+ * @param {number} shopid id du shop
+ */
 
 module.exports = router;

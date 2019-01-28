@@ -24,8 +24,8 @@ Product.prototype.getFullname = function () {
 *
 */
 
-exports.getAllProducts = (req, res, next) => {
-  Product.findAll()
+exports.getProducts = (req, res, next) => {
+  Product.findAll({where: {deleted: 0}})
     .then(result => {
       res.status(200).json(result);
     })

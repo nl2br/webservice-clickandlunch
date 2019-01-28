@@ -5,32 +5,28 @@ let server;
 
 describe('/api/v1/shops', () => {
 
-  beforeEach(() => { server = require('../../app'); });
+  beforeEach(() => { server = require('../../app'); })
 
-  afterEach(async () => { 
-    await server.close(); 
-    await Models.Shop.destroy({where: {}});
-  });
+  afterEach(async () => { await server.close(); })
   
   afterAll(async (done) => {
     await server.close();
     server.on('disconnected', done);
   },1000);
 
-  describe('GET /', () => {
+  describe('api get/shops', () => {
     it('Return all shops', async () => {
-      // on créer un shop
-      await Models.Shop.create({name: 'Asia Shop'});
-      // on le recupère depuis la BDD
+      await Models.Shop.create({name: 'Asia Shop 3'});
       const res = await request(server).get('/api/v1/shops');
+      console.log('res.body',res.body);
       expect(res.status).toBe(200);
-      expect(res.body.length).toBe(1);
+      expect(res.body.length).toBeGreaterThanOrEqual(1);
     });
   });
 
-  describe('GET /:id', () => {
+  describe('api get/shops/:id', () => {
     it('Return one specific shop', async () => {
-      // on créer le shop
+      
       const shop = await Models.Shop.create({name: 'Asia Shop'});
       // puis on tente de récupérer les infos de ce shop
       const res = await request(server).get('/api/v1/shops/' + shop.get('shop_id'));
@@ -54,4 +50,32 @@ describe('/api/v1/shops', () => {
     });
   });
 
+  describe('api put/shops/:id', () => {
+    it('Modify shop with valid data', async () => {
+      const shop = await Models.Shop.create({name: 'my shop'});
+
+      const res = await request(server)
+        .put('/api/v1/shops/' + shop.get('shop_id'))
+        .send({name: 'your shop'});
+
+      expect(res.status).toBe(200);
+      expect(res.body.name).toBe('your shop');
+    });
+  });
+
 })
+
+test('shop : return 2 products', async () => {
+  let shop = await Models.Shop.create({name: 'Armenian Shop'});
+  const product1 = await Models.Product.create({name: 'kumkuat', shop_id: shop.get('shop_id') });
+  const product2 = await Models.Product.create({name: 'kumkuat 2', shop_id: shop.get('shop_id') });
+  shop.setProducts([product1,product2]);
+  shop.getProducts().then( products => {
+      expect(products.length).toBe(2);
+  });
+  // await Models.Product.destroy({where: {}})
+  // .catch(error => {
+  //   console.log('error destroy shop : ', error.message);
+  //   // return res.status(400).send(error);
+  // });
+});
