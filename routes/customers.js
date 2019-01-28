@@ -17,11 +17,11 @@ router.get('/:id', customerController.getCustomer);
 
 // Create a new customer
 // POST /customers (admin, pro user)
-router.post('/', customerController.postAddCustomer);
+router.post('/', customerController.postCustomer);
 
 // Modify details for a given customer
 // PUT /customers/:id (admin, pro user)
-router.put('/:id', customerController.putModifyCustomer);
+router.put('/:id', customerController.putCustomer);
 
 // Delete a customer
 // DELETE /customers/:id (admin, pro user)

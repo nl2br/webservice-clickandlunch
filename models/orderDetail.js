@@ -5,19 +5,19 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       primaryKey: true,
       allowNull: false,
-      references: {
-        model: 'Order',
-        key: 'order_id'
-      }
+      // references: {
+      //   model: 'Order',
+      //   key: 'order_id'
+      // }
     },
     product_id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       allowNull: false,
-      references: {
-        model: 'Product',
-        key: 'product_id'
-      }
+      // references: {
+      //   model: 'Product',
+      //   key: 'product_id'
+      // }
     },
     quantity: {
       type: DataTypes.INTEGER,
@@ -27,9 +27,16 @@ module.exports = (sequelize, DataTypes) => {
     tableName: 'order_detail'
   });
 
+  OrderDetail.removeAttribute('id');
+
   OrderDetail.associate = (models) => {
     OrderDetail.belongsTo(models.Order, {
-      foreignKey: 'order_id'
+      foreignKey: 'order_id',
+      onDelete: 'CASCADE' // when delete an order, delete all orderDetail
+    });
+    OrderDetail.belongsTo(models.Product, {
+      foreignKey: 'product_id',
+      onDelete: 'CASCADE' // when delete a product, delete all orderDetail
     });
   }
 

@@ -12,17 +12,20 @@ module.exports = (sequelize, DataTypes) => {
     },
     last_name: {
       type: DataTypes.STRING
+    },
+    deleted: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: 0
     }
   });
 
-  // Shop.associate = function (models) {
+  Customer.associate = function (models) {
 
-  //   Shop.hasMany(models.Product, {
-  //     foreignKey: 'shop_id',
-  //     as: 'Product'
-  //   });
+    Customer.hasMany(models.Order, { // add foreign key to order
+      foreignKey: 'customer_id',
+    });
 
-  // };
+  };
 
   return Customer;
 

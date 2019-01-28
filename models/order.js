@@ -17,10 +17,10 @@ module.exports = (sequelize, DataTypes) => {
         args: false,
         msg: 'Please enter a customer id'
       },
-      references: {
-        model: 'Customer',
-        key: 'customer_id'
-      }
+      // references: {
+      //   model: 'Customer',
+      //   key: 'customer_id'
+      // }
     },
     shop_id: {
       type: DataTypes.INTEGER,
@@ -28,16 +28,25 @@ module.exports = (sequelize, DataTypes) => {
         args: false,
         msg: 'Please enter a shop id'
       },
-      references: {
-        model: 'Shop',
-        key: 'shop_id'
-      }
+      // references: {
+      //   model: 'Shop',
+      //   key: 'shop_id'
+      // }
+    },
+    deleted: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: 0
     }
   });
 
   Order.associate = (models) => {
-    Order.hasMany(models.OrderDetail, {
-      foreignKey: 'order_id'
+    Order.hasMany(models.OrderDetail, { // add foreign key order_id to OrderDetail
+      foreignKey: 'order_id',
+      // onDelete: 'CASCADE'
+    });
+    Order.belongsTo(models.Customer, { // customer_id inserted into order
+      foreignKey: 'customer_id',
+      // onDelete: 'CASCADE'
     });
   };
 

@@ -72,7 +72,7 @@ exports.getCustomer = (req, res, next) => {
 
 // Create a new Customer
 // POST /Customers (admin, pro user)
-exports.postAddCustomer = (req, res, next) => {
+exports.postCustomer = (req, res, next) => {
   Models.Customer.create({
     first_name: req.body.firstname,
     last_name: req.body.lastname
@@ -88,24 +88,22 @@ exports.postAddCustomer = (req, res, next) => {
 
 // Modify details for a given Customer
 // PUT /Customers/:id (admin, pro user)
-exports.putModifyCustomer = (req, res, next) => {
-  
-  Customer.findById(req.params.id)
+exports.putCustomer = (req, res, next) => {
+  Models.Customer.findById(req.params.id)
   .then(customer => {
-    //if(!customer) {return res.status(400).send("Can't modify this customer");}
+    if(!customer) {return res.status(400).send("this customer don't exist");}
     return customer.update({
       first_name: req.body.firstname || customer.first_name,
       last_name: req.body.lastname || customer.last_name
-    });
-  })
-  .then(() => {
-    return res.status(200).send(customer);
+    })  
+    .then(() => {
+      res.status(200).send(customer);
+    })
   })
   .catch(error => {
     console.log('error putModifyCustomer : ', error.message);
-    return res.status(400).send({message: "Error while trying to update the customer", data: error.message);
-  })
-
+    res.status(400).send({message: "Error while trying to update the customer", data: error.message});
+  });
 };
 // Delete a Customer
 // DELETE /Customers/:id (admin, pro user)

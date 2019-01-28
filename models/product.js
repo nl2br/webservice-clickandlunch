@@ -11,21 +11,28 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     shop_id: {
       type: DataTypes.INTEGER,
-      references: {
-        model: 'Shop',
-        key: 'shop_id'
-      }
+      // references: {
+      //   model: 'Shop',
+      //   key: 'shop_id'
+      // }
+    },
+    deleted: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: 0
     }
   });
 
   // Class Method
   Product.associate = function (models) {
 
-    Product.belongsTo(models.Shop, {
+    /**
+     * Ajout d'une contrainte a produit :
+     * Lorsqu'on delete un shop, ses produits associées sont supprimés
+     */
+    Product.belongsTo(models.Shop, { // add shop_id to product
       foreignKey: 'shop_id',
-      onDelete: 'CASCADE'
+      onDelete: 'CASCADE' // when deleting a shop, delete all his product
     });
-
   };
 
 

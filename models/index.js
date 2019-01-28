@@ -6,7 +6,7 @@ const env = process.env.NODE_ENV || 'development';
 const config = require(__dirname + '/../config.json')[env];
 const db = {};
 
-// TODO faire un bon fichier de config avec les var_ENV
+// TODO: faire un bon fichier de config avec les var_ENV
 const sequelize = new Sequelize(
   config.database,
   config.username,

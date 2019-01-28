@@ -8,12 +8,15 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     name: DataTypes.STRING,
+    deleted: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: 0
+    }
   });
 
   Shop.associate = function (models) {
-    Shop.hasMany(models.Product, {
-      foreignKey: 'shop_id',
-      as: { singular: 'product', plural: 'products' }
+    Shop.hasMany(models.Product, { // add foreign key to Product
+      foreignKey: 'shop_id'
     });
   };
 

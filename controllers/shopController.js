@@ -3,8 +3,8 @@ const { Shop } = Models;
 
 class Shops {
   
-  static getAllShops(req, res, next) {
-    Models.Shop.findAll()
+  static getShops(req, res, next) {
+    Models.Shop.findAll({where: {deleted: 0}})
       .then(result => {
         res.status(200).json(result);
       })
@@ -28,10 +28,11 @@ class Shops {
       });
   }
 
-  static getAllShopProducts(req, res, next) {
+  static getShopProducts(req, res, next) {
     Models.Product.findAll({
       where: {
-        shop_id: req.params.id
+        shop_id: req.params.id,
+        deleted: 0
       }
     })
       .then(result => {
@@ -46,7 +47,8 @@ class Shops {
       })
   }
 
-  static getShopSpecificProduct(req, res, next) {
+  // TODO: tester de virer static, renommer en getProduct et de voir comment le gérer
+  static getShopProduct(req, res, next) {
     Models.Product.findOne({
       where: { product_id: req.params.productid, shop_id: req.params.shopid },
     })
@@ -62,7 +64,7 @@ class Shops {
       });
   }
 
-  static postAddShop(req, res, next) {
+  static postShop(req, res, next) {
     Models.Shop.create({
       name: req.body.name
     })
@@ -73,6 +75,23 @@ class Shops {
       console.log('error postAddShop : ', error.message);
       res.status(400).send(error);
     })
+  }
+
+  static putShop(req, res, next) {
+    Models.Shop.findById(req.params.id)
+    .then(shop => {
+      if(!shop) {return res.status(400).send("this shop don't exist");}
+      return shop.update({
+        name: req.body.name || shop.name
+      })  
+      .then(() => {
+        res.status(200).send(shop);
+      })
+    })
+    .catch(error => {
+      console.log('error putShop : ', error.message);
+      res.status(400).send({message: "Error while trying to update the shop", data: error.message});
+    });
   }
 }
 
