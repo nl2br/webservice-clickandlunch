@@ -20,7 +20,7 @@ describe('/api/v1/customers', () => {
       const customer = await Models.Customer.create({first_name: 'nathan', last_name: 'lebreton'});
       const res = await request(server).get('/api/v1/customers/' + customer.get('customer_id'));
       expect(res.status).toBe(200);
-      expect(res.body).toEqual(customer.dataValues);
+      expect(res.body.last_name).toEqual(customer.dataValues.last_name);
     });
   });
 

@@ -19,7 +19,10 @@ module.exports = (sequelize, DataTypes) => {
     deleted: {
       type: DataTypes.BOOLEAN,
       defaultValue: 0
-    }
+    },
+    // Timestamps
+    created_at: DataTypes.DATE(6),
+    updated_at: DataTypes.DATE(6)
   });
 
   // Class Method
@@ -40,55 +43,18 @@ module.exports = (sequelize, DataTypes) => {
 
 }
 
-
-
-// const Sequelize = require('sequelize');
-// const sequelize = require('../utils/database');
-
-// const product = sequelize.define('product', {
-//   id: {
-//     type: Sequelize.INTEGER,
-//     primaryKey: true,
-//     autoIncrement: true,
-//     allowNull: false
-//   },
-//   name: Sequelize.STRING,
-//   id_shop: Sequelize.INTEGER
-// });
-
-// module.exports = product;
-
-
-
-
-
-// const { Model } = require('sequelize');
-// const sequelize = require('../utils/database');
-
-// class product extends Model {
-
-//     get fullName() {
-//         return `product ${this.name} from Shop ${this.id}`;
-//     }
-
-//     static init(sequelize) {
-//         super.init({
-//             id: {
-//                 type: Sequelize.INTEGER, 
-//                 primaryKey: true, 
-//                 autoIncrement: true,
-//                 allowNull: false
-//             },
-//             name: Sequelize.STRING,
-//             id_shop: Sequelize.INTEGER
-//         }, { sequelize })
-//     }
-
-//     static associate(models) {
-//         this.myAssociation = this.belongsTo(models.OtherModel);
-//         // or
-//         this.myAssociation = models.MyModel.belongsTo(models.OtherModel);
-//       }
-// }
-
-// module.exports = product;
+/**
+ * @swagger
+ * definition:
+ *   Product:
+ *     properties:
+ *       product_id:
+ *         type: integer
+ *       name:
+ *         type: string
+ *       deleted:
+ *        type: boolean
+ *        default: false
+ *       shop_id:
+ *         type: integer
+ */

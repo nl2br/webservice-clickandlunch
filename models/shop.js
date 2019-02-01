@@ -11,7 +11,10 @@ module.exports = (sequelize, DataTypes) => {
     deleted: {
       type: DataTypes.BOOLEAN,
       defaultValue: 0
-    }
+    },
+    // Timestamps
+    created_at: DataTypes.DATE(6),
+    updated_at: DataTypes.DATE(6)
   });
 
   // Class Method
@@ -23,6 +26,17 @@ module.exports = (sequelize, DataTypes) => {
 
   return Shop;
 };
+
+/**
+ * @swagger
+ * definition:
+ *   Shop:
+ *     properties:
+ *       shop_id:
+ *         type: integer
+ *       name:
+ *         type: string
+ */
 
 // Automatic functions
 

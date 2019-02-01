@@ -1,6 +1,7 @@
 const express = require('express');
 const http = require('http');
 const bodyParser = require('body-parser');
+const swaggerSpec = require('./swagger.js');
 
 // import routes
 const homeRouter = require('./routes');
@@ -14,6 +15,7 @@ const Models = require('./models');
 const app = express();
 // app.use(express.json());
 
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -22,6 +24,15 @@ app.use('/', homeRouter);
 app.use('/api/v1/products', productsRouter);
 app.use('/api/v1/shops', shopsRouter);
 app.use('/api/v1/customers', customersRouter);
+
+// route for swagger.json
+app.get('/swagger.json', function(req, res) {
+  res.setHeader('Content-Type', 'application/json');
+  res.send(swaggerSpec);
+});
+// adding static folder for swagger
+app.use(express.static('public'));
+
 // default route if invalid URL input
 app.use((req, res) => {
   res.status('404').send({message: 'Wrong URL'});
@@ -40,5 +51,11 @@ if (process.env.NODE_ENV !== 'test') { // https://blog.campvanilla.com/jest-expr
     });
   });
 };
+
+// if (process.env.NODE_ENV === 'test') { // https://blog.campvanilla.com/jest-expressjs-and-the-eaddrinuse-error-bac39356c33a
+//   Models.sequelize.sync({force:true}).then(function() {
+
+//   });
+// };
 
 module.exports = server;

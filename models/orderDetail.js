@@ -22,7 +22,10 @@ module.exports = (sequelize, DataTypes) => {
     quantity: {
       type: DataTypes.INTEGER,
       defaultValue: 1,
-    }
+    },
+    // Timestamps
+    created_at: DataTypes.DATE(6),
+    updated_at: DataTypes.DATE(6)
   },{
     tableName: 'order_detail'
   });

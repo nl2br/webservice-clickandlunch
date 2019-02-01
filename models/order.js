@@ -36,7 +36,10 @@ module.exports = (sequelize, DataTypes) => {
     deleted: {
       type: DataTypes.BOOLEAN,
       defaultValue: 0
-    }
+    },
+    // Timestamps
+    created_at: DataTypes.DATE(6),
+    updated_at: DataTypes.DATE(6)
   });
 
   Order.associate = (models) => {
@@ -52,3 +55,21 @@ module.exports = (sequelize, DataTypes) => {
 
   return Order;
 }
+
+/**
+ * @swagger
+ * definition:
+ *   Order:
+ *     properties:
+ *       order_id:
+ *         type: integer
+ *       date:
+ *         type: date
+ *       customer_id:
+ *         type: integer
+ *       shop_id:
+ *         type: integer
+ *       deleted:
+ *        type: boolean
+ *        default: false
+ */

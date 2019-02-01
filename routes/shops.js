@@ -56,3 +56,27 @@ router.put('/:id', Shops.putShop);
 router.delete('/:id', Shops.deleteShop)
 
 module.exports = router;
+
+/**
+ * @swagger
+ * /api/v1/shops:
+ *   post:
+ *     tags:
+ *       - Shop
+ *     description: Save shop
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: shop
+ *         description: Shop object
+ *         in: body
+ *         required: true
+ *         schema:
+ *           $ref: '#/definitions/Shop'
+ *     responses:
+ *       201:
+ *         description: Return saved shop
+ *         schema:
+ *           $ref: '#/definitions/Shop'
+ */
+

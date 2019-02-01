@@ -15,7 +15,12 @@ const sequelize = new Sequelize(
     dialect: config.dialect,
     host: config.host,
     port: config.port,
-    define: { timestamps: false, freezeTableName: true, underscored: true, }
+    define: { 
+      timestamps: true, 
+      freezeTableName: true, 
+      underscored: true
+    },
+    timezone: 'Europe/Paris'
   }
 );
 console.log(`Connected to "${config.database}" database`);

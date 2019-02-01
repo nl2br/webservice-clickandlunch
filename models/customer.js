@@ -16,7 +16,10 @@ module.exports = (sequelize, DataTypes) => {
     deleted: {
       type: DataTypes.BOOLEAN,
       defaultValue: 0
-    }
+    },
+    // Timestamps
+    created_at: DataTypes.DATE(6),
+    updated_at: DataTypes.DATE(6)
   });
 
   Customer.associate = function (models) {
@@ -30,3 +33,19 @@ module.exports = (sequelize, DataTypes) => {
   return Customer;
 
 }
+
+/**
+ * @swagger
+ * definition:
+ *   Customer:
+ *     properties:
+ *       customer_id:
+ *         type: integer
+ *       first_name:
+ *         type: string
+ *       last_name:
+ *         type: string
+ *       deleted:
+ *        type: boolean
+ *        default: false
+ */

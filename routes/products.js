@@ -75,3 +75,26 @@ router.get('/:id', (req, res) => {
 // }
 
 module.exports = router;
+
+/**
+ * @swagger
+ * /api/v1/products:
+ *   post:
+ *     tags:
+ *       - Product
+ *     description: Save product
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: product
+ *         description: Product object
+ *         in: body
+ *         required: true
+ *         schema:
+ *           $ref: '#/definitions/Product'
+ *     responses:
+ *       201:
+ *         description: Return saved product
+ *         schema:
+ *           $ref: '#/definitions/Product'
+ */

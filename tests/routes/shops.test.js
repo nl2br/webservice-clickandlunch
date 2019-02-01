@@ -31,7 +31,7 @@ describe('/api/v1/shops', () => {
       // puis on tente de récupérer les infos de ce shop
       const res = await request(server).get('/api/v1/shops/' + shop.get('shop_id'));
       expect(res.status).toBe(200);
-      expect(res.body).toEqual(shop.dataValues);
+      expect(res.body.name).toEqual(shop.dataValues.name);
     });
   });
 
@@ -46,7 +46,7 @@ describe('/api/v1/shops', () => {
 
       expect(res.status).toBe(201);
       expect(shop).not.toBeNull();
-      expect(res.body).toEqual(shop.dataValues);
+      expect(res.body.name).toEqual(shop.dataValues.name);
     });
   });
 
