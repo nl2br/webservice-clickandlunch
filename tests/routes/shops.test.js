@@ -1,5 +1,6 @@
 const request = require('supertest');
 const Models = require('../../models/');
+const Sequelize = require('sequelize');
 
 let server;
 
@@ -92,3 +93,64 @@ test('shop : return 2 products', async () => {
   //   // return res.status(400).send(error);
   // });
 });
+
+test('shop : return nearby shop around point', async () => {
+
+  let shop = await Models.Shop.create({
+    name: 'cafe',
+    location: {
+      type: 'Point',
+      coordinates: [11,2],
+      crs: {type: 'name', properties: { name: 'EPSG:4326'}}
+    }
+  });
+  await Models.Shop.create({
+    name: 'shop',
+    location: {
+      type: 'Point',
+      coordinates: [2,2],
+      crs: {type: 'name', properties: { name: 'EPSG:4326'}}
+    }
+  });
+  await Models.Shop.create({
+    name: 'cloth',
+    location: {
+      type: 'Point',
+      coordinates: [5,4],
+      crs: {type: 'name', properties: { name: 'EPSG:4326'}}
+    }
+  });
+  await Models.Shop.create({
+    name: 'restaurant',
+    location: {
+      type: 'Point',
+      coordinates: [8,7],
+      crs: {type: 'name', properties: { name: 'EPSG:4326'}}
+    }
+  });
+  await Models.Shop.create({
+    name: 'cafe 2',
+    location: {
+      type: 'Point',
+      coordinates: [3,9],
+      crs: {type: 'name', properties: { name: 'EPSG:4326'}}
+    }
+  });
+  await Models.Shop.create({
+    name: 'toy',
+    location: {
+      type: 'Point',
+      coordinates: [11,9],
+      crs: {type: 'name', properties: { name: 'EPSG:4326'}}
+    }
+  });
+
+
+  await shop.findNearbyShops(9, 4, 4.5)
+    .then(shops => console.log('RETEST',shops) )
+    .catch(error => {
+      console.log('error findNearbyShops : ', error.message);
+    });
+  
+
+})

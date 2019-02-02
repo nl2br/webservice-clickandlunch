@@ -1,3 +1,5 @@
+const Sequelize = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
 
   let Shop = sequelize.define('Shop', {
@@ -8,6 +10,10 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     name: DataTypes.STRING,
+    location: {
+      type: DataTypes.GEOMETRY('POINT', 4326),
+      allowNull: true
+    },
     deleted: {
       type: DataTypes.BOOLEAN,
       defaultValue: 0
@@ -24,8 +30,41 @@ module.exports = (sequelize, DataTypes) => {
     });
   };
 
+  Shop.prototype.findNearbyShops = async function (long, lat, range) {
+    let result = await sequelize.query(`SELECT id, ST_AsText(pt) AS point, name, ROUND(ST_Distance(POINT(9,4), pt), 2) AS distance
+      FROM poi
+      WHERE ST_Distance(POINT(9,4), pt) < 4.5
+      AND type = 'Shop'
+      ORDER BY distance ASC`, { 
+        type: sequelize.QueryTypes.SELECT,
+        // model: Projects,
+        // mapToModel: true
+      })
+      .catch(error => {
+        console.log('error findNearbyShops : ', error.message);
+      });
+    return result;
+  }
+  // Shop.prototype.findNearbyShops = function (long, lat, range) {
+  //   return Shop.findAll({
+  //     where: Sequelize.where(
+  //       Sequelize.fn('ST_Within', 
+  //         Sequelize.col('Location'),
+  //         Sequelize.fn('ST_SetSRID', 
+  //           Sequelize.fn('ST_MakePoint', 
+  //           long, lat), 4326),
+  //         +range * 0.016),
+  //       true)
+  //   })
+  //   .catch(error => {
+  //     console.log('error findNearbyShops : ', error.message);
+  //   });
+  // }
+
   return Shop;
 };
+
+
 
 /**
  * @swagger

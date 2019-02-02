@@ -110,6 +110,7 @@ class Shops {
       res.status(400).send({message: "Error while trying to delete the shop", data: error.message});
     });
   }
+
 }
 
 module.exports = Shops;
