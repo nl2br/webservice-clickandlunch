@@ -11,7 +11,11 @@ module.exports = (sequelize, DataTypes) => {
     },
     name: DataTypes.STRING,
     location: {
-      type: DataTypes.GEOMETRY('POINT', 4326),
+      /** OpenStreetMap est basé sur des mesures GPS 
+       * et est donc capable de détecter et de lire le système WGS84.
+       * Ce système est référencé 4326 en deux dimensions (X,Y)
+       * mesuré en mètres */
+      type: DataTypes.GEOMETRY('POINT', 4326), 
       allowNull: true
     },
     deleted: {
@@ -31,12 +35,14 @@ module.exports = (sequelize, DataTypes) => {
   };
 
   Shop.prototype.findNearbyShops = async function (long, lat, range) {
-    let result = await sequelize.query(`SELECT id, ST_AsText(pt) AS point, name, ROUND(ST_Distance(POINT(9,4), pt), 2) AS distance
+    // Note x is longitude and y is latitude
+    let result = await sequelize.query(`SELECT id, ST_AsText(pt) AS point, name, ROUND(ST_Distance(POINT(?,?), pt), 2) AS distance
       FROM poi
-      WHERE ST_Distance(POINT(9,4), pt) < 4.5
+      WHERE ST_Distance(POINT(?,?), pt) < ?
       AND type = 'Shop'
       ORDER BY distance ASC`, { 
         type: sequelize.QueryTypes.SELECT,
+        replacements: [long, lat, long, lat, range]
         // model: Projects,
         // mapToModel: true
       })
@@ -59,6 +65,17 @@ module.exports = (sequelize, DataTypes) => {
   //   .catch(error => {
   //     console.log('error findNearbyShops : ', error.message);
   //   });
+
+//     SELECT shop_id, ST_AsText(location) AS point, name, ROUND(ST_Distance(POINT(9,4), location), 2) AS distance
+//       FROM shop
+//       WHERE ST_Distance(POINT(9,4), location) < 4.5
+//       ORDER BY distance ASC;
+// SELECT `shop_id`, `name`, `location`, `deleted`, `created_at`, `updated_at` 
+// 	FROM `Shop` AS `Shop` 
+// 	WHERE ST_Within(`Location`, ST_SetSRID(ST_MakePoint(9, 4), 4326), 0.07200000000000001) = true;
+// SELECT `shop_id`, `name`, ST_AsText(location) 
+// 		FROM `Shop` 
+// 		WHERE ST_Within(`Location`,SRID(GeomFromText('POINT(9,4)', 4326)));
   // }
 
   return Shop;

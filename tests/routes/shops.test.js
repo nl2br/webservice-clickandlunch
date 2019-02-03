@@ -95,7 +95,8 @@ test('shop : return 2 products', async () => {
 });
 
 test('shop : return nearby shop around point', async () => {
-
+  let customerPosition = {lon: 9, lat: 4};
+  let radius = 4.5
   let shop = await Models.Shop.create({
     name: 'cafe',
     location: {
@@ -146,8 +147,8 @@ test('shop : return nearby shop around point', async () => {
   });
 
 
-  await shop.findNearbyShops(9, 4, 4.5)
-    .then(shops => console.log('RETEST',shops) )
+  await shop.findNearbyShops(customerPosition.lon,customerPosition.lat, radius)
+    .then(shops => console.log('Shops aux alentours :',shops) )
     .catch(error => {
       console.log('error findNearbyShops : ', error.message);
     });
