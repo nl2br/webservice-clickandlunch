@@ -1,0 +1,14 @@
+# all node modules
+node_modules
+
+# vscode config files
+.vscode
+
+# jest
+coverage
+
+# swagger api
+public/swagger-doc
+
+# public
+public

@@ -1,14 +1,21 @@
 const request = require('supertest');
 const Models = require('../../models/');
-const Sequelize = require('sequelize');
+truncate = require('../truncate');
 
 let server;
 
+beforeAll( async () =>{
+  await truncate();
+});
+
 describe('/api/v1/shops', () => {
 
-  beforeEach(() => { server = require('../../app'); })
-
-  afterEach(async () => { await server.close(); })
+  beforeEach( async () => { 
+    server = require('../../app'); 
+  })
+  afterEach(async () => { 
+    await server.close(); 
+  })
   
   afterAll(async (done) => {
     await server.close();
@@ -16,23 +23,62 @@ describe('/api/v1/shops', () => {
   },1000);
 
   describe('api get/shops', () => {
-    it('Return all shops', async () => {
-      await Models.Shop.create({name: 'Asia Shop 3'});
+    it('Listing all shop', async () => {
+      await Models.Shop.create({
+        name: 'Asia Shoppppp',
+        siret: '12345678912345',
+        siren: '123456789',
+        phone_number: '0678895645',
+        email: 'test@test.com',
+        location: {
+          type: 'Point',
+          coordinates: [11,9],
+          crs: {type: 'name', properties: { name: 'EPSG:4326'}}
+        }
+      });
       const res = await request(server).get('/api/v1/shops');
-      console.log('res.body',res.body);
+
       expect(res.status).toBe(200);
       expect(res.body.length).toBeGreaterThanOrEqual(1);
     });
   });
 
   describe('api get/shops/:id', () => {
-    it('Return one specific shop', async () => {
-      
-      const shop = await Models.Shop.create({name: 'Asia Shop'});
+    it('Get shop details for a given shop', async () => {
+      const shop = await Models.Shop.create({
+        name: 'Asia Shop',
+        siret: '12345678912345',
+        siren: '123456789',
+        phone_number: '0678895645',
+        email: 'test@test.com',
+        location: {
+          type: 'Point',
+          coordinates: [11,9],
+          crs: {type: 'name', properties: { name: 'EPSG:4326'}}
+        }
+      });
       // puis on tente de récupérer les infos de ce shop
       const res = await request(server).get('/api/v1/shops/' + shop.get('shop_id'));
       expect(res.status).toBe(200);
       expect(res.body.name).toEqual(shop.dataValues.name);
+    });
+
+    it('Should send error : Get shop details for an invalid shop', async () => {
+      const res = await request(server).get('/api/v1/shops/999');
+      expect(res.status).toBe(404);
+      expect(res).toHaveProperty('error');
+    });
+  });
+
+  describe('api get/shops/:id/products', () => {
+    it('Listing all product items for a given shop', async () => {
+      // TODO when product done
+    });
+  });
+  
+  describe('api get/shops/:shopId/products/:productId', () => {
+    it('Get specific product for a given shop', async () => {
+      // TODO when product done
     });
   });
 
@@ -41,7 +87,20 @@ describe('/api/v1/shops', () => {
       // on enregistre un nouveau shop
       const res = await request(server)
         .post('/api/v1/shops/')
-        .send({name: "My test Shop"});
+        .send({
+          name: 'My test Shop',
+          siret: '12345678912345',
+          siren: '123456789',
+          phoneNumber: '0678895645',
+          email: 'test@test.com',
+          longitude: 11,
+          latitude: 9
+          // location: {
+          //   type: 'Point',
+          //   coordinates: [11,9],
+          //   crs: {type: 'name', properties: { name: 'EPSG:4326'}}
+          // }
+        });
       // on le recupère depuis la BDD
       const shop = await Models.Shop.findById(res.body.shop_id)
 
@@ -49,11 +108,42 @@ describe('/api/v1/shops', () => {
       expect(shop).not.toBeNull();
       expect(res.body.name).toEqual(shop.dataValues.name);
     });
+
+    it('Should send error : try to save shop with invalid data', async () => {
+      const res = await request(server)
+        .post('/api/v1/shops/')
+        .send({
+          name: 'My test Shop',
+          siret: '123456A8912345',
+          siren: '123456789',
+          phoneNumber: '0678895645',
+          email: 'test.com',
+          location: {
+            type: 'Point',
+            coordinates: [11,9],
+            crs: {type: 'name', properties: { name: 'EPSG:4326'}}
+          }
+        });
+
+      expect(res.status).toBe(400);
+      expect(res).toHaveProperty('error');
+    });
   });
 
   describe('api put/shops/:id', () => {
     it('Modify shop with valid data', async () => {
-      const shop = await Models.Shop.create({name: 'my shop'});
+      const shop = await Models.Shop.create({
+        name: 'My Shop',
+        siret: '12345678912345',
+        siren: '123456789',
+        phone_number: '0678895645',
+        email: 'test@test.com',
+        location: {
+          type: 'Point',
+          coordinates: [11,9],
+          crs: {type: 'name', properties: { name: 'EPSG:4326'}}
+        }
+      });
 
       const res = await request(server)
         .put('/api/v1/shops/' + shop.get('shop_id'))
@@ -62,11 +152,90 @@ describe('/api/v1/shops', () => {
       expect(res.status).toBe(200);
       expect(res.body.name).toBe('your shop');
     });
+
+    it('Modify shop with valid data but long and lat', async () => {
+      const shop = await Models.Shop.create({
+        name: 'My Shop',
+        siret: '12345678912345',
+        siren: '123456789',
+        phone_number: '0678895645',
+        email: 'test@test.com',
+        location: {
+          type: 'Point',
+          coordinates: [11,9],
+          crs: {type: 'name', properties: { name: 'EPSG:4326'}}
+        }
+      });
+
+      const res = await request(server)
+        .put('/api/v1/shops/' + shop.get('shop_id'))
+        .send({
+          name: 'your shop',
+          longitude: 56,
+          latitude: 78
+        });
+
+      expect(res.status).toBe(200);
+      expect(res.body.name).toBe('your shop');
+    });
+
+    it('Should report error : Modify shop with invalid data', async () => {
+      const shop = await Models.Shop.create({
+        name: 'valid Shop',
+        siret: '12345678912345',
+        siren: '123456789',
+        phone_number: '0678895645',
+        email: 'test@test.com',
+        location: {
+          type: 'Point',
+          coordinates: [11,9],
+          crs: {type: 'name', properties: { name: 'EPSG:4326'}}
+        }
+      });
+
+      const res = await request(server)
+        .put('/api/v1/shops/' + shop.get('shop_id'))
+        .send({
+          name: 'unvalid \Shop',
+          siret: '1234567891234A',
+          siren: '1234567898',
+          phone_number: '9678895645',
+          email: 'test.com',
+          location: {
+            type: 'Point',
+            coordinates: [200,9],
+            crs: {type: 'name', properties: { name: 'EPSG:4326'}}
+          }
+        });
+
+      expect(res.status).toBe(400);
+      expect(res.body.message).toBe('Error while trying to update the shop');
+    });
+
+    it('Should report error : Modify shop with a not existing id', async () => {
+      const res = await request(server)
+        .put('/api/v1/shops/999')
+        .send({name: 'unvalid \Shop'});
+
+      expect(res.status).toBe(404);
+      expect(res.body.message).toBe("this shop don't exist");
+    });
   });
 
   describe('api delete/shops/:id', () => {
     it('Delete shop with a given id', async () => {
-      const shop = await Models.Shop.create({name: 'my shop'});
+      const shop = await Models.Shop.create({
+        name: 'My Shoppp',
+        siret: '12345678912345',
+        siren: '123456789',
+        phone_number: '0678895645',
+        email: 'test@test.com',
+        location: {
+          type: 'Point',
+          coordinates: [11,9],
+          crs: {type: 'name', properties: { name: 'EPSG:4326'}}
+        }
+      });
 
       const res = await request(server)
         .delete('/api/v1/shops/' + shop.get('shop_id'))
@@ -75,83 +244,14 @@ describe('/api/v1/shops', () => {
       expect(res.status).toBe(200);
       expect(res.body.deleted).toBe(true);
     });
-  });
 
-})
-
-test('shop : return 2 products', async () => {
-  let shop = await Models.Shop.create({name: 'Armenian Shop'});
-  const product1 = await Models.Product.create({name: 'kumkuat', shop_id: shop.get('shop_id') });
-  const product2 = await Models.Product.create({name: 'kumkuat 2', shop_id: shop.get('shop_id') });
-  shop.setProducts([product1,product2]);
-  shop.getProducts().then( products => {
-      expect(products.length).toBe(2);
-  });
-  // await Models.Product.destroy({where: {}})
-  // .catch(error => {
-  //   console.log('error destroy shop : ', error.message);
-  //   // return res.status(400).send(error);
-  // });
-});
-
-test('shop : return nearby shop around point', async () => {
-  let customerPosition = {lon: 9, lat: 4};
-  let radius = 4.5
-  let shop = await Models.Shop.create({
-    name: 'cafe',
-    location: {
-      type: 'Point',
-      coordinates: [11,2],
-      crs: {type: 'name', properties: { name: 'EPSG:4326'}}
-    }
-  });
-  await Models.Shop.create({
-    name: 'shop',
-    location: {
-      type: 'Point',
-      coordinates: [2,2],
-      crs: {type: 'name', properties: { name: 'EPSG:4326'}}
-    }
-  });
-  await Models.Shop.create({
-    name: 'cloth',
-    location: {
-      type: 'Point',
-      coordinates: [5,4],
-      crs: {type: 'name', properties: { name: 'EPSG:4326'}}
-    }
-  });
-  await Models.Shop.create({
-    name: 'restaurant',
-    location: {
-      type: 'Point',
-      coordinates: [8,7],
-      crs: {type: 'name', properties: { name: 'EPSG:4326'}}
-    }
-  });
-  await Models.Shop.create({
-    name: 'cafe 2',
-    location: {
-      type: 'Point',
-      coordinates: [3,9],
-      crs: {type: 'name', properties: { name: 'EPSG:4326'}}
-    }
-  });
-  await Models.Shop.create({
-    name: 'toy',
-    location: {
-      type: 'Point',
-      coordinates: [11,9],
-      crs: {type: 'name', properties: { name: 'EPSG:4326'}}
-    }
-  });
-
-
-  await shop.findNearbyShops(customerPosition.lon,customerPosition.lat, radius)
-    .then(shops => console.log('Shops aux alentours :',shops) )
-    .catch(error => {
-      console.log('error findNearbyShops : ', error.message);
+    it('Should send error : Get shop details for a not existing shop', async () => {
+      const res = await request(server).delete('/api/v1/shops/999');
+      expect(res.status).toBe(404);
+      expect(res).toHaveProperty('error');
+      expect(res.body.message).toBe("this shop don't exist");
     });
-  
 
-})
+  });
+
+});

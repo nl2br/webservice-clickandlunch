@@ -6,6 +6,9 @@ const env = process.env.NODE_ENV || 'development';
 const config = require(__dirname + '/../config.json')[env];
 const db = {};
 
+let logConsoleSequelize = process.env.NODE_ENV === 'test' ? true : false;
+// let logConsoleSequelize = process.env.NODE_ENV === 'test' ? false : true;
+
 // TODO: faire un bon fichier de config avec les var_ENV
 const sequelize = new Sequelize(
   config.database,
@@ -20,9 +23,11 @@ const sequelize = new Sequelize(
       freezeTableName: true, 
       underscored: true
     },
-    timezone: 'Europe/Paris'
+    timezone: 'Europe/Paris',
+    logging: logConsoleSequelize
   }
 );
+console.log(`ENV to "${process.env.NODE_ENV}"`);
 console.log(`Connected to "${config.database}" database`);
 
 fs

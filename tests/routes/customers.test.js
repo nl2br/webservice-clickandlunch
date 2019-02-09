@@ -1,11 +1,18 @@
 const request = require('supertest');
 const Models = require('../../models/');
+truncate = require('../truncate');
 
 let server;
 
+beforeAll( async () =>{
+  await truncate();
+});
+
 describe('/api/v1/customers', () => {
 
-  beforeEach(() => { server = require('../../app'); })
+  beforeEach(async () => { 
+    server = require('../../app'); 
+  });
   afterEach(async () => { 
     await server.close(); 
   });
@@ -32,7 +39,7 @@ describe('/api/v1/customers', () => {
         .put('/api/v1/customers/' + customer.get('customer_id'))
         .send({firstname: 'marilou'});
 
-      console.log('TESTTTT:', res.body)
+      // console.log('TESTTTT:', res.body)
 
       expect(res.status).toBe(200);
       expect(res.body.first_name).toBe('marilou');

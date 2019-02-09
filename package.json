@@ -7,6 +7,14 @@
     "test": "set NODE_ENV=test&& jest ./tests --detectOpenHandles --forceExit --coverage",
     "server": "set NODE_ENV=development&& nodemon app.js"
   },
+  "jest": {
+    "globals": {
+      "NODE_ENV": "test"
+    },
+    "verbose": true,
+    "testEnvironment": "node",
+    "transformIgnorePatterns": []
+  },
   "author": "",
   "license": "ISC",
   "devDependencies": {
