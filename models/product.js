@@ -1,3 +1,7 @@
+/**
+ * @module Models/Product
+ */
+
 module.exports = (sequelize, DataTypes) => {
 
   // Model definition
@@ -8,7 +12,36 @@ module.exports = (sequelize, DataTypes) => {
       autoIncrement: true,
       allowNull: false
     },
-    name: DataTypes.STRING,
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        is: '^[a-zA-Z0-9_]+( [a-zA-Z0-9_]+)*$', // allow letter uppper lower number space
+        notEmpty: true, // don't allow empty strings
+        len: [3,100] // only allow values with length between x and y
+      }
+    },
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+      validate: {
+        is: '^[a-zA-Z0-9_]+( [a-zA-Z0-9_]+)*$', // allow letter uppper lower number space
+        notEmpty: true, // don't allow empty strings
+        len: [3,250] // only allow values with length between x and y
+      }
+    },
+    price: {
+      type: DataTypes.DECIMAL,
+      allowNull: false,
+      validate: {
+        is: '^[0-9]+([.,][0-9]{2})?$',
+        notEmpty: true
+      }
+    },
+    product_type: {
+      type: DataTypes.ENUM,
+      values: ['STARTER', 'DISH', 'DESSERT','DRINK','OTHER','MENU']
+    },
     shop_id: {
       type: DataTypes.INTEGER,
       // references: {
@@ -38,7 +71,6 @@ module.exports = (sequelize, DataTypes) => {
     });
   };
 
-
   return Product;
 
 }
@@ -48,13 +80,13 @@ module.exports = (sequelize, DataTypes) => {
  * definition:
  *   Product:
  *     properties:
- *       product_id:
- *         type: integer
  *       name:
  *         type: string
- *       deleted:
- *        type: boolean
- *        default: false
- *       shop_id:
- *         type: integer
+ *       description:
+ *         type: text
+ *       price:
+ *         type: decimal
+ *       productType:
+ *         type: string
+ *         enum: ['STARTER', 'DISH', 'DESSERT','DRINK','OTHER','MENU']
  */

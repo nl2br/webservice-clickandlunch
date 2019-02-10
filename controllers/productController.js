@@ -1,36 +1,169 @@
-const Product = require('../models').Product;
+/**
+ * @module controller/Product
+ */
 
-/*
-*
-*   Methods definition of the class Product
-*
-*/
+const Models = require('../models/');
+const { Product } = Models;
 
-// Class Method
-// Product.associate = function (models) {
-//   console.log('test')
-// };
+class Products {
 
-// Instance Method
-Product.prototype.getFullname = function () {
-  return [this.name, this.id_shop].join(' ');
-};
+  /**
+   * @function getProduct
+   * Details of a product for a given id
+   * @param {object} req 
+   * @param {int} req.params.id id du product
+   * @param {*} res 
+   */
+  static getProduct(req, res) {
+    // rechercher si le produit demandé est de type MENU
+    Models.Menu.findAll({where:{menu_id: req.params.id}})
+      .then(result => {
+        if (result.length === 0) {
+          Products.getNormalProduct(req.params.id)
+            .then( result => {
+              res.status(200).json(result);
+            })
+            .catch(error => {
+              console.log('error getMenuProducts : ', error.message);
+              res.status(400).send(error);
+            });
+        }else{
+          Products.getMenuProducts(req.params.id)
+            .then( result => {
+              res.status(200).json(result);
+            })
+            .catch(error => {
+              console.log('error getMenuProducts : ', error.message);
+              res.status(400).send(error);
+            });
+        }
+      })
+      .catch(error => {
+        console.log('error getProduct : ', error.message);
+        res.status(400).send(error);
+      });
+  }
 
-// console.log(Product.build({ name: 'maki', id_shop: 1 }).getFullname())
+  static getNormalProduct(menuId) {
+    return new Promise((resolve, reject) => {
+      Models.Product.findByPk(menuId)
+        .then(result => {
+          if (!result) {
+            reject({message: 'No product Found for the given id'});
+          }
+          resolve(result);
+        })
+        .catch(error => {
+          console.log('error getNormalProduct : ', error.message);
+          reject({message: error});
+        });
+    });
+  }
 
-/*
-*
-*   API REST Sequelize for Product
-*
-*/
+  static getMenuProducts(menuId) {
+    console.log('getMenuProducts', menuId);
+    const listProducts = Models.sequelize.query(`select menu.product_id, 
+      (select product.name from product where product.product_id = menu.product_id) name,
+      (select product.description from product where product.product_id = menu.product_id) description,
+      (select product.price from product where product.product_id = menu.product_id) price, 
+      (select product.product_type from product where product.product_id = menu.product_id) product_type
+      from product
+      inner join menu on menu.menu_id = product.product_id
+      where product.product_id = ?`, { 
+        type: Models.sequelize.QueryTypes.SELECT,
+        replacements: [menuId]
+      });
 
-exports.getProducts = (req, res, next) => {
-  Product.findAll({where: {deleted: 0}})
+    const menu = Models.Product.findByPk(menuId);
+
+    return Promise.all([menu, listProducts])
+      .then(result => {
+        let res = result[0].dataValues;
+        Object.assign(res, {
+          listProducts: result[1]
+        });
+        return res;
+      })
+      .catch(error => {
+        console.log('error promise all : ', error.message);
+        return error.message;
+      });
+  }
+
+  // static getMenuProducts(menuId) {
+  //   return new Promise((resolve, reject) => {
+  //     Models.sequelize.query(`select menu.product_id, 
+  //       (select product.name from product where product.product_id = menu.product_id) name,
+  //       (select product.description from product where product.product_id = menu.product_id) description,
+  //       (select product.price from product where product.product_id = menu.product_id) price, 
+  //       (select product.product_type from product where product.product_id = menu.product_id) product_type,
+  //       (select product.shop_id from product where product.product_id = menu.product_id) shop_id
+  //       from product
+  //       inner join menu on menu.menu_id = product.product_id
+  //       where product.product_id = ?`, { 
+  //         type: Models.sequelize.QueryTypes.SELECT,
+  //         replacements: [menuId]
+  //       })
+  //       .then(result => {
+  //         resolve(result);
+  //       })
+  //       .catch(error => {
+  //         console.log('error getMenuProducts : ', error.message);
+  //         reject({message: error.message});
+  //       });
+  //   });
+  // }
+
+  // Models.Order.findAll({ // Nested Eager Loading
+  //   include: [{
+  //     model: Models.OrderDetail,
+  //     attributes: ['product_id','quantity'],
+  //     include: [{
+  //       model: Models.Product, 
+  //       attributes: ['name']
+  //     }] 
+  //   }],
+  //   // include: [{ all: true, nested: true }],
+  //   where: {shop_id: shopId, deleted: false}
+  // })
+
+  /**
+   * @function postProduct
+   * Create a new Product
+   * @param {*} req 
+   * @param {*} res 
+   */
+  static postProduct(req, res) {
+    Models.Product.create({
+      name: req.body.name,
+      description: req.body.description,
+      price: req.body.price,
+      product_type: req.body.productType
+    })
     .then(result => {
-      res.status(200).json(result);
+      if(result.product_type === 'MENU'){
+        req.body.listProducts.forEach(async item => {
+          console.log('item',item);
+          await Models.Menu.create({
+            menu_id:result.product_id,
+            product_id: item
+          })
+          .catch(error => {
+            console.log('error menu creation : ', error.message);
+            res.status(400).send(error);
+          });
+        });
+        res.status(201).json(result);
+      }else{
+        res.status(201).json(result);
+      }
     })
     .catch(error => {
-      console.log('error finding all Products : ', error.message)
+      console.log('error postProduct : ', error.message);
       res.status(400).send(error);
     });
+  }
+
 }
+
+module.exports = Products;
