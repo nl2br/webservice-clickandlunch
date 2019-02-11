@@ -50,7 +50,7 @@ describe('/api/v1/shops', () => {
         siret: '12345678912345',
         siren: '123456789',
         phone_number: '0678895645',
-        email: 'test@test.com',
+        email: 'test45@test.com',
         location: {
           type: 'Point',
           coordinates: [11,9],
@@ -92,7 +92,7 @@ describe('/api/v1/shops', () => {
           siret: '12345678912345',
           siren: '123456789',
           phoneNumber: '0678895645',
-          email: 'test@test.com',
+          email: 'test23@test.com',
           longitude: 11,
           latitude: 9
           // location: {
@@ -137,7 +137,7 @@ describe('/api/v1/shops', () => {
         siret: '12345678912345',
         siren: '123456789',
         phone_number: '0678895645',
-        email: 'test@test.com',
+        email: 'test1@test.com',
         location: {
           type: 'Point',
           coordinates: [11,9],
@@ -159,7 +159,7 @@ describe('/api/v1/shops', () => {
         siret: '12345678912345',
         siren: '123456789',
         phone_number: '0678895645',
-        email: 'test@test.com',
+        email: 'test2@test.com',
         location: {
           type: 'Point',
           coordinates: [11,9],
@@ -185,7 +185,7 @@ describe('/api/v1/shops', () => {
         siret: '12345678912345',
         siren: '123456789',
         phone_number: '0678895645',
-        email: 'test@test.com',
+        email: 'test3@test.com',
         location: {
           type: 'Point',
           coordinates: [11,9],
@@ -229,7 +229,7 @@ describe('/api/v1/shops', () => {
         siret: '12345678912345',
         siren: '123456789',
         phone_number: '0678895645',
-        email: 'test@test.com',
+        email: 'test7@test.com',
         location: {
           type: 'Point',
           coordinates: [11,9],

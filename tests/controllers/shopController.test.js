@@ -26,15 +26,16 @@ describe('/api/v1/shops', () => {
       siret: '12345678912345',
       siren: '123456789',
       phone_number: '0678895645',
-      email: 'test@test.com',
+      email: 'test@test7.com',
       location: {
         type: 'Point',
         coordinates: [11,9],
         crs: {type: 'name', properties: { name: 'EPSG:4326'}}
       }
     });
-    const product1 = await Models.Product.create({name: 'kumkuat', shop_id: shop.get('shop_id') });
-    const product2 = await Models.Product.create({name: 'kumkuat 2', shop_id: shop.get('shop_id') });
+      
+    const product1 = await Models.Product.create({name: 'kumkuat', price: '9.90', shop_id: shop.get('shop_id') });
+    const product2 = await Models.Product.create({name: 'kumkuat 2', price: '9.90', shop_id: shop.get('shop_id') });
     shop.setProducts([product1,product2]);
     shop.getProducts().then( products => {
         expect(products.length).toBe(2);
@@ -53,7 +54,7 @@ describe('/api/v1/shops', () => {
       siret: '12345678912345',
       siren: '123456789',
       phone_number: '0678895645',
-      email: 'test@test.com',
+      email: 'test@test6.com',
       location: {
         type: 'Point',
         email: 'test@test.com',
@@ -66,7 +67,7 @@ describe('/api/v1/shops', () => {
       siret: '12345678912345',
       siren: '123456789',
       phone_number: '0678895645',
-      email: 'test@test.com',
+      email: 'test@test5.com',
       location: {
         type: 'Point',
         coordinates: [2,2],
@@ -78,7 +79,7 @@ describe('/api/v1/shops', () => {
       siret: '12345678912345',
       siren: '123456789',
       phone_number: '0678895645',
-      email: 'test@test.com',
+      email: 'test@test4.com',
       location: {
         type: 'Point',
         coordinates: [5,4],
@@ -90,7 +91,7 @@ describe('/api/v1/shops', () => {
       siret: '12345678912345',
       siren: '123456789',
       phone_number: '0678895645',
-      email: 'test@test.com',
+      email: 'test@test3.com',
       location: {
         type: 'Point',
         coordinates: [8,7],
@@ -102,7 +103,7 @@ describe('/api/v1/shops', () => {
       siret: '12345678912345',
       siren: '123456789',
       phone_number: '0678895645',
-      email: 'test@test.com',
+      email: 'test@test2.com',
       location: {
         type: 'Point',
         coordinates: [3,9],
@@ -114,7 +115,7 @@ describe('/api/v1/shops', () => {
       siret: '12345678912345',
       siren: '123456789',
       phone_number: '0678895645',
-      email: 'test@test.com',
+      email: 'test@test1.com',
       location: {
         type: 'Point',
         coordinates: [11,9],

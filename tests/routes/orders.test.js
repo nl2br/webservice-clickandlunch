@@ -30,7 +30,7 @@ describe('/api/v1/orders', () => {
         siret: '12345678912345',
         siren: '123456789',
         phone_number: '0678895645',
-        email: 'test@test.com',
+        email: 'test@test9.com',
         location: {
           type: 'Point',
           coordinates: [11,9],
@@ -38,10 +38,10 @@ describe('/api/v1/orders', () => {
         }
       });
       const shopId = shop.get('shop_id');
-      const product1 = await Models.Product.create({name: 'Milk shake Framboise', shop_id: shopId });
-      const product2 = await Models.Product.create({name: 'Cake Miel Harissa', shop_id: shopId });
-      const product3 = await Models.Product.create({name: 'ananas', shop_id: shopId });
-      const product4 = await Models.Product.create({name: 'piepie', shop_id: shopId });
+      const product1 = await Models.Product.create({name: 'Milk shake Framboise', price: '9.90', shop_id: shopId });
+      const product2 = await Models.Product.create({name: 'Cake Miel Harissa', price: '9.90', shop_id: shopId });
+      const product3 = await Models.Product.create({name: 'ananas', price: '9.90',shop_id: shopId });
+      const product4 = await Models.Product.create({name: 'piepie', price: '9.90',shop_id: shopId });
       // création du customer
       let customer = await Models.Customer.create({first_name: 'Looping', last_name: 'Barracuda'});
       // création de la commande
