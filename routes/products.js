@@ -12,8 +12,8 @@ const Products = require('../controllers/productController');
  * /api/v1/products/{id}:
  *   get:
  *     tags:
- *       - product
- *     description: Get a product detail for a given id
+ *       - Product
+ *     description: Get a product or menu detail for a given id
  *     produces:
  *       - application/json
  *     parameters:
@@ -22,12 +22,14 @@ const Products = require('../controllers/productController');
  *         in: path
  *         required: true
  *         schema:
- *           $ref: '#/definitions/product'
+ *           $ref: '#/definitions/Product'
  *     responses:
  *       200:
  *         description: Return product detail
  *         schema:
- *           $ref: '#/definitions/product'
+ *            oneof:
+ *              - $ref: '#definitions/Product'
+ *              - $ref: '#definitions/Menu'
  *       400:
  *         description: Internal Error
  *       404:
@@ -44,7 +46,7 @@ router.get('/:id', Products.getProduct);
  * /api/v1/products:
  *   post:
  *     tags:
- *       - product
+ *       - Product
  *     description: Create a new product
  *     produces:
  *       - application/json
@@ -54,12 +56,12 @@ router.get('/:id', Products.getProduct);
  *         in: body
  *         required: true
  *         schema:
- *           $ref: '#/definitions/product'
+ *           $ref: '#/definitions/Product'
  *     responses:
  *       201:
  *         description: Return saved product
  *         schema:
- *           $ref: '#/definitions/product'
+ *           $ref: '#/definitions/Product'
  *       400:
  *         description: Internal error
  */
@@ -71,10 +73,10 @@ router.post('/', Products.postProduct);
 
 /**
  * @swagger
- * /api/v1/products:
+ * /api/v1/products/menus:
  *   post:
  *     tags:
- *       - product
+ *       - Product
  *     description: Create a new product
  *     produces:
  *       - application/json
@@ -84,12 +86,12 @@ router.post('/', Products.postProduct);
  *         in: body
  *         required: true
  *         schema:
- *           $ref: '#/definitions/product'
+ *           $ref: '#/definitions/Menu'
  *     responses:
  *       201:
  *         description: Return saved product
  *         schema:
- *           $ref: '#/definitions/product'
+ *           $ref: '#/definitions/Menu'
  *       400:
  *         description: Internal error
  */

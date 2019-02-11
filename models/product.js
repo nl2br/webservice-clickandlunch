@@ -92,3 +92,25 @@ module.exports = (sequelize, DataTypes) => {
  *       shop_id:
  *         type: integer
  */
+
+/**
+ * @swagger
+ * definition:
+ *   Menu:
+ *     properties:
+ *       name:
+ *         type: string
+ *       description:
+ *         type: text
+ *       price:
+ *         type: decimal
+ *       productType:
+ *         type: string
+ *         enum: ['STARTER', 'DISH', 'DESSERT','DRINK','OTHER','MENU']
+ *       shop_id:
+ *         type: integer
+ *       listProducts:
+ *         type: array
+ *         items:
+ *           type: integer
+ */
