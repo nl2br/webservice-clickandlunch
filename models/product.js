@@ -89,4 +89,6 @@ module.exports = (sequelize, DataTypes) => {
  *       productType:
  *         type: string
  *         enum: ['STARTER', 'DISH', 'DESSERT','DRINK','OTHER','MENU']
+ *       shop_id:
+ *         type: integer
  */

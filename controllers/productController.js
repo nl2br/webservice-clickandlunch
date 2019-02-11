@@ -90,43 +90,6 @@ class Products {
       });
   }
 
-  // static getMenuProducts(menuId) {
-  //   return new Promise((resolve, reject) => {
-  //     Models.sequelize.query(`select menu.product_id, 
-  //       (select product.name from product where product.product_id = menu.product_id) name,
-  //       (select product.description from product where product.product_id = menu.product_id) description,
-  //       (select product.price from product where product.product_id = menu.product_id) price, 
-  //       (select product.product_type from product where product.product_id = menu.product_id) product_type,
-  //       (select product.shop_id from product where product.product_id = menu.product_id) shop_id
-  //       from product
-  //       inner join menu on menu.menu_id = product.product_id
-  //       where product.product_id = ?`, { 
-  //         type: Models.sequelize.QueryTypes.SELECT,
-  //         replacements: [menuId]
-  //       })
-  //       .then(result => {
-  //         resolve(result);
-  //       })
-  //       .catch(error => {
-  //         console.log('error getMenuProducts : ', error.message);
-  //         reject({message: error.message});
-  //       });
-  //   });
-  // }
-
-  // Models.Order.findAll({ // Nested Eager Loading
-  //   include: [{
-  //     model: Models.OrderDetail,
-  //     attributes: ['product_id','quantity'],
-  //     include: [{
-  //       model: Models.Product, 
-  //       attributes: ['name']
-  //     }] 
-  //   }],
-  //   // include: [{ all: true, nested: true }],
-  //   where: {shop_id: shopId, deleted: false}
-  // })
-
   /**
    * @function postProduct
    * Create a new Product
@@ -141,22 +104,40 @@ class Products {
       product_type: req.body.productType
     })
     .then(result => {
-      if(result.product_type === 'MENU'){
-        req.body.listProducts.forEach(async item => {
-          console.log('item',item);
-          await Models.Menu.create({
-            menu_id:result.product_id,
-            product_id: item
-          })
-          .catch(error => {
-            console.log('error menu creation : ', error.message);
-            res.status(400).send(error);
-          });
+      res.status(201).json(result);
+    })
+    .catch(error => {
+      console.log('error postProduct : ', error.message);
+      res.status(400).send(error);
+    });
+  }
+
+  /**
+   * @function postProductMenu
+   * Create a new Product menu
+   * @param {*} req 
+   * @param {*} res 
+   */
+  static postProductMenu(req, res) {
+    Models.Product.create({
+      name: req.body.name,
+      description: req.body.description,
+      price: req.body.price,
+      product_type: req.body.productType
+    })
+    .then(result => {
+      req.body.listProducts.forEach(async item => {
+        console.log('item',item);
+        await Models.Menu.create({
+          menu_id:result.product_id,
+          product_id: item
+        })
+        .catch(error => {
+          console.log('error menu creation : ', error.message);
+          res.status(400).send(error);
         });
-        res.status(201).json(result);
-      }else{
-        res.status(201).json(result);
-      }
+      });
+      res.status(201).json(result);
     })
     .catch(error => {
       console.log('error postProduct : ', error.message);

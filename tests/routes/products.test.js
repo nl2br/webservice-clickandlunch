@@ -121,7 +121,7 @@ describe('/api/v1/products', () => {
       });
 
       const res = await request(server)
-        .post('/api/v1/products/')
+        .post('/api/v1/products/menus')
         .send({
           name: 'menu salade poulet frite',
           description: 'description product test',
