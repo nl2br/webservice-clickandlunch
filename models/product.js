@@ -65,9 +65,15 @@ module.exports = (sequelize, DataTypes) => {
      * Ajout d'une contrainte a produit :
      * Lorsqu'on delete un shop, ses produits associées sont supprimés
      */
-    Product.belongsTo(models.Shop, { // add shop_id to product
-      foreignKey: 'shop_id',
-      onDelete: 'CASCADE' // when deleting a shop, delete all his product
+    // Product.hasMany(models.Product, { 
+    //   foreignKey: 'menu_id',
+    //   as: 'Menu'
+    // });
+    Product.belongsToMany(models.Product, { 
+      as: 'products',
+      foreignKey: 'menu_id',
+      through: 'menu',
+      // otherKey: 'product_id'
     });
   };
 

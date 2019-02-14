@@ -16,27 +16,38 @@ class Products {
    */
   static getProduct(req, res) {
     // rechercher si le produit demandé est de type MENU
-    Models.Menu.findAll({where:{menu_id: req.params.id}})
+    // Models.Product.findAll({ 
+    //   include: [{
+    //     model: Models.Product,
+    //     as: 'Menu',
+    //     through: {
+    //       where: {product_id: req.params.id}
+    //     }
+    //   }]
+    // })
+    Models.Product.findAll({ 
+      where: {product_id: req.params.id},
+      include: [{
+        model: Models.Product,
+        as: 'products',
+        nested: true
+      }]
+    })
+    // Models.Product.findAll({ 
+    //   where:{product_id: req.params.id},
+    //   include: [{ all: true, nested: true }]
+    // })
+    // Models.Product.findAll({ 
+    //   through:[{
+    //     model: Models.Product, 
+    //     as: 'Menu',
+    //     where:{menu_id: req.params.id}
+    //   }],
+    //   where:{product_id: req.params.id}
+    // })
       .then(result => {
-        if (result.length === 0) {
-          Products.getNormalProduct(req.params.id)
-            .then( result => {
-              res.status(200).json(result);
-            })
-            .catch(error => {
-              console.log('error getMenuProducts : ', error.message);
-              res.status(400).send(error);
-            });
-        }else{
-          Products.getMenuProducts(req.params.id)
-            .then( result => {
-              res.status(200).json(result);
-            })
-            .catch(error => {
-              console.log('error getMenuProducts : ', error.message);
-              res.status(400).send(error);
-            });
-        }
+        console.log('getProduct', result);
+        res.status(200).json(result);
       })
       .catch(error => {
         console.log('error getProduct : ', error.message);
@@ -125,22 +136,20 @@ class Products {
       price: req.body.price,
       product_type: req.body.productType
     })
-    .then(result => {
-      req.body.listProducts.forEach(async item => {
-        console.log('item',item);
-        await Models.Menu.create({
-          menu_id:result.product_id,
-          product_id: item
+    .then(menu => {
+      console.log('menu', menu);
+      return menu.setMenus([...req.body.listProducts])
+        .then(result => {
+          // TODO: send full menu + products not only menu
+          res.status(201).json(menu);
         })
         .catch(error => {
-          console.log('error menu creation : ', error.message);
+          console.log('error setMenu : ', error.message);
           res.status(400).send(error);
         });
-      });
-      res.status(201).json(result);
     })
     .catch(error => {
-      console.log('error postProduct : ', error.message);
+      console.log('error sequelize postProductMenu : ', error.message);
       res.status(400).send(error);
     });
   }

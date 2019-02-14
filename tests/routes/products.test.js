@@ -49,6 +49,7 @@ describe('/api/v1/products', () => {
     });
 
     it('get specific product of type MENU', async () => {
+      await Models.sequelize.sync({force:true});
       const p1 = await Models.Product.create({
         name: 'salade chevre',
         description: 'description',
@@ -67,15 +68,8 @@ describe('/api/v1/products', () => {
         price: '4.90',
         product_type: 'MENU'
       });
-      await Models.Menu.create({
-        menu_id: menu.get('product_id'),
-        product_id: p1.get('product_id')
-      });
-      await Models.Menu.create({
-        menu_id: menu.get('product_id'),
-        product_id: p2.get('product_id')
-      });
-      console.log('Argument', menu.get('product_id'));
+      menu.setProducts([p1.get('product_id'), p2.get('product_id')]);
+
       const res = await request(server).get('/api/v1/products/' +  menu.get('product_id') );
       expect(res.status).toBe(200);
     });
@@ -102,10 +96,47 @@ describe('/api/v1/products', () => {
     it('Save a product menu type', async () => {
 
       const p1 = await Models.Product.create({
-        name: 'salade',
+        name: 'salade 1',
         description: 'description',
         price: '4.90',
         product_type: 'DISH'
+      });
+      const p2 = await Models.Product.create({
+        name: 'poulet 1',
+        description: 'description',
+        price: '4.90',
+        product_type: 'DISH'
+      });
+      const p3 = await Models.Product.create({
+        name: 'frite 1',
+        description: 'description',
+        price: '4.90',
+        product_type: 'DISH'
+      });
+
+      const res = await request(server)
+        .post('/api/v1/products/menus')
+        .send({
+          name: 'menu salade poulet frite 3',
+          description: 'description product test',
+          price: '9.90',
+          productType: 'MENU',
+          listProducts: [p1.get('product_id'), p2.get('product_id'), p3.get('product_id')]
+        });
+      // on le recupère depuis la BDD
+      const product = await Models.Product.findById(res.body.product_id);
+
+      expect(res.status).toBe(201);
+      expect(product).not.toBeNull();
+      expect(res.body.name).toEqual(product.dataValues.name);
+    });
+
+    it('test insert', async () => {
+      const p1 = await Models.Product.create({
+        name: 'poulet frite',
+        description: 'description',
+        price: '4.90',
+        product_type: 'MENU'
       });
       const p2 = await Models.Product.create({
         name: 'poulet',
@@ -120,21 +151,14 @@ describe('/api/v1/products', () => {
         product_type: 'DISH'
       });
 
-      const res = await request(server)
-        .post('/api/v1/products/menus')
-        .send({
-          name: 'menu salade poulet frite',
-          description: 'description product test',
-          price: '9.90',
-          productType: 'MENU',
-          listProducts: [p1.get('product_id'), p2.get('product_id'), p3.get('product_id')]
-        });
-      // on le recupère depuis la BDD
-      const product = await Models.Product.findById(res.body.product_id);
-
-      expect(res.status).toBe(201);
-      expect(product).not.toBeNull();
-      expect(res.body.name).toEqual(product.dataValues.name);
+      p1.setProducts([p2,p3]);
+        // .then(() => {
+        //   p1.getMenu().then(products => {
+        //     console.log("products: ", products.map(product => { 
+        //       return product.name 
+        //     }))
+        //   })
+        // })
     });
   });
 
