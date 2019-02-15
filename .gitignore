@@ -12,3 +12,6 @@ public/swagger-doc
 
 # public
 public
+
+# config
+config.json
