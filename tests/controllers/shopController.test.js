@@ -144,7 +144,7 @@ describe('/api/v1/shops', () => {
       siret: '12345678912345',
       siren: '123456789',
       phone_number: '0678895645',
-      email: 'test@test6.com',
+      email: 'tfdsest@test6.com',
       location: {
         type: 'Point',
         email: 'test@test.com',
@@ -157,7 +157,7 @@ describe('/api/v1/shops', () => {
       siret: '12345678912345',
       siren: '123456789',
       phone_number: '0678895645',
-      email: 'test@test5.com',
+      email: 'tesdsqt@test5.com',
       location: {
         type: 'Point',
         coordinates: [-1.689636,48.109745],
@@ -169,7 +169,7 @@ describe('/api/v1/shops', () => {
       siret: '12345678912345',
       siren: '123456789',
       phone_number: '0678895645',
-      email: 'test@test4.com',
+      email: 'tesdsqt@test4.com',
       location: {
         type: 'Point',
         coordinates: [-1.687571,48.110186],
@@ -181,7 +181,7 @@ describe('/api/v1/shops', () => {
       siret: '12345678912345',
       siren: '123456789',
       phone_number: '0678895645',
-      email: 'test@test3.com',
+      email: 'tesfdst@test3.com',
       location: {
         type: 'Point',
         coordinates: [-1.675866,48.083555],
@@ -194,7 +194,7 @@ describe('/api/v1/shops', () => {
       siret: '12345678912345',
       siren: '123456789',
       phone_number: '0678895645',
-      email: 'tesdsqt@test3.com',
+      email: 'tefdssdsqt@test3.com',
       location: {
         type: 'Point',
         coordinates: [-1.684577,48.152134],
