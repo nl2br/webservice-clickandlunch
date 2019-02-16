@@ -3,7 +3,7 @@
  * @module Models/Shop
  */
 
- module.exports = (sequelize, DataTypes) => {
+module.exports = (sequelize, DataTypes) => {
 
   let Shop = sequelize.define('Shop', {
     shop_id: {
@@ -96,21 +96,22 @@
    */
   Shop.prototype.findNearbyShops = async function (long, lat, range) {
     // Note x is longitude and y is latitude
+    // rend en mètre
     let result = await sequelize.query(`SELECT shop_id, ST_AsText(location) AS point, name, 
-      ROUND(ST_Distance(POINT(?,?), location), 2) AS distance
+      ROUND(ST_Distance(POINT(?,?), location), 6) * 106000 AS distance
       FROM shop
-      WHERE ST_Distance(POINT(?,?), location) < ?
+      WHERE ST_Distance(POINT(?,?), location) * 106000 < ?
       ORDER BY distance ASC`, { 
-        type: sequelize.QueryTypes.SELECT,
-        replacements: [long, lat, long, lat, range]
-        // model: Projects,
-        // mapToModel: true
-      })
+      type: sequelize.QueryTypes.SELECT,
+      replacements: [long, lat, long, lat, range]
+      // model: Projects,
+      // mapToModel: true
+    })
       .catch(error => {
         console.log('error findNearbyShops : ', error.message);
       });
     return result;
-  }
+  };
 
   return Shop;
 };

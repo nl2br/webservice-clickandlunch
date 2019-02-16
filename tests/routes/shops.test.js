@@ -1,6 +1,6 @@
 const request = require('supertest');
 const Models = require('../../models/');
-truncate = require('../truncate');
+const truncate = require('../truncate');
 
 let server;
 
@@ -12,10 +12,10 @@ describe('/api/v1/shops', () => {
 
   beforeEach( async () => { 
     server = require('../../app'); 
-  })
+  });
   afterEach(async () => { 
     await server.close(); 
-  })
+  });
   
   afterAll(async (done) => {
     await server.close();
@@ -102,7 +102,7 @@ describe('/api/v1/shops', () => {
           // }
         });
       // on le recupère depuis la BDD
-      const shop = await Models.Shop.findById(res.body.shop_id)
+      const shop = await Models.Shop.findById(res.body.shop_id);
 
       expect(res.status).toBe(201);
       expect(shop).not.toBeNull();
@@ -196,7 +196,7 @@ describe('/api/v1/shops', () => {
       const res = await request(server)
         .put('/api/v1/shops/' + shop.get('shop_id'))
         .send({
-          name: 'unvalid \Shop',
+          name: 'unvalid \'Shop',
           siret: '1234567891234A',
           siren: '1234567898',
           phone_number: '9678895645',
@@ -215,10 +215,10 @@ describe('/api/v1/shops', () => {
     it('Should report error : Modify shop with a not existing id', async () => {
       const res = await request(server)
         .put('/api/v1/shops/999')
-        .send({name: 'unvalid \Shop'});
+        .send({name: 'unvalid \' Shop'});
 
       expect(res.status).toBe(404);
-      expect(res.body.message).toBe("this shop don't exist");
+      expect(res.body.message).toBe('this shop don\'t exist');
     });
   });
 
@@ -249,7 +249,7 @@ describe('/api/v1/shops', () => {
       const res = await request(server).delete('/api/v1/shops/999');
       expect(res.status).toBe(404);
       expect(res).toHaveProperty('error');
-      expect(res.body.message).toBe("this shop don't exist");
+      expect(res.body.message).toBe('this shop don\'t exist');
     });
 
   });

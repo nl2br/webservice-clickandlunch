@@ -1,6 +1,6 @@
 const request = require('supertest');
 const Models = require('../../models/');
-truncate = require('../truncate');
+const truncate = require('../truncate');
 
 let server;
 
@@ -69,16 +69,16 @@ describe('/api/v1/orders', () => {
           // console.log('array order', JSON.stringify(orders));
           
         });
-        // await Models.Product.destroy({where: {}})
-        // .catch(error => {
-        //   console.log('error destroy product : ', error.message);
-        //   // return res.status(400).send(error);
-        // });
-        // await Models.Shop.destroy({where: {}})
-        // .catch(error => {
-        //   console.log('error destroy shop : ', error.message);
-        //   // return res.status(400).send(error);
-        // });
+      // await Models.Product.destroy({where: {}})
+      // .catch(error => {
+      //   console.log('error destroy product : ', error.message);
+      //   // return res.status(400).send(error);
+      // });
+      // await Models.Shop.destroy({where: {}})
+      // .catch(error => {
+      //   console.log('error destroy shop : ', error.message);
+      //   // return res.status(400).send(error);
+      // });
     });
   });
 

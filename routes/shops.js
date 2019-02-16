@@ -63,6 +63,30 @@ router.get('/', Shops.getShops);
  */
 router.get('/:id', Shops.getShop);
 
+//TODO: swagger doc + controller
+/**
+ * Get shop details by name  (all user)
+ * @method get/shops/:name
+ * @param {string} name name du shop
+ */
+// router.get('/:name', Shops.getShopByName);
+
+//TODO: swagger doc + controller
+/**
+ * Get shops around coordinates user  (all user)
+ * @method get/shops/:long?/:lat?/:distance?
+ * @param {number} id id du shop
+ */
+// router.get('/:long?/:lat?/:distance?', Shops.getShopNearby);
+
+//TODO: swagger doc + controller
+/**
+ * Get shops of a given category (all user)
+ * @method get/shops/:idCategory?
+ * @param {number} id id du shop
+ */
+// router.get('/:idCategory?', Shops.getShopByCategory);
+
 //TODO: swagger doc when product done
 /**
  * Listing all product items for a given shop  (all user)
@@ -180,7 +204,7 @@ router.put('/:id', Shops.putShop);
  * @method delete/shops/:id
  * @param {number} shopid id du shop
  */
-router.delete('/:id', Shops.deleteShop)
+router.delete('/:id', Shops.deleteShop);
 
 module.exports = router;
 

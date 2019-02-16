@@ -50,7 +50,7 @@ if (process.env.NODE_ENV !== 'test') { // https://blog.campvanilla.com/jest-expr
       console.log(`Listening on port ${port}...`);
     });
   });
-};
+}
 
 // if (process.env.NODE_ENV === 'test') { // https://blog.campvanilla.com/jest-expressjs-and-the-eaddrinuse-error-bac39356c33a
 //   Models.sequelize.sync({force:true}).then(function() {

@@ -3,7 +3,6 @@
  */
 
 const Models = require('../models/');
-const { Shop } = Models;
 
 class Shops {
   // TODO: Listing all shop for a given City id / @function get/:id/shops 
@@ -22,7 +21,7 @@ class Shops {
       .catch(error => {
         console.log('error getAllShops', error.message);
         res.status(400).send(error);
-      }) 
+      });
   }
 
   /**
@@ -69,7 +68,7 @@ class Shops {
       .catch(error => {
         console.log('error getAllShopProducts : ', error.message);
         res.status(400).send(error);
-      })
+      });
   }
 
   /**
@@ -116,13 +115,13 @@ class Shops {
         crs: {type: 'name', properties: { name: 'EPSG:4326'}}
       }
     })
-    .then(result => {
-      res.status(201).json(result);
-    })
-    .catch(error => {
-      console.log('error postShop : ', error.message);
-      res.status(400).send(error);
-    })
+      .then(result => {
+        res.status(201).json(result);
+      })
+      .catch(error => {
+        console.log('error postShop : ', error.message);
+        res.status(400).send(error);
+      });
   }
 
   /**
@@ -134,42 +133,42 @@ class Shops {
    */
   static putShop(req, res) {
     Models.Shop.findById(req.params.id)
-    .then(shop => {
-      if(!shop) {return res.status(404).send({message:"this shop don't exist"});}
-      if(req.body.longitude && req.body.latitude){
-        return shop.update({
-          name: req.body.name || shop.name,
-          siret: req.body.siret || shop.siret,
-          siren: req.body.siren || shop.siren,
-          phone_number: req.body.phoneNumber || shop.phone_number,
-          email: req.body.email || shop.email,
-          location: {
-            type: 'Point',
-            coordinates: [req.body.longitude,req.body.latitude],
-            crs: {type: 'name', properties: { name: 'EPSG:4326'}}
-          }
-        })  
-        .then(() => {
-          res.status(200).send(shop);
-        })
-      }else{
-        return shop.update({
-          name: req.body.name || shop.name,
-          siret: req.body.siret || shop.siret,
-          siren: req.body.siren || shop.siren,
-          phone_number: req.body.phoneNumber || shop.phone_number,
-          email: req.body.email || shop.email,
-          location: shop.location
-        })  
-        .then(() => {
-          res.status(200).send(shop);
-        })
-      }
-    })
-    .catch(error => {
-      console.log('error putShop : ', error.message);
-      res.status(400).send({message: "Error while trying to update the shop", data: error.message});
-    });
+      .then(shop => {
+        if(!shop) {return res.status(404).send({message:'this shop don\'t exist'});}
+        if(req.body.longitude && req.body.latitude){
+          return shop.update({
+            name: req.body.name || shop.name,
+            siret: req.body.siret || shop.siret,
+            siren: req.body.siren || shop.siren,
+            phone_number: req.body.phoneNumber || shop.phone_number,
+            email: req.body.email || shop.email,
+            location: {
+              type: 'Point',
+              coordinates: [req.body.longitude,req.body.latitude],
+              crs: {type: 'name', properties: { name: 'EPSG:4326'}}
+            }
+          })  
+            .then(() => {
+              res.status(200).send(shop);
+            });
+        }else{
+          return shop.update({
+            name: req.body.name || shop.name,
+            siret: req.body.siret || shop.siret,
+            siren: req.body.siren || shop.siren,
+            phone_number: req.body.phoneNumber || shop.phone_number,
+            email: req.body.email || shop.email,
+            location: shop.location
+          })  
+            .then(() => {
+              res.status(200).send(shop);
+            });
+        }
+      })
+      .catch(error => {
+        console.log('error putShop : ', error.message);
+        res.status(400).send({message: 'Error while trying to update the shop', data: error.message});
+      });
   }
 
   /**
@@ -181,19 +180,19 @@ class Shops {
    */
   static deleteShop(req, res) {
     Models.Shop.findById(req.params.id)
-    .then(shop => {
-      if(!shop) {return res.status(404).send({message: "this shop don't exist"});}
-      return shop.update({
-        deleted: 1
-      })  
-      .then(() => {
-        res.status(200).send(shop);
+      .then(shop => {
+        if(!shop) {return res.status(404).send({message: 'this shop don\'t exist'});}
+        return shop.update({
+          deleted: 1
+        })  
+          .then(() => {
+            res.status(200).send(shop);
+          });
       })
-    })
-    .catch(error => {
-      console.log('error deleteShop : ', error.message);
-      res.status(400).send({message: "Error while trying to delete the shop", data: error.message});
-    });
+      .catch(error => {
+        console.log('error deleteShop : ', error.message);
+        res.status(400).send({message: 'Error while trying to delete the shop', data: error.message});
+      });
   }
 
 }
