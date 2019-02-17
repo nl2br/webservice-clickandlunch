@@ -39,9 +39,10 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     product_type: {
-      type: DataTypes.ENUM,
+      type: DataTypes.ENUM, // TODO: créer un enum js productType plutot qu'un enum MySQL
       values: ['STARTER', 'DISH', 'DESSERT','DRINK','OTHER','MENU']
     },
+    // TODO: créer le modèle PHOTO puis ajouter les relations
     shop_id: {
       type: DataTypes.INTEGER,
       // references: {
@@ -73,7 +74,7 @@ module.exports = (sequelize, DataTypes) => {
 
   return Product;
 
-}
+};
 
 /**
  * @swagger

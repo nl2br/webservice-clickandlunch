@@ -69,6 +69,11 @@ module.exports = (sequelize, DataTypes) => {
         max: 180
       }
     },
+    // TODO: créer le modèle PHOTO puis ajouter les relations
+    // TODO: créer le modèle SHOPCATEGORY
+    // TODO: créer le modèle CONFIGURATION
+    // TODO: créer le modèle BANKACCOUNT
+    // TODO: créer le modèle PROFESSIONNAL
     deleted: {
       type: DataTypes.BOOLEAN,
       defaultValue: 0
