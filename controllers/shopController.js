@@ -14,14 +14,71 @@ class Shops {
    * @param {*} res 
    */
   static getShops(req, res) {
-    Models.Shop.findAll({where: {deleted: 0}})
-      .then(result => {
-        res.status(200).json(result);
+    // test if query parameters exists
+    if(Object.keys(req.query).length !== 0){
+      // if(req.query.name){
+        
+      // }
+      if(req.query.lon !== 0 && req.query.lat !== 0){
+        Shops.getShopsNearby(req.query)
+          .then( result => {
+            return res.status(200).json(result);
+          })
+          .catch(error => {
+            console.log('error getShops : ', error.message);
+            return res.status(400).send(error);
+          });
+      }
+      // TODO: handle route with idcategory when MODEL PRODUCT CATEGORY done
+      // if(req.query.idcategory){
+
+      // }
+    }else{
+      Models.Shop.findAll({where: {deleted: 0}})
+        .then(result => {
+          res.status(200).json(result);
+        })
+        .catch(error => {
+          console.log('error getShops', error.message);
+          res.status(400).send(error);
+        });
+    }
+  }
+
+  /**
+   * @function findNearbyShops
+   * Permet de retrouver les shops autours d'un utilisateur (positionné par sa longitude et sa latitude) 
+   * sur un rayon donné par le paramètre range
+   * @param {float} params.lon Longitude de l'utilisateur
+   * @param {float} params.lat Latitude de l'utilisateur
+   * @param {int} params.range Distance de recherche
+   * @returns {array} Tableau contenant des shops
+   */
+  static getShopsNearby(params) {
+    return new Promise((resolve, reject) => {
+      const range = params.range ? params.range : 1000; // distance à 1km par defaut
+      // Note x is longitude and y is latitude
+      // rend en mètre
+      Models.sequelize.query(`SELECT shop_id, name, phone_number, email, 
+        ROUND(ST_Distance(POINT(?,?), location), 6) * 106000 AS distance
+        FROM shop
+        WHERE ST_Distance(POINT(?,?), location) * 106000 < ?
+        AND deleted = 0
+        ORDER BY distance ASC`, { 
+        type: Models.sequelize.QueryTypes.SELECT,
+        replacements: [params.lon, params.lat, params.lon, params.lat, range]
       })
-      .catch(error => {
-        console.log('error getAllShops', error.message);
-        res.status(400).send(error);
-      });
+        .then(result => {
+          if (!result) {
+            reject({message: 'No shops Found arround the coordinates'});
+          }
+          resolve(result);
+        })
+        .catch(error => {
+          console.log('error getShopsNearby : ', error.message);
+          reject({message: error});
+        });
+    });
   }
 
   /**
@@ -43,6 +100,17 @@ class Shops {
         console.log('error getShop : ', error.message);
         res.status(400).send(error);
       });
+  }
+
+  /**
+   * @function getShopByName
+   * Details of a shop for a given id
+   * @param {object} req 
+   * @param {int} req.params.id id du shop
+   * @param {*} res 
+   */
+  static getShopByName(req, res) {
+    res.status(200).json({message: 'by name'});
   }
 
   /**

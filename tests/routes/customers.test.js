@@ -1,6 +1,6 @@
 const request = require('supertest');
 const Models = require('../../models/');
-truncate = require('../truncate');
+const truncate = require('../truncate');
 
 let server;
 
@@ -23,6 +23,7 @@ describe('/api/v1/customers', () => {
   },1000);
 
   describe('GET customers/:id', () => {
+
     it('Return one specific customer', async () => {
       const customer = await Models.Customer.create({first_name: 'nathan', last_name: 'lebreton'});
       const res = await request(server).get('/api/v1/customers/' + customer.get('customer_id'));
@@ -32,6 +33,7 @@ describe('/api/v1/customers', () => {
   });
 
   describe('PUT customers/:id', () => {
+
     it('Modify user with valid data', async () => {
       const customer = await Models.Customer.create({first_name: 'sabrina', last_name: 'lebreton'});
 

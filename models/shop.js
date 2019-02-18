@@ -90,34 +90,6 @@ module.exports = (sequelize, DataTypes) => {
     });
   };
 
-  /**
-   * @function findNearbyShops
-   * Permet de retrouver les shops autours d'un utilisateur (positionné par sa longitude et sa latitude) 
-   * sur un rayon donné par le paramètre range
-   * @param {float} long Longitude de l'utilisateur
-   * @param {float} lat Latitude de l'utilisateur
-   * @param {int} range Distance de recherche
-   * @returns {array} Tableau contenant des shops
-   */
-  Shop.prototype.findNearbyShops = async function (long, lat, range) {
-    // Note x is longitude and y is latitude
-    // rend en mètre
-    let result = await sequelize.query(`SELECT shop_id, ST_AsText(location) AS point, name, 
-      ROUND(ST_Distance(POINT(?,?), location), 6) * 106000 AS distance
-      FROM shop
-      WHERE ST_Distance(POINT(?,?), location) * 106000 < ?
-      ORDER BY distance ASC`, { 
-      type: sequelize.QueryTypes.SELECT,
-      replacements: [long, lat, long, lat, range]
-      // model: Projects,
-      // mapToModel: true
-    })
-      .catch(error => {
-        console.log('error findNearbyShops : ', error.message);
-      });
-    return result;
-  };
-
   return Shop;
 };
 

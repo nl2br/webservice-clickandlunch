@@ -23,6 +23,12 @@ describe('/api/v1/orders', () => {
   },1000);
 
   describe('GET /:id', () => {
+    beforeAll( async () =>{
+      await truncate();
+    });
+    afterAll( async () =>{
+      await truncate();
+    });
     it('Return all orders for a valid shop ID', async () => {
       // création du shop et de 2 produits
       let shop = await Models.Shop.create({
@@ -63,11 +69,10 @@ describe('/api/v1/orders', () => {
           }] 
         }],
         // include: [{ all: true, nested: true }],
-        where: {shop_id: shopId, deleted: false}
+        where: {shop_id: shopId, deleted: 0}
       })
         .then( orders => {
-          // console.log('array order', JSON.stringify(orders));
-          
+          console.log('array order', JSON.stringify(orders));
         });
       // await Models.Product.destroy({where: {}})
       // .catch(error => {

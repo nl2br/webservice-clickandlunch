@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "set NODE_ENV=test&& jest ./tests --detectOpenHandles --forceExit --coverage",
+    "test": "set NODE_ENV=test&& jest ./tests --runInBand --detectOpenHandles --forceExit",
     "server": "set NODE_ENV=development&& nodemon app.js"
   },
   "jest": {

@@ -1,9 +1,7 @@
 /**
  * @module controller/Product
  */
-
 const Models = require('../models/');
-const { Product } = Models;
 
 class Products {
 
@@ -70,9 +68,9 @@ class Products {
       from product
       inner join menu on menu.menu_id = product.product_id
       where product.product_id = ?`, { 
-        type: Models.sequelize.QueryTypes.SELECT,
-        replacements: [menuId]
-      });
+      type: Models.sequelize.QueryTypes.SELECT,
+      replacements: [menuId]
+    });
 
     const menu = Models.Product.findByPk(menuId);
 
@@ -101,15 +99,16 @@ class Products {
       name: req.body.name,
       description: req.body.description,
       price: req.body.price,
-      product_type: req.body.productType
+      product_type: req.body.productType,
+      shop_id: req.body.shopId
     })
-    .then(result => {
-      res.status(201).json(result);
-    })
-    .catch(error => {
-      console.log('error postProduct : ', error.message);
-      res.status(400).send(error);
-    });
+      .then(result => {
+        res.status(201).json(result);
+      })
+      .catch(error => {
+        console.log('error postProduct : ', error.message);
+        res.status(400).send(error);
+      });
   }
 
   /**
@@ -123,26 +122,27 @@ class Products {
       name: req.body.name,
       description: req.body.description,
       price: req.body.price,
-      product_type: req.body.productType
+      product_type: req.body.productType,
+      shop_id: req.body.shopId
     })
-    .then(result => {
-      req.body.listProducts.forEach(async item => {
-        console.log('item',item);
-        await Models.Menu.create({
-          menu_id:result.product_id,
-          product_id: item
-        })
-        .catch(error => {
-          console.log('error menu creation : ', error.message);
-          res.status(400).send(error);
+      .then(result => {
+        req.body.listProducts.forEach(async item => {
+          console.log('item',item);
+          await Models.Menu.create({
+            menu_id:result.product_id,
+            product_id: item
+          })
+            .catch(error => {
+              console.log('error menu creation : ', error.message);
+              res.status(400).send(error);
+            });
         });
+        res.status(201).json(result);
+      })
+      .catch(error => {
+        console.log('error postProduct : ', error.message);
+        res.status(400).send(error);
       });
-      res.status(201).json(result);
-    })
-    .catch(error => {
-      console.log('error postProduct : ', error.message);
-      res.status(400).send(error);
-    });
   }
 
 }
