@@ -65,17 +65,48 @@ module.exports = router;
 
 //TODO: swagger shops?idCategory
 //TODO: swagger shops?name
-//TODO: swagger shops?lat&long&range
-//TODO: swagger shops/p/:page
 //TODO: swagger shops/:shopid/products/:productid when product done
 //TODO: swagger shops/:id/products when product done
+
 /**
  * @swagger
- * /api/v1/shops/:
+ * /api/v1/shops/p/{0-n}:
  *   get:
  *     tags:
  *       - Shop
- *     description: Get a list of all shops
+ *     description: Get a paginated list of all shops, 20 shops per request
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: Return 20 shops
+ *         schema:
+ *           $ref: '#/definitions/Shop'
+ *       400:
+ *         description: Internal error
+ */
+
+/**
+ * @swagger
+ * /api/v1/shops?lat=n&lon=n:
+ *   get:
+ *     tags:
+ *       - Shop
+ *     description: Get shops around position of a user
+ *     parameters:
+ *       - in: path
+ *         name: lat
+ *         type: float
+ *         required: true
+ *       - in: path
+ *         name: lon
+ *         type: float
+ *         required: true
+ *       - in: path
+ *         name: range
+ *         type: float
+ *         required: false
+ *         default: 1000m
  *     produces:
  *       - application/json
  *     responses:
@@ -93,7 +124,7 @@ module.exports = router;
  *   get:
  *     tags:
  *       - Shop
- *     description: Get a list of all shops
+ *     description: Get a shop
  *     produces:
  *       - application/json
  *     parameters:
@@ -133,8 +164,6 @@ module.exports = router;
  *     responses:
  *       201:
  *         description: Return saved shop
- *         schema:
- *           $ref: '#/definitions/Shop'
  *       400:
  *         description: Internal error
  */
@@ -145,7 +174,7 @@ module.exports = router;
  *   put:
  *     tags:
  *       - Shop
- *     description: Modify details of a given shop
+ *     description: Modify details of a shop for a given id
  *     produces:
  *       - application/json
  *     parameters:
@@ -164,8 +193,6 @@ module.exports = router;
  *     responses:
  *       200:
  *         description: Return shop detail
- *         schema:
- *           $ref: '#/definitions/Shop'
  *       400:
  *         description: Internal Error
  *       404:
@@ -191,8 +218,6 @@ module.exports = router;
  *     responses:
  *       200:
  *         description: Shop has 'Deleted' to true 
- *         schema:
- *           $ref: '#/definitions/Shop'
  *       400:
  *         description: Internal Error
  *       404:
