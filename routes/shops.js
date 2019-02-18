@@ -13,21 +13,11 @@ const Shops = require('../controllers/shopController');
  */
 router.get('/', Shops.getShops);
 
-//TODO: swagger doc + controller
 /**
- * Get shops of a given category (all user)
- * @method get/shops/:idCategory?
- * @param {number} idCategory id de la categorie de shop
+ * Listing all shop with pagination (all user)
+ * @method get/shops/p/:page
  */
-// router.get('/:idCategory?', Shops.getShopByCategory);
-
-//TODO: swagger doc + controller
-/**
- * Get shop details by name  (all user)
- * @method get/shops/:name
- * @param {string} name name du shop
- */
-// router.get('/:name?', Shops.getShopByName);
+router.get('/p/:page', Shops.getShops);
 
 /**
  * Get shop details for a given shop  (all user)
@@ -36,7 +26,6 @@ router.get('/', Shops.getShops);
  */
 router.get('/:id', Shops.getShop);
 
-//TODO: swagger doc when product done
 /**
  * Listing all product items for a given shop  (all user)
  * @method get/shops/:id/products
@@ -44,7 +33,6 @@ router.get('/:id', Shops.getShop);
  */
 router.get('/:id/products', Shops.getShopProducts);
 
-//TODO: swagger doc when product done
 /**
  * Get specific product for a given shop  (all user)
  * @method get/shops/:shopid/products/:productid
@@ -75,6 +63,12 @@ router.delete('/:id', Shops.deleteShop);
 
 module.exports = router;
 
+//TODO: swagger shops?idCategory
+//TODO: swagger shops?name
+//TODO: swagger shops?lat&long&range
+//TODO: swagger shops/p/:page
+//TODO: swagger shops/:shopid/products/:productid when product done
+//TODO: swagger shops/:id/products when product done
 /**
  * @swagger
  * /api/v1/shops/:

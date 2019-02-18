@@ -24,11 +24,9 @@ describe('/api/v1/shops', () => {
 
   describe('api get/shops', () => {
     beforeAll( async () =>{
-      console.log('shops creation truncate');
-      await truncate();
+
     });
     it('Listing all shop', async () => {
-      console.log('shops creation');
       await Models.Shop.create({ // 189m
         name: 'Les grands gamins',    
         siret: '12345678912345',
@@ -77,7 +75,7 @@ describe('/api/v1/shops', () => {
           crs: {type: 'name', properties: { name: 'EPSG:4326'}}
         }
       });
-      const res = await request(server).get('/api/v1/shops');
+      const res = await request(server).get('/api/v1/shops/p/0');
       expect(res.status).toBe(200);
       expect(res.body).toHaveLength(4);
     });

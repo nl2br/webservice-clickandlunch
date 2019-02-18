@@ -14,27 +14,41 @@ class Shops {
    * @param {*} res 
    */
   static getShops(req, res) {
-    // test if query parameters exists
-    if(Object.keys(req.query).length !== 0){
-      // if(req.query.name){
-        
-      // }
-      if(req.query.lon !== 0 && req.query.lat !== 0){
-        Shops.getShopsNearby(req.query)
-          .then( result => {
-            return res.status(200).json(result);
-          })
-          .catch(error => {
-            console.log('error getShops : ', error.message);
-            return res.status(400).send(error);
-          });
-      }
-      // TODO: handle route with idcategory when MODEL PRODUCT CATEGORY done
-      // if(req.query.idcategory){
 
-      // }
-    }else{
-      Models.Shop.findAll({where: {deleted: 0}})
+    console.log('req.query',req.query);
+    console.log('req.params',req.params);
+
+    // getShopsNearby
+    if(req.query.hasOwnProperty('lat') && req.query.hasOwnProperty('lon')){
+      Shops.getShopsNearby(req.query)
+        .then( result => {
+          res.status(200).json(result);
+        })
+        .catch(error => {
+          console.log('error getShops : ', error.message);
+          res.status(400).send(error);
+        });
+    }
+    
+    //TODO: shops?name=XXX + swagger doc 
+    // if(req.query.name){
+    // }
+
+    // TODO: handle route with idcategory when MODEL PRODUCT CATEGORY done
+    // if(req.query.idcategory){
+    // }
+
+    // getShops with pagination
+    if(req.params.hasOwnProperty('page')){
+      console.log('pagination');
+      const itemPerPage = 20;
+      const offset = req.params.page * itemPerPage;
+      const limit = offset + itemPerPage;
+      Models.Shop.findAll({
+        where: {deleted: 0},
+        limit: limit,
+        offset: offset
+      })
         .then(result => {
           res.status(200).json(result);
         })
@@ -45,6 +59,7 @@ class Shops {
     }
   }
 
+
   /**
    * @function findNearbyShops
    * Permet de retrouver les shops autours d'un utilisateur (positionné par sa longitude et sa latitude) 
@@ -54,9 +69,9 @@ class Shops {
    * @param {int} params.range Distance de recherche
    * @returns {array} Tableau contenant des shops
    */
-  static getShopsNearby(params) {
+  static getShopsNearby(query) {
     return new Promise((resolve, reject) => {
-      const range = params.range ? params.range : 1000; // distance à 1km par defaut
+      const range = query.range ? query.range : 1000; // distance à 1km par defaut
       // Note x is longitude and y is latitude
       // rend en mètre
       Models.sequelize.query(`SELECT shop_id, name, phone_number, email, 
@@ -66,7 +81,7 @@ class Shops {
         AND deleted = 0
         ORDER BY distance ASC`, { 
         type: Models.sequelize.QueryTypes.SELECT,
-        replacements: [params.lon, params.lat, params.lon, params.lat, range]
+        replacements: [query.lon, query.lat, query.lon, query.lat, range]
       })
         .then(result => {
           if (!result) {
