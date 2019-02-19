@@ -93,29 +93,40 @@ module.exports = (sequelize, DataTypes) => {
   return Shop;
 };
 
-
-
 /**
  * @swagger
  * definition:
  *  Shop:
  *    properties:
+ *      shop_id:
+ *        type: number
  *      name:
  *        type: string
  *      siret:
  *        type: string
  *      siren:
  *        type: string
- *      phoneNumber:
+ *      phone_number:
  *        type: string
  *      email:
  *        type: string
- *      longitude:
- *        type: number
- *      latitude:
- *        type: number
- *        
+ *      location:
+ *        type: object
+ *        properties:
+ *          type: 
+ *            type: string
+ *          coordinates:
+ *            type: array
+ *            items:
+ *              type: number
+ *      deleted:
+ *        type: boolean
+ *      created_at:
+ *        type: date
+ *      updated_at:
+ *        type: date
  */
+
 
 
 // Automatic functions

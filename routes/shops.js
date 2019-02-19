@@ -70,25 +70,38 @@ module.exports = router;
 
 /**
  * @swagger
- * /api/v1/shops/p/{0-n}:
+ * /api/v1/shops/p/{numberPage}:
  *   get:
  *     tags:
  *       - Shop
  *     description: Get a paginated list of all shops, 20 shops per request
+ *     parameters:
+ *       - name: numberPage
+ *         description: page souhaitée
+ *         in: path
+ *         required: true
  *     produces:
  *       - application/json
  *     responses:
  *       200:
- *         description: Return 20 shops
+ *         description: Return an object
  *         schema:
- *           $ref: '#/definitions/Shop'
+ *            properties:
+ *               count:
+ *                  type: number
+ *               pages:
+ *                  type: number
+ *               result:
+ *                  type: array
+ *                  items:
+ *                    type: object
  *       400:
  *         description: Internal error
  */
 
 /**
  * @swagger
- * /api/v1/shops?lat=n&lon=n:
+ * /api/v1/shops?lat={lat}&lon={lon}&range={range}:
  *   get:
  *     tags:
  *       - Shop
@@ -96,24 +109,38 @@ module.exports = router;
  *     parameters:
  *       - in: path
  *         name: lat
- *         type: float
+ *         type: number
  *         required: true
  *       - in: path
  *         name: lon
- *         type: float
+ *         type: number
  *         required: true
  *       - in: path
  *         name: range
  *         type: float
  *         required: false
- *         default: 1000m
+ *         default: 1000
+ *         description: en mètre
  *     produces:
  *       - application/json
  *     responses:
  *       200:
- *         description: Return all shops
- *         schema:
- *           $ref: '#/definitions/Shop'
+ *         description: Return all shops nearby the user longitude and latitude and the range
+ *         properties:
+ *           shop_id:
+ *             type: number
+ *           name:
+ *             type: string
+ *           siret:
+ *             type: string
+ *           siren:
+ *             type: string
+ *           phone_number:
+ *             type: string
+ *           email:
+ *             type: string
+ *           distance:
+ *             type: number
  *       400:
  *         description: Internal error
  */
@@ -159,8 +186,21 @@ module.exports = router;
  *         description: Shop object
  *         in: body
  *         required: true
- *         schema:
- *           $ref: '#/definitions/Shop'
+ *         properties:
+ *           name:
+ *             type: string
+ *           siret:
+ *             type: string
+ *           siren:
+ *             type: string
+ *           phoneNumber:
+ *             type: string
+ *           email:
+ *             type: string
+ *           longitude:
+ *             type: number
+ *           latitude:
+ *             type: number
  *     responses:
  *       201:
  *         description: Return saved shop
@@ -182,14 +222,25 @@ module.exports = router;
  *         description: Shop id
  *         in: path
  *         required: true
- *         schema:
- *           $ref: '#/definitions/Shop'
  *       - name: shop
  *         description: Shop object
  *         in: body
  *         required: true
- *         schema:
- *           $ref: '#/definitions/Shop'
+ *         properties:
+ *           name:
+ *             type: string
+ *           siret:
+ *             type: string
+ *           siren:
+ *             type: string
+ *           phoneNumber:
+ *             type: string
+ *           email:
+ *             type: string
+ *           longitude:
+ *             type: number
+ *           latitude:
+ *             type: number
  *     responses:
  *       200:
  *         description: Return shop detail

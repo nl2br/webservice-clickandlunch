@@ -75,9 +75,9 @@ describe('/api/v1/shops', () => {
           crs: {type: 'name', properties: { name: 'EPSG:4326'}}
         }
       });
-      const res = await request(server).get('/api/v1/shops/p/0');
+      const res = await request(server).get('/api/v1/shops/p/1');
       expect(res.status).toBe(200);
-      expect(res.body).toHaveLength(4);
+      expect(res.body.count).toBe(4);
     });
     
     it('Return all shops around 1000m of a user position', async () => {
@@ -126,6 +126,7 @@ describe('/api/v1/shops', () => {
       });
       // puis on tente de récupérer les infos de ce shop
       const res = await request(server).get('/api/v1/shops/' + shop.get('shop_id'));
+      console.log('shopdetail', res.body);
       expect(res.status).toBe(200);
       expect(res.body.name).toEqual(shop.dataValues.name);
     });

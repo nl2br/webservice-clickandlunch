@@ -41,16 +41,26 @@ class Shops {
     // getShops with pagination
     if(req.params.hasOwnProperty('page')){
       console.log('pagination');
-      const itemPerPage = 20;
-      const offset = req.params.page * itemPerPage;
-      const limit = offset + itemPerPage;
-      Models.Shop.findAll({
-        where: {deleted: 0},
-        limit: limit,
-        offset: offset
-      })
-        .then(result => {
-          res.status(200).json(result);
+      let limit = 20;   // number of records per page
+      let offset = 0;
+
+      Models.Shop.findAndCountAll({where: {deleted: 0}},{raw: true})
+        .then((data) => {
+          let page = req.params.page; // page number
+          let pages = Math.ceil(data.count / limit);
+          offset = limit * (page - 1);
+          Models.Shop.findAll({
+            where: {deleted: 0},
+            limit: limit,
+            offset: offset
+          })
+            .then(result => {
+              res.status(200).json({'result': result, 'count': data.count, 'pages': pages});
+            })
+            .catch(error => {
+              console.log('error getShops', error.message);
+              res.status(400).send(error);
+            });
         })
         .catch(error => {
           console.log('error getShops', error.message);
