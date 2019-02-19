@@ -6,19 +6,19 @@ module.exports = (sequelize, DataTypes) => {
 
   // Model definition
   const Menu = sequelize.define('Menu', {
-    menu_id: {
+    menuId: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       allowNull: false
     },
-    product_id: {
+    productId: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       allowNull: false
     },
     // Timestamps
-    created_at: DataTypes.DATE(6),
-    updated_at: DataTypes.DATE(6)
+    createdAt: DataTypes.DATE(6),
+    updatedAt: DataTypes.DATE(6)
   });
 
   Menu.removeAttribute('id');
@@ -27,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
   Menu.associate = function (models) {
 
     Menu.belongsTo(models.Product, { // add product_id to menu
-      foreignKey: 'product_id',
+      foreignKey: 'productId',
       onDelete: 'CASCADE' // when deleting a product, delete all menu
     });
 

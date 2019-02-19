@@ -21,7 +21,7 @@ const sequelize = new Sequelize(
     define: { 
       timestamps: true, 
       freezeTableName: true, 
-      underscored: true
+      underscored: false
     },
     timezone: 'Europe/Paris',
     logging: logConsoleSequelize

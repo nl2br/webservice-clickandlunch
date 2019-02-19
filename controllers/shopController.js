@@ -84,7 +84,7 @@ class Shops {
       const range = query.range ? query.range : 1000; // distance à 1km par defaut
       // Note x is longitude and y is latitude
       // rend en mètre
-      Models.sequelize.query(`SELECT shop_id, name, phone_number, email, 
+      Models.sequelize.query(`SELECT shopId, name, phoneNumber, email, 
         ROUND(ST_Distance(POINT(?,?), location), 6) * 106000 AS distance
         FROM shop
         WHERE ST_Distance(POINT(?,?), location) * 106000 < ?
@@ -148,7 +148,7 @@ class Shops {
   static getShopProducts(req, res) {
     Models.Product.findAll({
       where: {
-        shop_id: req.params.id,
+        shopId: req.params.id,
         deleted: 0
       }
     })
@@ -174,7 +174,7 @@ class Shops {
    */
   static getShopProduct(req, res) {
     Models.Product.findOne({
-      where: { product_id: req.params.productid, shop_id: req.params.shopid },
+      where: { productId: req.params.productid, shopId: req.params.shopid },
     })
       .then(result => {
         if (!result) {
@@ -200,7 +200,7 @@ class Shops {
       name: req.body.name,
       siret: req.body.siret,
       siren: req.body.siren,
-      phone_number: req.body.phoneNumber,
+      phoneNumber: req.body.phoneNumber,
       email: req.body.email,
       location: {
         type: 'Point',
@@ -233,7 +233,7 @@ class Shops {
             name: req.body.name || shop.name,
             siret: req.body.siret || shop.siret,
             siren: req.body.siren || shop.siren,
-            phone_number: req.body.phoneNumber || shop.phone_number,
+            phoneNumber: req.body.phoneNumber || shop.phoneNumber,
             email: req.body.email || shop.email,
             location: {
               type: 'Point',
@@ -249,7 +249,7 @@ class Shops {
             name: req.body.name || shop.name,
             siret: req.body.siret || shop.siret,
             siren: req.body.siren || shop.siren,
-            phone_number: req.body.phoneNumber || shop.phone_number,
+            phoneNumber: req.body.phoneNumber || shop.phoneNumber,
             email: req.body.email || shop.email,
             location: shop.location
           })  

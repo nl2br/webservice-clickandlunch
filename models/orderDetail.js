@@ -1,7 +1,7 @@
 module.exports = (sequelize, DataTypes) => {
 
   let OrderDetail = sequelize.define('OrderDetail', {
-    order_id: {
+    orderId: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       allowNull: false,
@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
       //   key: 'order_id'
       // }
     },
-    product_id: {
+    productId: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       allowNull: false,
@@ -24,24 +24,24 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: 1,
     },
     // Timestamps
-    created_at: DataTypes.DATE(6),
-    updated_at: DataTypes.DATE(6)
+    createdAt: DataTypes.DATE(6),
+    updatedAt: DataTypes.DATE(6)
   },{
-    tableName: 'order_detail'
+    tableName: 'orderDetail'
   });
 
   OrderDetail.removeAttribute('id');
 
   OrderDetail.associate = (models) => {
     OrderDetail.belongsTo(models.Order, {
-      foreignKey: 'order_id',
+      foreignKey: 'orderId',
       onDelete: 'CASCADE' // when delete an order, delete all orderDetail
     });
     OrderDetail.belongsTo(models.Product, {
-      foreignKey: 'product_id',
+      foreignKey: 'productId',
       onDelete: 'CASCADE' // when delete a product, delete all orderDetail
     });
-  }
+  };
 
   return OrderDetail;
-}
+};

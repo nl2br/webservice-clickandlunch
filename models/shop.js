@@ -6,7 +6,7 @@
 module.exports = (sequelize, DataTypes) => {
 
   let Shop = sequelize.define('Shop', {
-    shop_id: {
+    shopId: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
@@ -37,7 +37,7 @@ module.exports = (sequelize, DataTypes) => {
         isNumeric: true
       }
     },
-    phone_number: {
+    phoneNumber: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
@@ -78,15 +78,15 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.BOOLEAN,
       defaultValue: 0
     },
-    created_at: DataTypes.DATE(6),
-    updated_at: DataTypes.DATE(6)
+    createdAt: DataTypes.DATE(6),
+    updatedAt: DataTypes.DATE(6)
   });
 
 
   // Class Method
   Shop.associate = function (models) {
     Shop.hasMany(models.Product, { // add foreign key to Product
-      foreignKey: 'shop_id'
+      foreignKey: 'shopId'
     });
   };
 
@@ -98,7 +98,7 @@ module.exports = (sequelize, DataTypes) => {
  * definition:
  *  Shop:
  *    properties:
- *      shop_id:
+ *      shopId:
  *        type: number
  *      name:
  *        type: string
@@ -106,7 +106,7 @@ module.exports = (sequelize, DataTypes) => {
  *        type: string
  *      siren:
  *        type: string
- *      phone_number:
+ *      phoneNumber:
  *        type: string
  *      email:
  *        type: string
@@ -121,9 +121,9 @@ module.exports = (sequelize, DataTypes) => {
  *              type: number
  *      deleted:
  *        type: boolean
- *      created_at:
+ *      createdAt:
  *        type: date
- *      updated_at:
+ *      updatedAt:
  *        type: date
  */
 

@@ -127,7 +127,7 @@ module.exports = router;
  *       200:
  *         description: Return all shops nearby the user longitude and latitude and the range
  *         properties:
- *           shop_id:
+ *           shopId:
  *             type: number
  *           name:
  *             type: string
@@ -135,7 +135,7 @@ module.exports = router;
  *             type: string
  *           siren:
  *             type: string
- *           phone_number:
+ *           phoneNumber:
  *             type: string
  *           email:
  *             type: string

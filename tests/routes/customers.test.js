@@ -25,27 +25,27 @@ describe('/api/v1/customers', () => {
   describe('GET customers/:id', () => {
 
     it('Return one specific customer', async () => {
-      const customer = await Models.Customer.create({first_name: 'nathan', last_name: 'lebreton'});
-      const res = await request(server).get('/api/v1/customers/' + customer.get('customer_id'));
+      const customer = await Models.Customer.create({firstname: 'nathan', lastname: 'lebreton'});
+      const res = await request(server).get('/api/v1/customers/' + customer.get('customerId'));
       expect(res.status).toBe(200);
-      expect(res.body.last_name).toEqual(customer.dataValues.last_name);
+      expect(res.body.lastname).toEqual(customer.dataValues.lastname);
     });
   });
 
   describe('PUT customers/:id', () => {
 
     it('Modify user with valid data', async () => {
-      const customer = await Models.Customer.create({first_name: 'sabrina', last_name: 'lebreton'});
+      const customer = await Models.Customer.create({firstname: 'sabrina', lastname: 'lebreton'});
 
       const res = await request(server)
-        .put('/api/v1/customers/' + customer.get('customer_id'))
+        .put('/api/v1/customers/' + customer.get('customerId'))
         .send({firstname: 'marilou'});
 
       // console.log('TESTTTT:', res.body)
 
       expect(res.status).toBe(200);
-      expect(res.body.first_name).toBe('marilou');
-      // const updatedCustomer = await request(server).get('/api/v1/customers/' + customer.get('customer_id'));
+      expect(res.body.firstname).toBe('marilou');
+      // const updatedCustomer = await request(server).get('/api/v1/customers/' + customer.get('customerId'));
       // expect(res.body[1]).toEqual(updatedCustomer.dataValues); // WHY res.body[1] => https://stackoverflow.com/questions/38524938/sequelize-update-record-and-return-result
     });
   });

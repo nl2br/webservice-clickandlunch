@@ -29,7 +29,7 @@ describe('shopController', () => {
       name: 'Armenian Shop',
       siret: '12345678912345',
       siren: '123456789',
-      phone_number: '0678895645',
+      phoneNumber: '0678895645',
       email: 'test@test7.com',
       location: {
         type: 'Point',
@@ -55,7 +55,7 @@ describe('shopController', () => {
       name: 'toy',
       siret: '12345678912345',
       siren: '123456789',
-      phone_number: 'rere',
+      phoneNumber: 'rere',
       email: 'test@test.com',
       location: {
         type: 'Point',

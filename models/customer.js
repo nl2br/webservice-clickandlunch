@@ -1,16 +1,16 @@
 module.exports = (sequelize, DataTypes) => {
 
   let Customer = sequelize.define('Customer', {
-    customer_id: {
+    customerId: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
       allowNull: false
     },
-    first_name: {
+    firstname: {
       type: DataTypes.STRING
     },
-    last_name: {
+    lastname: {
       type: DataTypes.STRING
     },
     deleted: {
@@ -18,32 +18,32 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: 0
     },
     // Timestamps
-    created_at: DataTypes.DATE(6),
-    updated_at: DataTypes.DATE(6)
+    createdAt: DataTypes.DATE(6),
+    updatedAt: DataTypes.DATE(6)
   });
 
   Customer.associate = function (models) {
 
     Customer.hasMany(models.Order, { // add foreign key to order
-      foreignKey: 'customer_id',
+      foreignKey: 'customerId',
     });
 
   };
 
   return Customer;
 
-}
+};
 
 /**
  * @swagger
  * definition:
  *   Customer:
  *     properties:
- *       customer_id:
+ *       customerId:
  *         type: integer
- *       first_name:
+ *       firstname:
  *         type: string
- *       last_name:
+ *       lastname:
  *         type: string
  *       deleted:
  *        type: boolean

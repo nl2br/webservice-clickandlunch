@@ -35,7 +35,7 @@ describe('/api/v1/orders', () => {
         name: 'Fruity Land',    
         siret: '12345678912345',
         siren: '123456789',
-        phone_number: '0678895645',
+        phoneNumber: '0678895645',
         email: 'test@test9.com',
         location: {
           type: 'Point',
@@ -43,18 +43,18 @@ describe('/api/v1/orders', () => {
           crs: {type: 'name', properties: { name: 'EPSG:4326'}}
         }
       });
-      const shopId = shop.get('shop_id');
-      const product1 = await Models.Product.create({name: 'Milk shake Framboise', price: '9.90', shop_id: shopId });
-      const product2 = await Models.Product.create({name: 'Cake Miel Harissa', price: '9.90', shop_id: shopId });
-      const product3 = await Models.Product.create({name: 'ananas', price: '9.90',shop_id: shopId });
-      const product4 = await Models.Product.create({name: 'piepie', price: '9.90',shop_id: shopId });
+      const shopId = shop.get('shopId');
+      const product1 = await Models.Product.create({name: 'Milk shake Framboise', price: '9.90', shopId: shopId });
+      const product2 = await Models.Product.create({name: 'Cake Miel Harissa', price: '9.90', shopId: shopId });
+      const product3 = await Models.Product.create({name: 'ananas', price: '9.90',shopId: shopId });
+      const product4 = await Models.Product.create({name: 'piepie', price: '9.90',shopId: shopId });
       // création du customer
-      let customer = await Models.Customer.create({first_name: 'Looping', last_name: 'Barracuda'});
+      let customer = await Models.Customer.create({firstname: 'Looping', lastname: 'Barracuda'});
       // création de la commande
-      let order = await Models.Order.create({date: Date.now(), customer_id: customer.get('customer_id'), shop_id: shopId});
+      let order = await Models.Order.create({date: Date.now(), customerId: customer.get('customerId'), shopId: shopId});
       // ajout des produits dans la commande
-      let orderDetail1 = await Models.OrderDetail.create({order_id: order.get('order_id'), product_id: product1.get('product_id'), quantity: 1});
-      let orderDetail2 = await Models.OrderDetail.create({order_id: order.get('order_id'), product_id: product2.get('product_id'), quantity: 1});
+      let orderDetail1 = await Models.OrderDetail.create({orderId: order.get('orderId'), productId: product1.get('productId'), quantity: 1});
+      let orderDetail2 = await Models.OrderDetail.create({orderId: order.get('orderId'), productId: product2.get('productId'), quantity: 1});
       // shop.setProducts([product1,product3]);
       // order.setOrderDetails([orderDetail1, orderDetail2]);
       // order.setCustomer(customer.get('customer_id'));
@@ -62,14 +62,14 @@ describe('/api/v1/orders', () => {
       Models.Order.findAll({ // Nested Eager Loading
         include: [{
           model: Models.OrderDetail,
-          attributes: ['product_id','quantity'],
+          attributes: ['productId','quantity'],
           include: [{
             model: Models.Product, 
             attributes: ['name']
           }] 
         }],
         // include: [{ all: true, nested: true }],
-        where: {shop_id: shopId, deleted: 0}
+        where: {shopId: shopId, deleted: 0}
       })
         .then( orders => {
           console.log('array order', JSON.stringify(orders));

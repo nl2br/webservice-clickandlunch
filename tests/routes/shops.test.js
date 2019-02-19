@@ -31,7 +31,7 @@ describe('/api/v1/shops', () => {
         name: 'Les grands gamins',    
         siret: '12345678912345',
         siren: '123456789',
-        phone_number: '0678895645',
+        phoneNumber: '0678895645',
         email: 'atesdsqt@test5.com',
         location: {
           type: 'Point',
@@ -43,7 +43,7 @@ describe('/api/v1/shops', () => {
         name: 'oh ma biche',    
         siret: '12345678912345',
         siren: '123456789',
-        phone_number: '0678895645',
+        phoneNumber: '0678895645',
         email: 'atesdsqt@test4.com',
         location: {
           type: 'Point',
@@ -55,7 +55,7 @@ describe('/api/v1/shops', () => {
         name: 'del arte',
         siret: '12345678912345',
         siren: '123456789',
-        phone_number: '0678895645',
+        phoneNumber: '0678895645',
         email: 'atesfdst@test3.com',
         location: {
           type: 'Point',
@@ -67,7 +67,7 @@ describe('/api/v1/shops', () => {
         name: 'lauthetik',
         siret: '12345678912345',
         siren: '123456789',
-        phone_number: '0678895645',
+        phoneNumber: '0678895645',
         email: 'atefdssdsqt@test3.com',
         location: {
           type: 'Point',
@@ -116,7 +116,7 @@ describe('/api/v1/shops', () => {
         name: 'Asia Shop',
         siret: '12345678912345',
         siren: '123456789',
-        phone_number: '0678895645',
+        phoneNumber: '0678895645',
         email: 'rtest45@test.com',
         location: {
           type: 'Point',
@@ -125,7 +125,7 @@ describe('/api/v1/shops', () => {
         }
       });
       // puis on tente de récupérer les infos de ce shop
-      const res = await request(server).get('/api/v1/shops/' + shop.get('shop_id'));
+      const res = await request(server).get('/api/v1/shops/' + shop.get('shopId'));
       console.log('shopdetail', res.body);
       expect(res.status).toBe(200);
       expect(res.body.name).toEqual(shop.dataValues.name);
@@ -179,7 +179,7 @@ describe('/api/v1/shops', () => {
           // }
         });
       // on le recupère depuis la BDD
-      const shop = await Models.Shop.findById(res.body.shop_id);
+      const shop = await Models.Shop.findById(res.body.shopId);
 
       expect(res.status).toBe(201);
       expect(shop).not.toBeNull();
@@ -216,7 +216,7 @@ describe('/api/v1/shops', () => {
         name: 'My Shop',
         siret: '12345678912345',
         siren: '123456789',
-        phone_number: '0678895645',
+        phoneNumber: '0678895645',
         email: 'utest1@test.com',
         location: {
           type: 'Point',
@@ -226,7 +226,7 @@ describe('/api/v1/shops', () => {
       });
 
       const res = await request(server)
-        .put('/api/v1/shops/' + shop.get('shop_id'))
+        .put('/api/v1/shops/' + shop.get('shopId'))
         .send({name: 'your shop'});
 
       expect(res.status).toBe(200);
@@ -238,7 +238,7 @@ describe('/api/v1/shops', () => {
         name: 'My Shop',
         siret: '12345678912345',
         siren: '123456789',
-        phone_number: '0678895645',
+        phoneNumber: '0678895645',
         email: 'itest2@test.com',
         location: {
           type: 'Point',
@@ -248,7 +248,7 @@ describe('/api/v1/shops', () => {
       });
 
       const res = await request(server)
-        .put('/api/v1/shops/' + shop.get('shop_id'))
+        .put('/api/v1/shops/' + shop.get('shopId'))
         .send({
           name: 'your shop',
           longitude: 56,
@@ -264,7 +264,7 @@ describe('/api/v1/shops', () => {
         name: 'valid Shop',
         siret: '12345678912345',
         siren: '123456789',
-        phone_number: '0678895645',
+        phoneNumber: '0678895645',
         email: 'otest3@test.com',
         location: {
           type: 'Point',
@@ -274,12 +274,12 @@ describe('/api/v1/shops', () => {
       });
 
       const res = await request(server)
-        .put('/api/v1/shops/' + shop.get('shop_id'))
+        .put('/api/v1/shops/' + shop.get('shopId'))
         .send({
           name: 'unvalid \'Shop',
           siret: '1234567891234A',
           siren: '1234567898',
-          phone_number: '9678895645',
+          phoneNumber: '9678895645',
           email: 'ptest.com',
           location: {
             type: 'Point',
@@ -311,7 +311,7 @@ describe('/api/v1/shops', () => {
         name: 'My Shoppp',
         siret: '12345678912345',
         siren: '123456789',
-        phone_number: '0678895645',
+        phoneNumber: '0678895645',
         email: 'qtest7@test.com',
         location: {
           type: 'Point',
@@ -321,7 +321,7 @@ describe('/api/v1/shops', () => {
       });
 
       const res = await request(server)
-        .delete('/api/v1/shops/' + shop.get('shop_id'))
+        .delete('/api/v1/shops/' + shop.get('shopId'))
         .send({deleted: 1});
 
       expect(res.status).toBe(200);

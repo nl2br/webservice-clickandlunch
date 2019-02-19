@@ -26,18 +26,7 @@ describe('/api/v1/products', () => {
 
     beforeAll( async () =>{
       await truncate();
-      await Models.Shop.create({
-        name: 'Restaurant test',
-        siret: '12345678912345',
-        siren: '123456789',
-        phone_number: '0678895645',
-        email: 'testazerty@test.com',
-        location: {
-          type: 'Point',
-          coordinates: [11,9],
-          crs: {type: 'name', properties: { name: 'EPSG:4326'}}
-        }
-      });
+
     });
 
     afterAll( async () =>{
@@ -46,19 +35,30 @@ describe('/api/v1/products', () => {
     });
 
     it('get specific product of type DISH', async () => {
-      const shop = Models.Shop.findAll({where:{email:'testazerty@test.com'}});
+      const shop = await Models.Shop.create({
+        name: 'Restaurant test',
+        siret: '12345678912345',
+        siren: '123456789',
+        phoneNumber: '0678895645',
+        email: 'testazerty@test.com',
+        location: {
+          type: 'Point',
+          coordinates: [11,9],
+          crs: {type: 'name', properties: { name: 'EPSG:4326'}}
+        }
+      });
       const p = await Models.Product.create({
         name: 'yahourt',
         description: 'description',
         price: '4.90',
-        product_type: 'DISH',
-        shopId: shop.get('shop_id')
+        productType: 'DISH',
+        shopId: shop.get('shopId')
       });
 
-      const res = await request(server).get('/api/v1/products/' + p.get('product_id'));
+      const res = await request(server).get('/api/v1/products/' + p.get('productId'));
 
       // on le recupère depuis la BDD
-      const newProduct = await Models.Product.findById(p.get('product_id'));
+      const newProduct = await Models.Product.findById(p.get('productId'));
 
       expect(res.status).toBe(200);
       expect(newProduct).not.toBeNull();
@@ -73,38 +73,49 @@ describe('/api/v1/products', () => {
     });
 
     it('get specific product of type MENU', async () => {
-      const shop = Models.Shop.findAll({where:{email:'testazerty@test.com'}});
+      const shop = await Models.Shop.create({
+        name: 'Restaurant test',
+        siret: '12345678912345',
+        siren: '123456789',
+        phoneNumber: '0678895645',
+        email: 'testazerty2@test.com',
+        location: {
+          type: 'Point',
+          coordinates: [11,9],
+          crs: {type: 'name', properties: { name: 'EPSG:4326'}}
+        }
+      });
       const p1 = await Models.Product.create({
         name: 'salade chevre',
         description: 'description',
         price: '4.90',
-        product_type: 'DISH',
-        shopId: shop.get('shop_id')
+        productType: 'DISH',
+        shopId: shop.get('shopId')
       });
       const p2 = await Models.Product.create({
         name: 'poulet roti',
         description: 'description',
         price: '4.90',
-        product_type: 'DISH',
-        shopId: shop.get('shop_id')
+        productType: 'DISH',
+        shopId: shop.get('shopId')
       });
       const menu = await Models.Product.create({
         name: 'menu salade chevre poulet roti',
         description: 'description',
         price: '4.90',
-        product_type: 'MENU',
-        shopId: shop.get('shop_id')
+        productType: 'MENU',
+        shopId: shop.get('shopId')
       });
       await Models.Menu.create({
-        menu_id: menu.get('product_id'),
-        product_id: p1.get('product_id')
+        menuId: menu.get('productId'),
+        productId: p1.get('productId')
       });
       await Models.Menu.create({
-        menu_id: menu.get('product_id'),
-        product_id: p2.get('product_id')
+        menuId: menu.get('productId'),
+        productId: p2.get('productId')
       });
-      console.log('Argument', menu.get('product_id'));
-      const res = await request(server).get('/api/v1/products/' +  menu.get('product_id') );
+      console.log('Argument', menu.get('productId'));
+      const res = await request(server).get('/api/v1/products/' +  menu.get('productId') );
       expect(res.status).toBe(200);
     });
   });
@@ -122,7 +133,7 @@ describe('/api/v1/products', () => {
         name: 'Restaurant test',
         siret: '12345678912345',
         siren: '123456789',
-        phone_number: '0678895645',
+        phoneNumber: '0678895645',
         email: 'testazerty@test.com',
         location: {
           type: 'Point',
@@ -130,7 +141,7 @@ describe('/api/v1/products', () => {
           crs: {type: 'name', properties: { name: 'EPSG:4326'}}
         }
       });
-      console.log('SHOPPPPPPPPPPPPPPPPPPPP', shop.get('shop_id'));
+      console.log('SHOPPPPPPPPPPPPPPPPPPPP', shop.get('shopId'));
       const res = await request(server)
         .post('/api/v1/products/')
         .send({
@@ -138,10 +149,10 @@ describe('/api/v1/products', () => {
           description: 'description product test',
           price: '9.90',
           productType: 'DISH',
-          shopId: shop.get('shop_id')
+          shopId: shop.get('shopId')
         });
       // on le recupère depuis la BDD
-      const product = await Models.Product.findById(res.body.product_id);
+      const product = await Models.Product.findById(res.body.productId);
 
       expect(res.status).toBe(201);
       expect(product).not.toBeNull();
@@ -153,7 +164,7 @@ describe('/api/v1/products', () => {
         name: 'Restaurant test',
         siret: '12345678912345',
         siren: '123456789',
-        phone_number: '0678895645',
+        phoneNumber: '0678895645',
         email: 'atestazerty@test.com',
         location: {
           type: 'Point',
@@ -165,22 +176,22 @@ describe('/api/v1/products', () => {
         name: 'salade',
         description: 'description',
         price: '4.90',
-        product_type: 'DISH',
-        shopId: shop.get('shop_id')
+        productType: 'DISH',
+        shopId: shop.get('shopId')
       });
       const p2 = await Models.Product.create({
         name: 'poulet',
         description: 'description',
         price: '4.90',
-        product_type: 'DISH',
-        shopId: shop.get('shop_id')
+        productType: 'DISH',
+        shopId: shop.get('shopId')
       });
       const p3 = await Models.Product.create({
         name: 'frite',
         description: 'description',
         price: '4.90',
-        product_type: 'DISH',
-        shopId: shop.get('shop_id')
+        productType: 'DISH',
+        shopId: shop.get('shopId')
       });
 
       const res = await request(server)
@@ -190,11 +201,11 @@ describe('/api/v1/products', () => {
           description: 'description product test',
           price: '9.90',
           productType: 'MENU',
-          shopId: shop.get('shop_id'),
-          listProducts: [p1.get('product_id'), p2.get('product_id'), p3.get('product_id')]
+          shopId: shop.get('shopId'),
+          listProducts: [p1.get('productId'), p2.get('productId'), p3.get('productId')]
         });
       // on le recupère depuis la BDD
-      const product = await Models.Product.findById(res.body.product_id);
+      const product = await Models.Product.findById(res.body.productId);
 
       expect(res.status).toBe(201);
       expect(product).not.toBeNull();

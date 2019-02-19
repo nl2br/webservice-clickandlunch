@@ -14,7 +14,7 @@ class Products {
    */
   static getProduct(req, res) {
     // rechercher si le produit demandé est de type MENU
-    Models.Menu.findAll({where:{menu_id: req.params.id}})
+    Models.Menu.findAll({where:{menuId: req.params.id}})
       .then(result => {
         if (result.length === 0) {
           Products.getNormalProduct(req.params.id)
@@ -60,14 +60,14 @@ class Products {
 
   static getMenuProducts(menuId) {
     console.log('getMenuProducts', menuId);
-    const listProducts = Models.sequelize.query(`select menu.product_id, 
-      (select product.name from product where product.product_id = menu.product_id) name,
-      (select product.description from product where product.product_id = menu.product_id) description,
-      (select product.price from product where product.product_id = menu.product_id) price, 
-      (select product.product_type from product where product.product_id = menu.product_id) product_type
+    const listProducts = Models.sequelize.query(`select menu.productId, 
+      (select product.name from product where product.productId = menu.productId) name,
+      (select product.description from product where product.productId = menu.productId) description,
+      (select product.price from product where product.productId = menu.productId) price, 
+      (select product.productType from product where product.productId = menu.productId) productType
       from product
-      inner join menu on menu.menu_id = product.product_id
-      where product.product_id = ?`, { 
+      inner join menu on menu.menuId = product.productId
+      where product.productId = ?`, { 
       type: Models.sequelize.QueryTypes.SELECT,
       replacements: [menuId]
     });
@@ -99,8 +99,8 @@ class Products {
       name: req.body.name,
       description: req.body.description,
       price: req.body.price,
-      product_type: req.body.productType,
-      shop_id: req.body.shopId
+      productType: req.body.productType,
+      shopId: req.body.shopId
     })
       .then(result => {
         res.status(201).json(result);
@@ -122,15 +122,15 @@ class Products {
       name: req.body.name,
       description: req.body.description,
       price: req.body.price,
-      product_type: req.body.productType,
-      shop_id: req.body.shopId
+      productType: req.body.productType,
+      shopId: req.body.shopId
     })
       .then(result => {
         req.body.listProducts.forEach(async item => {
           console.log('item',item);
           await Models.Menu.create({
-            menu_id:result.product_id,
-            product_id: item
+            menuId:result.productId,
+            productId: item
           })
             .catch(error => {
               console.log('error menu creation : ', error.message);

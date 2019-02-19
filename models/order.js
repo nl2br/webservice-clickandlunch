@@ -1,7 +1,7 @@
 module.exports = (sequelize, DataTypes) => {
 
   let Order = sequelize.define('Order', {
-    order_id: {
+    orderId: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW,
     },
-    customer_id: {
+    customerId: {
       type: DataTypes.INTEGER,
       allowNull: {
         args: false,
@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
       //   key: 'customer_id'
       // }
     },
-    shop_id: {
+    shopId: {
       type: DataTypes.INTEGER,
       allowNull: {
         args: false,
@@ -38,36 +38,36 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: 0
     },
     // Timestamps
-    created_at: DataTypes.DATE(6),
-    updated_at: DataTypes.DATE(6)
+    createdAt: DataTypes.DATE(6),
+    updatedAt: DataTypes.DATE(6)
   });
 
   Order.associate = (models) => {
     Order.hasMany(models.OrderDetail, { // add foreign key order_id to OrderDetail
-      foreignKey: 'order_id',
+      foreignKey: 'orderId',
       // onDelete: 'CASCADE'
     });
     Order.belongsTo(models.Customer, { // customer_id inserted into order
-      foreignKey: 'customer_id',
+      foreignKey: 'customerId',
       // onDelete: 'CASCADE'
     });
   };
 
   return Order;
-}
+};
 
 /**
  * @swagger
  * definition:
  *   Order:
  *     properties:
- *       order_id:
+ *       orderId:
  *         type: integer
  *       date:
  *         type: date
- *       customer_id:
+ *       customerId:
  *         type: integer
- *       shop_id:
+ *       shopId:
  *         type: integer
  *       deleted:
  *        type: boolean

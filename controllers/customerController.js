@@ -74,36 +74,36 @@ exports.getCustomer = (req, res, next) => {
 // POST /Customers (admin, pro user)
 exports.postCustomer = (req, res, next) => {
   Models.Customer.create({
-    first_name: req.body.firstname,
-    last_name: req.body.lastname
+    firstname: req.body.firstname,
+    lastname: req.body.lastname
   })
-  .then(newCustomer => {
-    return res.status(200).json(newCustomer);
-  })
-  .catch(error => {
-    console.log('error postAddCustomer : ', error.message);
-    return res.status(400).send(error);
-  })
+    .then(newCustomer => {
+      return res.status(200).json(newCustomer);
+    })
+    .catch(error => {
+      console.log('error postAddCustomer : ', error.message);
+      return res.status(400).send(error);
+    });
 };
 
 // Modify details for a given Customer
 // PUT /Customers/:id (admin, pro user)
 exports.putCustomer = (req, res, next) => {
   Models.Customer.findById(req.params.id)
-  .then(customer => {
-    if(!customer) {return res.status(400).send("this customer don't exist");}
-    return customer.update({
-      first_name: req.body.firstname || customer.first_name,
-      last_name: req.body.lastname || customer.last_name
-    })  
-    .then(() => {
-      res.status(200).send(customer);
+    .then(customer => {
+      if(!customer) {return res.status(400).send('this customer don\'t exist');}
+      return customer.update({
+        firstname: req.body.firstname || customer.firstname,
+        lastname: req.body.lastname || customer.lastname
+      })  
+        .then(() => {
+          res.status(200).send(customer);
+        });
     })
-  })
-  .catch(error => {
-    console.log('error putModifyCustomer : ', error.message);
-    res.status(400).send({message: "Error while trying to update the customer", data: error.message});
-  });
+    .catch(error => {
+      console.log('error putModifyCustomer : ', error.message);
+      res.status(400).send({message: 'Error while trying to update the customer', data: error.message});
+    });
 };
 // Delete a Customer
 // DELETE /Customers/:id (admin, pro user)

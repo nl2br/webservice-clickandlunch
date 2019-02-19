@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
 
   // Model definition
   const Product = sequelize.define('Product', {
-    product_id: {
+    productId: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
@@ -38,12 +38,12 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: true
       }
     },
-    product_type: {
+    productType: {
       type: DataTypes.ENUM, // TODO: créer un enum js productType plutot qu'un enum MySQL
       values: ['STARTER', 'DISH', 'DESSERT','DRINK','OTHER','MENU']
     },
     // TODO: créer le modèle PHOTO puis ajouter les relations
-    shop_id: {
+    shopId: {
       type: DataTypes.INTEGER,
       // references: {
       //   model: 'Shop',
@@ -55,8 +55,8 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: 0
     },
     // Timestamps
-    created_at: DataTypes.DATE(6),
-    updated_at: DataTypes.DATE(6)
+    createdAt: DataTypes.DATE(6),
+    updatedAt: DataTypes.DATE(6)
   });
 
   // Class Method
@@ -67,7 +67,7 @@ module.exports = (sequelize, DataTypes) => {
      * Lorsqu'on delete un shop, ses produits associées sont supprimés
      */
     Product.belongsTo(models.Shop, { // add shop_id to product
-      foreignKey: 'shop_id',
+      foreignKey: 'shopId',
       onDelete: 'CASCADE' // when deleting a shop, delete all his product
     });
   };
@@ -90,7 +90,7 @@ module.exports = (sequelize, DataTypes) => {
  *       productType:
  *         type: string
  *         enum: ['STARTER', 'DISH', 'DESSERT','DRINK','OTHER','MENU']
- *       shop_id:
+ *       shopId:
  *         type: integer
  */
 
