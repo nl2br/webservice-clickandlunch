@@ -31,8 +31,16 @@ class Shops {
     }
     
     //TODO: shops?name=XXX + swagger doc 
-    // if(req.query.name){
-    // }
+    if(req.query.hasOwnProperty('name')){
+      Shops.getShopsByName(req.query.name)
+        .then( result => {
+          res.status(200).json(result);
+        })
+        .catch(error => {
+          console.log('error getShops : ', error.message);
+          res.status(400).send(error);
+        });
+    }
 
     // TODO: handle route with idcategory when MODEL PRODUCT CATEGORY done
     // if(req.query.idcategory){
@@ -67,16 +75,44 @@ class Shops {
           res.status(400).send(error);
         });
     }
+
+    // aucun paramètre n'est demandé -> error 400
+    if(Object.getOwnPropertyNames(req.params).length < 1 
+      && Object.getOwnPropertyNames(req.query).length < 1){
+      res.status(400).send({message: 'Please use a valid API route'});
+    }
   }
 
+  static getShopsByName(searchTerm) {
+    let name = searchTerm.slice(1,-1);
+    return new Promise((resolve, reject) => {
+      Models.Shop.findAll({
+        where: {
+          $or: [
+            { 'name': { like: '%' + name.trim() + '%' } }
+          ]
+        }
+      },{raw: true})
+        .then(result => {
+          if (!result) {
+            reject({message: 'No shops Found'});
+          }
+          resolve(result);
+        })
+        .catch(error => {
+          console.log('error getShopByName : ', error.message);
+          reject({message: error});
+        });
+    });
+  }
 
   /**
    * @function findNearbyShops
    * Permet de retrouver les shops autours d'un utilisateur (positionné par sa longitude et sa latitude) 
    * sur un rayon donné par le paramètre range
-   * @param {float} params.lon Longitude de l'utilisateur
-   * @param {float} params.lat Latitude de l'utilisateur
-   * @param {int} params.range Distance de recherche
+   * @param {float} query.lon Longitude de l'utilisateur
+   * @param {float} query.lat Latitude de l'utilisateur
+   * @param {int} query.range Distance de recherche
    * @returns {array} Tableau contenant des shops
    */
   static getShopsNearby(query) {
@@ -125,17 +161,6 @@ class Shops {
         console.log('error getShop : ', error.message);
         res.status(400).send(error);
       });
-  }
-
-  /**
-   * @function getShopByName
-   * Details of a shop for a given id
-   * @param {object} req 
-   * @param {int} req.params.id id du shop
-   * @param {*} res 
-   */
-  static getShopByName(req, res) {
-    res.status(200).json({message: 'by name'});
   }
 
   /**

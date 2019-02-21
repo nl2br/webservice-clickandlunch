@@ -24,9 +24,6 @@ describe('/api/v1/shops', () => {
 
   describe('api get/shops', () => {
     beforeAll( async () =>{
-
-    });
-    it('Listing all shop', async () => {
       await Models.Shop.create({ // 189m
         name: 'Les grands gamins',    
         siret: '12345678912345',
@@ -64,7 +61,7 @@ describe('/api/v1/shops', () => {
         }
       });
       await Models.Shop.create({ // 4.56km
-        name: 'lauthetik',
+        name: 'les gauthetik',
         siret: '12345678912345',
         siren: '123456789',
         phoneNumber: '0678895645',
@@ -75,6 +72,9 @@ describe('/api/v1/shops', () => {
           crs: {type: 'name', properties: { name: 'EPSG:4326'}}
         }
       });
+    });
+    it('Listing all shop', async () => {
+
       const res = await request(server).get('/api/v1/shops/p/1');
       expect(res.status).toBe(200);
       expect(res.body.count).toBe(4);
@@ -105,6 +105,19 @@ describe('/api/v1/shops', () => {
       const res = await request(server).get('/api/v1/shops?lon=' + userPosition.lon + '&lat=' + userPosition.lat + '&range=' + range);
       expect(res.body).toHaveLength(0);
     });
+
+    it('Return 2 shop for "les" in search', async () => {
+      const res = await request(server).get('/api/v1/shops?name=" les g"');
+      expect(res.status).toBe(200);
+      expect(res.body).toHaveLength(2);
+    });
+
+    it('Return error 400', async () => {
+      const res = await request(server).get('/api/v1/shops');
+      expect(res.status).toBe(400);
+      expect(res.body.message).toBe('Please use a valid API route');
+    });
+
   });
 
   describe('api get/shops/:id', () => {

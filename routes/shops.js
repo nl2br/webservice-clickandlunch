@@ -64,7 +64,6 @@ router.delete('/:id', Shops.deleteShop);
 module.exports = router;
 
 //TODO: swagger shops?idCategory
-//TODO: swagger shops?name
 //TODO: swagger shops/:shopid/products/:productid when product done
 //TODO: swagger shops/:id/products when product done
 
@@ -141,6 +140,29 @@ module.exports = router;
  *             type: string
  *           distance:
  *             type: number
+ *       400:
+ *         description: Internal error
+ */
+
+/**
+ * @swagger
+ * /api/v1/shops?name="{search}":
+ *   get:
+ *     tags:
+ *       - Shop
+ *     description: Return a list of shop corresponding to the searched term
+ *     parameters:
+ *       - in: path
+ *         name: search
+ *         type: string
+ *         required: true
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: Return all shops corresponding to the searched term
+ *         schema:
+ *           $ref: '#/definitions/Shop'
  *       400:
  *         description: Internal error
  */
