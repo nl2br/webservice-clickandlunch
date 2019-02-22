@@ -8,6 +8,27 @@ const router = express.Router();
 const Products = require('../controllers/productController');
 
 /**
+ * Get details for a given id product (all user)
+ * @method get/products/:id
+ */
+router.get('/:id', Products.getProduct);
+
+/**
+ * Create a new product (admin, pro user)
+ * @method post/products
+ */
+router.post('/', Products.postProduct);
+
+
+/**
+ * Create a new product (admin, pro user)
+ * @method post/products/menus
+ */
+router.post('/menus', Products.postProductMenu);
+
+module.exports = router;
+
+/**
  * @swagger
  * /api/v1/products/{id}:
  *   get:
@@ -35,11 +56,6 @@ const Products = require('../controllers/productController');
  *       404:
  *         description: Id not found
  */
-/**
- * Get details for a given id product (all user)
- * @method get/products/:id
- */
-router.get('/:id', Products.getProduct);
 
 /**
  * @swagger
@@ -65,11 +81,6 @@ router.get('/:id', Products.getProduct);
  *       400:
  *         description: Internal error
  */
-/**
- * Create a new product (admin, pro user)
- * @method post/products
- */
-router.post('/', Products.postProduct);
 
 /**
  * @swagger
@@ -95,10 +106,3 @@ router.post('/', Products.postProduct);
  *       400:
  *         description: Internal error
  */
-/**
- * Create a new product (admin, pro user)
- * @method post/products/menus
- */
-router.post('/menus', Products.postProductMenu);
-
-module.exports = router;

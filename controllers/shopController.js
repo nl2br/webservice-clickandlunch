@@ -229,7 +229,7 @@ class Shops {
         res.status(200).json(result);
       })
       .catch(error => {
-        console.log('error getAllShopProducts : ', error.message);
+        console.log('error getShopProducts : ', error.message);
         res.status(400).send(error);
       });
   }
@@ -253,7 +253,7 @@ class Shops {
         res.status(200).json(result);
       })
       .catch(error => {
-        console.log('error getShopSpecificProduct : ', error.message);
+        console.log('error getShopProduct : ', error.message);
         res.status(400).send(error);
       });
   }

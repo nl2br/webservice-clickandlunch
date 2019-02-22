@@ -38,8 +38,9 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: true
       }
     },
+    // TODO: créer un enum js productType plutot qu'un enum MySQL
     productType: {
-      type: DataTypes.ENUM, // TODO: créer un enum js productType plutot qu'un enum MySQL
+      type: DataTypes.ENUM, 
       values: ['STARTER', 'DISH', 'DESSERT','DRINK','OTHER','MENU']
     },
     // TODO: créer le modèle PHOTO puis ajouter les relations
@@ -81,6 +82,8 @@ module.exports = (sequelize, DataTypes) => {
  * definition:
  *   Product:
  *     properties:
+ *       productId:
+ *         type: number
  *       name:
  *         type: string
  *       description:

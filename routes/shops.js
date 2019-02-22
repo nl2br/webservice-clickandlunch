@@ -70,9 +70,7 @@ router.delete('/:id', Shops.deleteShop);
 
 module.exports = router;
 
-//TODO: swagger shops?idCategory
-//TODO: swagger shops/:shopid/products/:productid when product done
-//TODO: swagger shops/:id/products when product done
+
 
 /**
  * @swagger
@@ -265,6 +263,79 @@ module.exports = router;
  *         description: Internal Error
  *       404:
  *         description: Id not found
+ */
+//TODO: swagger shops/:shopid/products/:productid when product done
+/**
+ * @swagger
+ * /api/v1/shops/:shopid/products/:productid:
+ *   get:
+ *     tags:
+ *       - Shop
+ *     description: Return a list of shop corresponding to the searched term
+ *     parameters:
+ *       - in: path
+ *         name: shopid
+ *         type: number
+ *         required: true
+ *         description: id du shop recherché
+ *       - in: path
+ *         name: productid
+ *         type: number
+ *         required: true
+ *         description: id du produit recherché
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: Return the product's detail from the wanted shop
+ *         schema:
+ *           $ref: '#/definitions/Product'
+ *       400:
+ *         description: Internal error
+ *       404:
+ *         description: not found
+ */
+//TODO: swagger shops/:id/products when product done
+/**
+ * @swagger
+ * /api/v1/shops/:id/products:
+ *   get:
+ *     tags:
+ *       - Shop
+ *     description: Return a list of product corresponding to the searched shop
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         type: number
+ *         required: true
+ *         description: id du shop recherché
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: Return a products list from the wanted shop
+ *         schema:
+ *              type: array
+ *              items:
+ *                type: object
+ *                properties:
+ *                   productId:
+ *                     type: number
+ *                   name:
+ *                     type: string
+ *                   description:
+ *                     type: text
+ *                   price:
+ *                     type: decimal
+ *                   productType:
+ *                     type: string
+ *                     enum: ['STARTER', 'DISH', 'DESSERT','DRINK','OTHER','MENU']
+ *                   shopId:
+ *                     type: integer
+ *       400:
+ *         description: Internal error
+ *       404:
+ *         description: not found
  */
 
 /**

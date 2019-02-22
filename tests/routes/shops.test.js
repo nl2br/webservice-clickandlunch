@@ -152,21 +152,81 @@ describe('/api/v1/shops', () => {
   });
 
   describe('api get/shops/:id/products', () => {
-    beforeAll( async () =>{
-      await truncate();
-    });
+
     it('Listing all product items for a given shop', async () => {
-      // TODO when product done
+      const shop = await Models.Shop.create({
+        name: 'Restaurant test',
+        siret: '12345678912345',
+        siren: '123456789',
+        phoneNumber: '0678895645',
+        email: 'testazerty@test.com',
+        location: {
+          type: 'Point',
+          coordinates: [11,9],
+          crs: {type: 'name', properties: { name: 'EPSG:4326'}}
+        }
+      });
+      const p1 = await Models.Product.create({
+        name: 'yahourt',
+        description: 'description',
+        price: '4.90',
+        productType: 'DISH',
+        shopId: shop.get('shopId')
+      });
+      const p2 = await Models.Product.create({
+        name: 'yahourt 2',
+        description: 'description',
+        price: '4.90',
+        productType: 'DISH',
+        shopId: shop.get('shopId')
+      });
+      await shop.setProducts([p1.get('productId'),p2.get('productId')]);
+      const res = await request(server).get('/api/v1/shops/' + shop.get('shopId') + '/products');
+      expect(res.status).toBe(200);
+      console.log(res.body);
+
+      expect(res.body).toHaveLength(2);
+      await shop.destroy();
     });
+
   });
   
   describe('api get/shops/:shopId/products/:productId', () => {
-    beforeAll( async () =>{
-      await truncate();
-    });
+
     it('Get specific product for a given shop', async () => {
-      // TODO when product done
+      const shop = await Models.Shop.create({
+        name: 'Restaurant test',
+        siret: '12345678912345',
+        siren: '123456789',
+        phoneNumber: '0678895645',
+        email: 'testazerty@test.com',
+        location: {
+          type: 'Point',
+          coordinates: [11,9],
+          crs: {type: 'name', properties: { name: 'EPSG:4326'}}
+        }
+      });
+      const p1 = await Models.Product.create({
+        name: 'yahourt',
+        description: 'description',
+        price: '4.90',
+        productType: 'DISH',
+        shopId: shop.get('shopId')
+      });
+      const p2 = await Models.Product.create({
+        name: 'yahourt 2',
+        description: 'description',
+        price: '4.90',
+        productType: 'DISH',
+        shopId: shop.get('shopId')
+      });
+      await shop.setProducts([p1.get('productId'),p2.get('productId')]);
+      const res = await request(server).get('/api/v1/shops/' + shop.get('shopId') + '/products/' + p2.get('productId'));
+      expect(res.status).toBe(200);
+      expect(res.body.name).toBe('yahourt 2');
+      await shop.destroy();
     });
+
   });
 
   describe('api post/shops', () => {
