@@ -3,7 +3,6 @@ const truncate = require('../truncate');
 let server;
 
 beforeAll( async () =>{
-  console.log('truncate beforeall');
   await truncate();
 });
 
@@ -13,13 +12,10 @@ describe('shopController', () => {
     server = require('../../app'); 
   });
   afterEach(async () => { 
-    console.log('truncate aftereach');
-    await truncate();
     await server.close(); 
   });
   
   afterAll(async (done) => {
-    await truncate();
     await server.close();
     server.on('disconnected', done);
   },1000);
@@ -70,5 +66,49 @@ describe('shopController', () => {
 
   });
 
+  describe('Shop and ShopCategory', () => {
+
+    it('Had a category to a shop', async () => {
+
+      const shop1 = await Models.Shop.create({
+        name: 'Asia Shop',
+        siret: '12345678912345',
+        siren: '123456789',
+        phoneNumber: '0678895645',
+        email: 'zatest@test7.com',
+        location: {
+          type: 'Point',
+          coordinates: [11,9],
+          crs: {type: 'name', properties: { name: 'EPSG:4326'}}
+        }
+      });
+
+      let category1 = await Models.ShopCategory.create({
+        name: 'asiatique'
+      });
+
+      await shop1.addShopCategory(category1);
+
+      category1.getShops()
+        .then( shops => {
+          shops.forEach(shop => {
+            expect(shop.dataValues.name).toBe('Asia Shop');
+          });
+        })
+        .catch(error => {
+          console.log('error:' ,error);
+        });
+      
+      shop1.getShopCategories()
+        .then( categories => {
+          categories.forEach(categorie => {
+            expect(categorie.dataValues.name).toBe('asiatique');
+          });
+        })
+        .catch(error => {
+          console.log('error:' ,error);
+        });
+    });
+  });
 });
 

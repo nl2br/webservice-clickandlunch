@@ -88,10 +88,35 @@ module.exports = (sequelize, DataTypes) => {
     Shop.hasMany(models.Product, { // add foreign key to Product
       foreignKey: 'shopId'
     });
+    Shop.belongsToMany(models.ShopCategory, { // add foreign key to Product
+      through: 'ShopsCategory',
+      foreignKey: 'shopId'
+    });
   };
 
   return Shop;
 };
+
+// SHOP Sequelize functions
+// addProduct
+// addProducts
+// addShopCategories
+// addShopCategory
+// createProduct
+// createShopCategory
+// countProducts
+// getProducts
+// getShopCategories
+// hasProduct
+// hasProducts
+// hasShopCategories
+// hasShopCategory
+// removeProduct
+// removeProducts
+// removeShopCategory
+// removeShopCategories
+// setProducts
+// setShopCategories
 
 /**
  * @swagger
@@ -126,18 +151,3 @@ module.exports = (sequelize, DataTypes) => {
  *      updatedAt:
  *        type: date
  */
-
-
-
-// Automatic functions
-
-// addProduct
-// addProducts
-// countProducts
-// createProduct
-// getProducts
-// hasProduct
-// hasProducts
-// removeProduct
-// removeProducts
-// setProducts
