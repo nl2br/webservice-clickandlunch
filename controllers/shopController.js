@@ -57,12 +57,15 @@ class Shops {
           let page = req.params.page; // page number
           let pages = Math.ceil(data.count / limit);
           offset = limit * (page - 1);
-          Models.Shop.findAll({
+          return Models.Shop.findAll({
             where: {deleted: 0},
             limit: limit,
             offset: offset
           })
             .then(result => {
+              if(data.count === 0) { 
+                return res.status(404).send({message: 'No shops found'}); 
+              }
               res.status(200).json({'result': result, 'count': data.count, 'pages': pages});
             })
             .catch(error => {
@@ -94,7 +97,7 @@ class Shops {
         }
       },{raw: true})
         .then(result => {
-          if (!result) {
+          if (Array.isArray(result) && !result.length) {
             reject({message: 'No shops Found'});
           }
           resolve(result);
@@ -104,6 +107,48 @@ class Shops {
           reject({message: error});
         });
     });
+  }
+
+  static getShopsByCategory(req, res) {
+    console.log('pagination');
+    let limit = 20;   // number of records per page
+    let offset = 0;
+
+    Models.Shop.findAndCountAll({
+      include: [{
+        model: Models.ShopCategory
+      }],
+      where: {deleted: 0}
+    },{raw: true})
+      .then((data) => {
+        let page = req.params.page; // page number
+        let pages = Math.ceil(data.count / limit);
+        offset = limit * (page - 1);
+
+        return Models.Shop.findAll({
+          include: [{
+            model: Models.ShopCategory,
+            attributes: ['shopCategoryId', 'name']
+          }],
+          where: {deleted: 0},
+          limit: limit,
+          offset: offset
+        })
+          .then(result => {
+            if(data.count === 0) { 
+              return res.status(404).send({message: 'No shops for the given id category'}); 
+            }
+            res.status(200).json({'result': result, 'count': data.count, 'pages': pages});
+          })
+          .catch(error => {
+            console.log('error getShops', error.message);
+            res.status(400).send(error);
+          });
+      })
+      .catch(error => {
+        console.log('error getShops', error.message);
+        res.status(400).send(error);
+      });
   }
 
   /**
@@ -130,7 +175,7 @@ class Shops {
         replacements: [query.lon, query.lat, query.lon, query.lat, range]
       })
         .then(result => {
-          if (!result) {
+          if (Array.isArray(result) && !result.length) {
             reject({message: 'No shops Found arround the coordinates'});
           }
           resolve(result);

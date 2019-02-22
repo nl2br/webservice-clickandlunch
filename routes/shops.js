@@ -19,6 +19,13 @@ router.get('/', Shops.getShops);
  */
 router.get('/p/:page', Shops.getShops);
 
+
+/**
+ * Listing all shop of a category with pagination (all user)
+ * @method get/shops/p/:page/category/:idCategory
+ */
+router.get('/p/:page/category/:idCategory', Shops.getShopsByCategory);
+
 /**
  * Get shop details for a given shop  (all user)
  * @method get/shops/:id
@@ -96,6 +103,68 @@ module.exports = router;
  *                    type: object
  *       400:
  *         description: Internal error
+ *       404:
+ *         description: not found
+ */
+
+/**
+ * @swagger
+ * /api/v1/shops/p/{numberPage}/category/{shopCategoryId}:
+ *   get:
+ *     tags:
+ *       - Shop
+ *     description: Get a paginated list of all shops for a given id shopCategory, 20 shops per request
+ *     parameters:
+ *       - name: numberPage
+ *         description: page souhaitée
+ *         in: path
+ *         required: true
+ *       - name: shopCategoryId
+ *         description: categorie souhaitée
+ *         in: path
+ *         required: true
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: Return an object
+ *         schema:
+ *            properties:
+ *               count:
+ *                  type: number
+ *               pages:
+ *                  type: number
+ *               result:
+ *                  type: array
+ *                  items:
+ *                    type: object
+ *                    properties:
+ *                       shopId:
+ *                         type: number
+ *                       name:
+ *                         type: string
+ *                       siret:
+ *                         type: string
+ *                       siren:
+ *                         type: string
+ *                       phoneNumber:
+ *                         type: string
+ *                       email:
+ *                         type: string
+ *                       ShopCategories:
+ *                         type: array
+ *                         items:
+ *                            type: object
+ *                            properties:
+ *                              shopCategoryId:
+ *                                type: number
+ *                              name:
+ *                                 type: string  
+ *                            
+ *       400:
+ *         description: Internal error
+ *       404:
+ *         description: not found
  */
 
 /**
@@ -142,6 +211,8 @@ module.exports = router;
  *             type: number
  *       400:
  *         description: Internal error
+ *       404:
+ *         description: not found
  */
 
 /**
@@ -165,6 +236,8 @@ module.exports = router;
  *           $ref: '#/definitions/Shop'
  *       400:
  *         description: Internal error
+ *       404:
+ *         description: not found
  */
 
 /**

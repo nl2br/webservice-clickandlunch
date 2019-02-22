@@ -103,7 +103,7 @@ describe('/api/v1/shops', () => {
       let range = 100; // meters
 
       const res = await request(server).get('/api/v1/shops?lon=' + userPosition.lon + '&lat=' + userPosition.lat + '&range=' + range);
-      expect(res.body).toHaveLength(0);
+      expect(res.body.message).toBe('No shops Found arround the coordinates');
     });
 
     it('Return 2 shop for "les" in search', async () => {
@@ -350,4 +350,38 @@ describe('/api/v1/shops', () => {
 
   });
 
+  describe('ShopCategory', () => {
+
+    it('Get a japanese shop', async () => {
+
+      const category = await Models.ShopCategory.create({
+        name: 'Japonais'
+      });
+      const category2 = await Models.ShopCategory.create({
+        name: 'Portuguesh'
+      });
+
+      const shop1 = await Models.Shop.create({
+        name: 'JapShop',
+        siret: '12345678912345',
+        siren: '123456789',
+        phoneNumber: '0678895645',
+        email: 'zaqtest7@test.com',
+        location: {
+          type: 'Point',
+          coordinates: [11,9],
+          crs: {type: 'name', properties: { name: 'EPSG:4326'}}
+        }
+      });
+
+      await shop1.setShopCategories([category.get('shopCategoryId'), category2.get('shopCategoryId')]);
+
+      const res = await request(server).get('/api/v1/shops/p/1/category/' + category.get('shopCategoryId'));
+      console.log(res.body.result[0]);
+      console.log(res.body.result[0].ShopCategories);
+      expect(res.body.count).toBe(2);
+
+    });
+
+  });
 });
