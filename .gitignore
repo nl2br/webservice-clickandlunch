@@ -14,7 +14,7 @@ public/swagger-doc
 public
 
 # config
-config.json
+config/config.json
 
 # eslint
 .eslintrc.json
