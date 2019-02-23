@@ -44,18 +44,19 @@ const server = http.createServer(app);
 // Server launch
 const port = process.env.PORT || 3000;
 if (process.env.NODE_ENV !== 'test') { // https://blog.campvanilla.com/jest-expressjs-and-the-eaddrinuse-error-bac39356c33a
-  // Models.sequelize.sync({force:true}).then(function() {
-  Models.sequelize.sync().then(function() {
+  Models.sequelize.sync({force:true}).then(function() {
+  // Models.sequelize.sync().then(function() {
     server.listen(port, () => {
       console.log(`Listening on port ${port}...`);
     });
   });
 }
 
-// if (process.env.NODE_ENV === 'test') { // https://blog.campvanilla.com/jest-expressjs-and-the-eaddrinuse-error-bac39356c33a
-//   Models.sequelize.sync({force:true}).then(function() {
+if (process.env.NODE_ENV === 'test') { // https://blog.campvanilla.com/jest-expressjs-and-the-eaddrinuse-error-bac39356c33a
+  // Models.sequelize.sync({force:true}).then(function() {
+  Models.sequelize.sync().then(function() {
 
-//   });
-// };
+  });
+}
 
 module.exports = server;
