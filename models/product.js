@@ -31,7 +31,7 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     price: {
-      type: DataTypes.DECIMAL,
+      type: DataTypes.DECIMAL(10,2),
       allowNull: false,
       validate: {
         is: '^[0-9]+([.,][0-9]{2})?$',
@@ -44,13 +44,13 @@ module.exports = (sequelize, DataTypes) => {
       values: ['STARTER', 'DISH', 'DESSERT','DRINK','OTHER','MENU']
     },
     // TODO: créer le modèle PHOTO puis ajouter les relations
-    shopId: {
-      type: DataTypes.INTEGER,
-      // references: {
-      //   model: 'Shop',
-      //   key: 'shop_id'
-      // }
-    },
+    // shopId: {
+    //   type: DataTypes.INTEGER,
+    //   // references: {
+    //   //   model: 'Shop',
+    //   //   key: 'shop_id'
+    //   // }
+    // },
     deleted: {
       type: DataTypes.BOOLEAN,
       defaultValue: 0

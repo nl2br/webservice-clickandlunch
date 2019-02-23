@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "test": "set NODE_ENV=test&& jest ./tests --runInBand --detectOpenHandles --forceExit",
-    "server": "set NODE_ENV=development&& nodemon app.js"
+    "server": "set NODE_ENV=development&& nodemon app.js",
+    "server:reset": "set NODE_ENV=development&& sequelize db:drop && sequelize db:create && sequelize db:migrate && sequelize db:seed:all && nodemon app.js"
   },
   "jest": {
     "globals": {
