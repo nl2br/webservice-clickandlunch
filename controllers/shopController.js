@@ -26,7 +26,7 @@ class Shops {
         })
         .catch(error => {
           console.log('error getShops : ', error.message);
-          res.status(400).send(error);
+          res.status(400).send({message: error.message});
         });
     }
     
@@ -38,7 +38,7 @@ class Shops {
         })
         .catch(error => {
           console.log('error getShops : ', error.message);
-          res.status(400).send(error);
+          res.status(400).send({message: error.message});
         });
     }
 
@@ -70,12 +70,12 @@ class Shops {
             })
             .catch(error => {
               console.log('error getShops', error.message);
-              res.status(400).send(error);
+              res.status(400).send({message: error.message});
             });
         })
         .catch(error => {
           console.log('error getShops', error.message);
-          res.status(400).send(error);
+          res.status(400).send({message: error.message});
         });
     }
 
@@ -142,12 +142,12 @@ class Shops {
           })
           .catch(error => {
             console.log('error getShops', error.message);
-            res.status(400).send(error);
+            res.status(400).send({message: error.message});
           });
       })
       .catch(error => {
         console.log('error getShops', error.message);
-        res.status(400).send(error);
+        res.status(400).send({message: error.message});
       });
   }
 
@@ -204,7 +204,7 @@ class Shops {
       })
       .catch(error => {
         console.log('error getShop : ', error.message);
-        res.status(400).send(error);
+        res.status(400).send({message: error.message});
       });
   }
 
@@ -230,7 +230,7 @@ class Shops {
       })
       .catch(error => {
         console.log('error getShopProducts : ', error.message);
-        res.status(400).send(error);
+        res.status(400).send({message: error.message});
       });
   }
 
@@ -254,7 +254,7 @@ class Shops {
       })
       .catch(error => {
         console.log('error getShopProduct : ', error.message);
-        res.status(400).send(error);
+        res.status(400).send({message: error.message});
       });
   }
 
@@ -266,7 +266,7 @@ class Shops {
    */
   static postShop(req, res) {
     // TODO: JOI sur longitude latitude 
-    Models.Shop.create({
+    return Models.Shop.create({
       name: req.body.name,
       siret: req.body.siret,
       siren: req.body.siren,
@@ -279,11 +279,28 @@ class Shops {
       }
     })
       .then(result => {
+        // le shop a des categories associées
+        if(req.body.hasOwnProperty('categories') && req.body.categories.length){
+          console.log('CATEGORIEEEEEE');
+
+          // on ajoute les categories au shop
+          return result.addShopCategories(req.body.categories)
+            .then( () => {
+            // pour renvoyé le shop et c categories, on recherche le shop et sa categorie
+              return Models.Shop.findByPk(result.get('shopId'), {
+                include: [ { model: Models.ShopCategory, through: 'ShopsCategory' } ]
+              });
+            });
+        }else{
+          return result;
+        }
+      })
+      .then(result => {
         res.status(201).json(result);
       })
       .catch(error => {
         console.log('error postShop : ', error.message);
-        res.status(400).send(error);
+        res.status(400).send({message: error.message});
       });
   }
 

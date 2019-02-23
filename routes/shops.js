@@ -295,7 +295,7 @@ module.exports = router;
  *       404:
  *         description: not found
  */
-//TODO: swagger shops/:id/products when product done
+
 /**
  * @swagger
  * /api/v1/shops/:id/products:
@@ -367,6 +367,10 @@ module.exports = router;
  *             type: number
  *           latitude:
  *             type: number
+ *           categories:
+ *             type: array
+ *             items:
+ *                type: number
  *     responses:
  *       201:
  *         description: Return saved shop
