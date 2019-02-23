@@ -1,5 +1,7 @@
 // swagger
 const swaggerJSDoc = require('swagger-jsdoc');
+const port = process.env.PORT || 3000;
+const host = 'localhost:' + port;
 // swagger definition
 const swaggerDefinition = {
   info: {
@@ -7,7 +9,7 @@ const swaggerDefinition = {
     version: '1.0.0',
     description: 'Hello i am swagger . I am one step ahead of postman. My job is to provide API description',
   },
-  host: 'localhost:5000',
+  host: host,
   basePath: '/',
 };
 // options for swagger jsdoc 
