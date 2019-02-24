@@ -1,3 +1,5 @@
+const ValidationRegexp = require('../utils/validationRegex');
+
 module.exports = (sequelize, DataTypes) => {
 
   let Customer = sequelize.define('Customer', {
@@ -8,10 +10,20 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     firstname: {
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
+      validate: {
+        is: ValidationRegexp.name(), // allow letter uppper lower number space
+        notEmpty: true, // don't allow empty strings
+        len: [3,100] // only allow values with length between x and y
+      }
     },
     lastname: {
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
+      validate: {
+        is: ValidationRegexp.name(), // allow letter uppper lower number space
+        notEmpty: true, // don't allow empty strings
+        len: [3,100] // only allow values with length between x and y
+      }
     },
     deleted: {
       type: DataTypes.BOOLEAN,

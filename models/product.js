@@ -1,6 +1,7 @@
 /**
  * @module Models/Product
  */
+const ValidationRegexp = require('../utils/validationRegex');
 
 module.exports = (sequelize, DataTypes) => {
 
@@ -16,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        is: '^[a-zA-Z0-9_]+( [a-zA-Z0-9_]+)*$', // allow letter uppper lower number space
+        is: ValidationRegexp.name(), // allow letter uppper lower number space
         notEmpty: true, // don't allow empty strings
         len: [3,100] // only allow values with length between x and y
       }
@@ -25,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.TEXT,
       allowNull: true,
       validate: {
-        is: '^[a-zA-Z0-9_]+( [a-zA-Z0-9_]+)*$', // allow letter uppper lower number space
+        is: ValidationRegexp.description(), // allow letter uppper lower number space
         notEmpty: true, // don't allow empty strings
         len: [3,250] // only allow values with length between x and y
       }
@@ -34,7 +35,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DECIMAL(10,2),
       allowNull: false,
       validate: {
-        is: '^[0-9]+([.,][0-9]{2})?$',
+        is: ValidationRegexp.price(),
         notEmpty: true
       }
     },

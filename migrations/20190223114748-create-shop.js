@@ -1,4 +1,6 @@
 'use strict';
+const ValidationRegexp = require('../utils/validationRegex');
+
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable('Shop', {
@@ -12,7 +14,7 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
         validate: {
-          is: '^[a-zA-Z0-9_]+( [a-zA-Z0-9_]+)*$', // allow letter uppper lower number space
+          is: ValidationRegexp.name(),
           notEmpty: true, // don't allow empty strings
           len: [3,25] // only allow values with length between x and y
         }
@@ -37,7 +39,7 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
         validate: {
-          is: '(0|\\+33|0033)[1-9][0-9]{8}'
+          is: ValidationRegexp.phone()
         }
       },
       email: {

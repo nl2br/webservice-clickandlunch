@@ -98,7 +98,7 @@ class Products {
     Models.Product.create({
       name: req.body.name,
       description: req.body.description,
-      price: req.body.price,
+      price: req.body.price.replace(',' , '.'),
       productType: req.body.productType,
       shopId: req.body.shopId
     })
@@ -121,7 +121,7 @@ class Products {
     Models.Product.create({
       name: req.body.name,
       description: req.body.description,
-      price: req.body.price,
+      price: req.body.price.replace(',' , '.'),
       productType: req.body.productType,
       shopId: req.body.shopId
     })
