@@ -14,6 +14,7 @@ module.exports = async function truncate() {
     models['Product'].destroy({ where: {}, force: true }),
     models['Order'].destroy({ where: {}, force: true }),
     models['Shop'].destroy({ where: {}, force: true }),
+    models['User'].destroy({ where: {}, force: true }),
   ]);
 
 };
