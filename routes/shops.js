@@ -6,6 +6,7 @@
 const express = require('express');
 const router = express.Router();
 const Shops = require('../controllers/shopController');
+const auth = require('../middleware/auth');
 
 /**
  * Listing all shop (all user)
@@ -52,7 +53,7 @@ router.get('/:shopid/products/:productid', Shops.getShopProduct);
  * Create a new shop (admin, pro user)
  * @method post/shops
  */
-router.post('/', Shops.postShop);
+router.post('/', auth, Shops.postShop);
 
 /**
  * Modify details for a given shop (admin, pro user)
@@ -264,7 +265,7 @@ module.exports = router;
  *       404:
  *         description: Id not found
  */
-//TODO: swagger shops/:shopid/products/:productid when product done
+
 /**
  * @swagger
  * /api/v1/shops/:shopid/products/:productid:
@@ -376,6 +377,8 @@ module.exports = router;
  *         description: Return saved shop
  *       400:
  *         description: Internal error
+ *     security:
+ *       - JWT: []
  */
 
 /**

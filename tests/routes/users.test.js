@@ -35,8 +35,8 @@ describe('/api/v1/users', () => {
         });
       // on le recupère depuis la BDD
       const user = await Models.User.findByPk(res.body.userId);
-
       expect(res.status).toBe(201);
+      expect(res.header).toHaveProperty('x-auth-token');
       expect(user).not.toBeNull();
       expect(res.body.firstname).toEqual(user.dataValues.firstname);
 

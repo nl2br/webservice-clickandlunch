@@ -9,6 +9,7 @@ const productsRouter = require('./routes/products');
 const shopsRouter = require('./routes/shops');
 const customersRouter = require('./routes/customers');
 const usersRouter = require('./routes/users');
+const authRouter = require('./routes/auth');
 
 const Models = require('./models');
 
@@ -26,6 +27,7 @@ app.use('/api/v1/products', productsRouter);
 app.use('/api/v1/shops', shopsRouter);
 app.use('/api/v1/customers', customersRouter);
 app.use('/api/v1/users', usersRouter);
+app.use('/api/v1/auth', authRouter);
 
 // route for swagger.json
 app.get('/swagger.json', function(req, res) {

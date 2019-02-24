@@ -1,4 +1,6 @@
 const ValidationRegexp = require('../utils/validationRegex');
+const jwt = require('jsonwebtoken');
+const config = require('../config/config.json');
 
 module.exports = (sequelize, DataTypes) => {
 
@@ -60,6 +62,20 @@ module.exports = (sequelize, DataTypes) => {
     createdAt: DataTypes.DATE(6),
     updatedAt: DataTypes.DATE(6)
   });
+
+  // Adding an instance level method
+  User.prototype.generateAuthToken = function() {
+
+    const payload = {
+      id: this.userId,
+      email: this.email
+    };
+    
+    const key = config.jwtPrivateKey;
+    const token = jwt.sign(payload, key);
+
+    return token;
+  };
 
   return User;
 

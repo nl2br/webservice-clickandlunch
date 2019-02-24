@@ -26,8 +26,10 @@
     "supertest": "^3.3.0"
   },
   "dependencies": {
+    "bcrypt": "^3.0.4",
     "express": "~4.16.4",
     "joi": "14.1.0",
+    "jsonwebtoken": "^8.5.0",
     "mysql2": "~1.6.4",
     "sequelize": "~4.41.2",
     "swagger-jsdoc": "^3.2.6"
