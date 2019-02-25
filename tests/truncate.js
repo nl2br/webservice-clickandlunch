@@ -6,7 +6,6 @@ const map = require('lodash/map');
 const models = require('../models');
 
 module.exports = async function truncate() {
-  console.log('truncate');
   return await Promise.all([
     models['Customer'].destroy({ where: {}, force: true }),
     // models['Menu'].destroy({ where: {}, force: true }),

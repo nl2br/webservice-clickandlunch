@@ -15,9 +15,6 @@ class Shops {
    */
   static getShops(req, res) {
 
-    console.log('req.query',req.query);
-    console.log('req.params',req.params);
-
     // getShopsNearby
     if(req.query.hasOwnProperty('lat') && req.query.hasOwnProperty('lon')){
       Shops.getShopsNearby(req.query)
@@ -48,7 +45,6 @@ class Shops {
 
     // getShops with pagination
     if(req.params.hasOwnProperty('page')){
-      console.log('pagination');
       let limit = 20;   // number of records per page
       let offset = 0;
 
@@ -110,7 +106,6 @@ class Shops {
   }
 
   static getShopsByCategory(req, res) {
-    console.log('pagination');
     let limit = 20;   // number of records per page
     let offset = 0;
 
@@ -281,8 +276,6 @@ class Shops {
       .then(result => {
         // le shop a des categories associées
         if(req.body.hasOwnProperty('categories') && req.body.categories.length){
-          console.log('CATEGORIEEEEEE');
-
           // on ajoute les categories au shop
           return result.addShopCategories(req.body.categories)
             .then( () => {

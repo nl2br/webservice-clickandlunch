@@ -59,7 +59,7 @@ describe('/api/v1/auth', () => {
         });
 
       const res = await request(server)
-        .post('/api/v1/auth/')
+        .post('/api/v1/auth/login/')
         .send({
           email: 'b@b.com',
           password: 'myFailPassword'
@@ -81,7 +81,7 @@ describe('/api/v1/auth', () => {
         });
 
       const res = await request(server)
-        .post('/api/v1/auth/')
+        .post('/api/v1/auth/login/')
         .send({
           email: 'a@b.com',
           password: 'mypassword'

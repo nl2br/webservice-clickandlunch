@@ -6,8 +6,8 @@ const env = process.env.NODE_ENV || 'development';
 const config = require(__dirname + '/../config/config.json')[env];
 const db = {};
 
-let logConsoleSequelize = process.env.NODE_ENV === 'test' ? true : false;
-// let logConsoleSequelize = process.env.NODE_ENV === 'test' ? false : true;
+// let logConsoleSequelize = process.env.NODE_ENV === 'test' ? true : false;
+let logConsoleSequelize = process.env.NODE_ENV === 'test' ? false : false;
 
 // TODO: faire un bon fichier de config avec les var_ENV
 const sequelize = new Sequelize(

@@ -59,7 +59,6 @@ class Products {
   }
 
   static getMenuProducts(menuId) {
-    console.log('getMenuProducts', menuId);
     const listProducts = Models.sequelize.query(`select menu.productId, 
       (select product.name from product where product.productId = menu.productId) name,
       (select product.description from product where product.productId = menu.productId) description,
@@ -127,7 +126,6 @@ class Products {
     })
       .then(result => {
         req.body.listProducts.forEach(async item => {
-          console.log('item',item);
           await Models.Menu.create({
             menuId:result.productId,
             productId: item

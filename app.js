@@ -56,7 +56,7 @@ if (process.env.NODE_ENV !== 'test') { // https://blog.campvanilla.com/jest-expr
   });
 }
 
-if (process.env.NODE_ENV === 'test') { // https://blog.campvanilla.com/jest-expressjs-and-the-eaddrinuse-error-bac39356c33a
+if (process.env.NODE_ENV === 'test') {
   // Models.sequelize.sync({force:true}).then(function() {
   Models.sequelize.sync().then(function() {
 

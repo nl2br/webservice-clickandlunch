@@ -13,33 +13,30 @@ class Users {
    * @param {*} req 
    * @param {*} res 
    */
-  static postUser(req, res) {
+  static async postUser(req, res) {
 
     // verify if user already exist
-    return Models.User.findOne({where:{email: req.body.email}})
-      .then(user => {
-        if(user) return res.status(400).send({message: 'User already exist'});
-        // generate the salt
-        return bcrypt.genSalt(10);
-      })
-      .then(salt => {
-        // generate the hashed password with the salt
-        return bcrypt.hash(req.body.password, salt);
-      })
-      .then(hashPassword => {
-        // TODO: put the type of the user: customer or supplier ???
-        // create the user
-        return Models.User.create({
-          firstname: req.body.firstname,
-          lastname: req.body.lastname,
-          phoneNumber: req.body.phoneNumber,
-          email: req.body.email,
-          password: hashPassword
-        });
-      })
+    let user = await Models.User.findOne({where:{email: req.body.email}});
+    if(user) return res.status(400).send({message: 'User already exist'});
+
+    // generate the salt
+    const salt = await bcrypt.genSalt(10);
+    // generate the hashed password with the salt
+    const hashPassword = await bcrypt.hash(req.body.password, salt);
+
+    // TODO: put the type of the user: customer or supplier ???
+    // create the user
+    Models.User.create({
+      firstname: req.body.firstname,
+      lastname: req.body.lastname,
+      phoneNumber: req.body.phoneNumber,
+      email: req.body.email,
+      password: hashPassword
+    })
       .then(user => {
         // generate the token
         const token = user.generateAuthToken();
+
         // send the response without password
         res
           .header('x-auth-token', token)
@@ -53,12 +50,10 @@ class Users {
           });
       })
       .catch(error => {
-        console.log('error postUser : ', error.message);
         res.status(400).send({message: error.message});
       });
   }
-
-
+ 
 
 }
 

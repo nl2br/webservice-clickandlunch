@@ -114,7 +114,6 @@ describe('/api/v1/products', () => {
         menuId: menu.get('productId'),
         productId: p2.get('productId')
       });
-      console.log('Argument', menu.get('productId'));
       const res = await request(server).get('/api/v1/products/' +  menu.get('productId') );
       expect(res.status).toBe(200);
     });
@@ -141,7 +140,6 @@ describe('/api/v1/products', () => {
           crs: {type: 'name', properties: { name: 'EPSG:4326'}}
         }
       });
-      console.log('SHOPPPPPPPPPPPPPPPPPPPP', shop.get('shopId'));
       const res = await request(server)
         .post('/api/v1/products/')
         .send({

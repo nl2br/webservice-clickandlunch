@@ -72,7 +72,7 @@ describe('/api/v1/orders', () => {
         where: {shopId: shopId, deleted: 0}
       })
         .then( orders => {
-          console.log('array order', JSON.stringify(orders));
+          // console.log('array order', JSON.stringify(orders));
         });
       // await Models.Product.destroy({where: {}})
       // .catch(error => {

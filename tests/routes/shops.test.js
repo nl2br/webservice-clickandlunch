@@ -3,10 +3,12 @@ const Models = require('../../models/');
 const truncate = require('../truncate');
 
 let server;
+let token; // declare the token variable in a scope accessible by the entire test suite
 
 beforeAll( async () =>{
   await truncate();
 });
+
 
 describe('/api/v1/shops', () => {
 
@@ -139,7 +141,6 @@ describe('/api/v1/shops', () => {
       });
       // puis on tente de récupérer les infos de ce shop
       const res = await request(server).get('/api/v1/shops/' + shop.get('shopId'));
-      console.log('shopdetail', res.body);
       expect(res.status).toBe(200);
       expect(res.body.name).toEqual(shop.dataValues.name);
     });
@@ -183,7 +184,6 @@ describe('/api/v1/shops', () => {
       await shop.setProducts([p1.get('productId'),p2.get('productId')]);
       const res = await request(server).get('/api/v1/shops/' + shop.get('shopId') + '/products');
       expect(res.status).toBe(200);
-      console.log(res.body);
 
       expect(res.body).toHaveLength(2);
       await shop.destroy();
@@ -230,13 +230,18 @@ describe('/api/v1/shops', () => {
   });
 
   describe('api post/shops', () => {
-    beforeAll( async () =>{
-      await truncate();
+    
+    beforeEach( async () =>{
+      let user = new Models.User();
+      token = user.generateAuthToken();
     });
+
     it('Save a shop with valid data', async () => {
+
       // on enregistre un nouveau shop
       const res = await request(server)
-        .post('/api/v1/shops/')
+        .post('/api/v1/shops')
+        .set('x-auth-token', token)
         .send({
           name: 'My test Shop',
           siret: '12345678912345',
@@ -245,11 +250,6 @@ describe('/api/v1/shops', () => {
           email: 'ttest23@test.com',
           longitude: 11,
           latitude: 9
-          // location: {
-          //   type: 'Point',
-          //   coordinates: [11,9],
-          //   crs: {type: 'name', properties: { name: 'EPSG:4326'}}
-          // }
         });
       // on le recupère depuis la BDD
       const shop = await Models.Shop.findById(res.body.shopId);
@@ -259,9 +259,45 @@ describe('/api/v1/shops', () => {
       expect(res.body.name).toEqual(shop.dataValues.name);
     });
 
+    it('Should return 401 cause user is not logged', async () => {
+
+      const res = await request(server)
+        .post('/api/v1/shops')
+        .send({
+          name: 'My test Shop',
+          siret: '12345678912345',
+          siren: '123456789',
+          phoneNumber: '0678895645',
+          email: 'ttest23@test.com',
+          longitude: 11,
+          latitude: 9
+        });
+
+      expect(res.status).toBe(401);
+    });
+
+    it('Should return 400 cause token is not the good one', async () => {
+      token =  'mypiratetoken';
+      const res = await request(server)
+        .post('/api/v1/shops')
+        .set('x-auth-token', token)
+        .send({
+          name: 'My test Shop',
+          siret: '12345678912345',
+          siren: '123456789',
+          phoneNumber: '0678895645',
+          email: 'ttest23@test.com',
+          longitude: 11,
+          latitude: 9
+        });
+
+      expect(res.status).toBe(400);
+    });
+
     it('Should send error : try to save shop with invalid data', async () => {
       const res = await request(server)
-        .post('/api/v1/shops/')
+        .post('/api/v1/shops')
+        .set('x-auth-token', token)
         .send({
           name: 'My test Shop',
           siret: '123456A8912345',
@@ -437,8 +473,8 @@ describe('/api/v1/shops', () => {
       await shop1.setShopCategories([category.get('shopCategoryId'), category2.get('shopCategoryId')]);
 
       const res = await request(server).get('/api/v1/shops/p/1/category/' + category.get('shopCategoryId'));
-      console.log(res.body.result[0]);
-      console.log(res.body.result[0].ShopCategories);
+      // console.log(res.body.result[0]);
+      // console.log(res.body.result[0].ShopCategories);
       expect(res.body.count).toBe(2);
 
     });
