@@ -54,6 +54,10 @@ module.exports = (sequelize, DataTypes) => {
         len: [5,1024]
       }
     },
+    role: {
+      type: DataTypes.ENUM, 
+      values: ['ADMIN', 'VENDOR', 'CUSTOMER']
+    },
     deleted: {
       type: DataTypes.BOOLEAN,
       defaultValue: 0
@@ -68,7 +72,8 @@ module.exports = (sequelize, DataTypes) => {
 
     const payload = {
       id: this.userId,
-      email: this.email
+      email: this.email,
+      role: this.role
     };
     
     const key = config.jwtPrivateKey;

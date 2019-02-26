@@ -7,6 +7,7 @@ const express = require('express');
 const router = express.Router();
 const Shops = require('../controllers/shopController');
 const auth = require('../middleware/auth');
+const role = require('../middleware/role');
 
 /**
  * Listing all shop (all user)
@@ -53,7 +54,7 @@ router.get('/:shopid/products/:productid', Shops.getShopProduct);
  * Create a new shop (admin, pro user)
  * @method post/shops
  */
-router.post('/', auth, Shops.postShop);
+router.post('/', [auth, role('VENDOR', 'ADMIN')], Shops.postShop);
 
 /**
  * Modify details for a given shop (admin, pro user)

@@ -32,7 +32,8 @@ describe('/api/v1/auth', () => {
           lastname: 'lebreton',
           phoneNumber: '0678895645',
           email: 'a@a.com',
-          password: 'mypassword'
+          password: 'mypassword',
+          role: 'CUSTOMER'
         });
 
       const res = await request(server)
@@ -55,7 +56,8 @@ describe('/api/v1/auth', () => {
           lastname: 'lebreton',
           phoneNumber: '0678895645',
           email: 'b@b.com',
-          password: 'mypassword'
+          password: 'mypassword',
+          role: 'CUSTOMER'          
         });
 
       const res = await request(server)
@@ -77,7 +79,8 @@ describe('/api/v1/auth', () => {
           lastname: 'lebreton',
           phoneNumber: '0678895645',
           email: 'c@c.com',
-          password: 'mypassword'
+          password: 'mypassword',
+          role: 'CUSTOMER'
         });
 
       const res = await request(server)

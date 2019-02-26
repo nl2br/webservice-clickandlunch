@@ -233,6 +233,7 @@ describe('/api/v1/shops', () => {
     
     beforeEach( async () =>{
       let user = new Models.User();
+      user.role = 'VENDOR';
       token = user.generateAuthToken();
     });
 

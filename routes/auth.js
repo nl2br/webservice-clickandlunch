@@ -13,6 +13,7 @@ const Auth = require('../controllers/authController');
  */
 router.post('/login', Auth.authenticateUser);
 
+// Logout on the client, simply delete the token
 
 module.exports = router;
 

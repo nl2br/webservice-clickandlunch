@@ -9,19 +9,27 @@ class Auth {
 
   /**
    * @function authenticateUser
-   * Create a new Auth
+   * Log the user by generating his token
    * @param {*} req 
    * @param {*} res 
    */
   static async authenticateUser(req, res) { // login
-
+    let user;
     // verify if user exist
-    const user = await Models.User.findOne({where:{email: req.body.email}});
-    if(!user) return res.status(400).send({message: 'invalid login or password'});
-    
+    try{
+      user = await Models.User.findOne({where:{email: req.body.email}});
+      if(!user) return res.status(400).send({message: 'invalid login or password'});
+    }catch(ex){
+      res.status(500).send('Internal error');
+    }
+
     // compare both password
-    const valid = await bcrypt.compare(req.body.password,user.password);
-    if(!valid) return res.status(400).send({message: 'invalid login or password'});
+    try{
+      const valid = await bcrypt.compare(req.body.password,user.password);
+      if(!valid) return res.status(400).send({message: 'invalid login or password'});
+    }catch(ex){
+      res.status(500).send('Internal error');
+    }
     
     // generate the token
     const token = user.generateAuthToken();
@@ -32,6 +40,7 @@ class Auth {
       token: token
     });
   }
+
 
 }
 
