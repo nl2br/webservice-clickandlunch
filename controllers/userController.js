@@ -31,7 +31,8 @@ class Users {
       lastname: req.body.lastname,
       phoneNumber: req.body.phoneNumber,
       email: req.body.email,
-      password: hashPassword
+      password: hashPassword,
+      role: req.body.role
     })
       .then(user => {
         // generate the token
@@ -47,6 +48,7 @@ class Users {
             lastname: user.lastname,
             phoneNumber: user.phoneNumber,
             email: user.email,
+            role: req.body.role
           });
       })
       .catch(error => {

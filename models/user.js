@@ -103,6 +103,12 @@ module.exports = (sequelize, DataTypes) => {
  *         type: string
  *       password:
  *         type: string
+ *       role:
+ *         type: string
+ *         enum:
+ *           - ADMIN
+ *           - CUSTOMER
+ *           - VENDOR
  *       deleted:
  *        type: boolean
  *        default: false

@@ -41,6 +41,12 @@ module.exports = router;
  *             type: string
  *           password:
  *             type: string
+ *           role:
+ *             type: string
+ *             enum:
+ *               - ADMIN
+ *               - CUSTOMER
+ *               - VENDOR
  *     responses:
  *       201:
  *         description: Return saved User
@@ -56,6 +62,12 @@ module.exports = router;
  *                 type: number
  *               email:
  *                 type: string
+ *               role:
+ *                  type: string
+ *                  enum:
+ *                    - ADMIN
+ *                    - CUSTOMER
+ *                    - VENDOR
  *       400:
  *         description: Internal error
  */
