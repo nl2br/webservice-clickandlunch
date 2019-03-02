@@ -16,58 +16,58 @@ router.post('/', Users.postUser);
 
 module.exports = router;
 
-/**
- * @swagger
- * /api/v1/users:
- *   post:
- *     tags:
- *       - User
- *     description: Create a new User
- *     produces:
- *       - application/json
- *     parameters:
- *       - name: User
- *         description: User object
- *         in: body
- *         required: true
- *         properties:
- *           firstname:
- *             type: string
- *           lastname:
- *             type: string
- *           phoneNumber:
- *             type: string
- *           email:
- *             type: string
- *           password:
- *             type: string
- *           role:
- *             type: string
- *             enum:
- *               - ADMIN
- *               - CUSTOMER
- *               - VENDOR
- *     responses:
- *       201:
- *         description: Return saved User
- *         schema:
- *            properties:
- *               userId:
- *                 type: number
- *               firstname:
- *                 type: string
- *               lastname:
- *                 type: string
- *               phoneNumber:
- *                 type: number
- *               email:
- *                 type: string
- *               role:
- *                  type: string
- *                  enum:
- *                    - ADMIN
- *                    - CUSTOMER
- *                    - VENDOR
- *       400:
- *         description: Internal error
- */
+// /**
+//  * @swagger
+//  * /api/v1/users:
+//  *   post:
+//  *     tags:
+//  *       - User
+//  *     description: Create a new User
+//  *     produces:
+//  *       - application/json
+//  *     parameters:
+//  *       - name: User
+//  *         description: User object
+//  *         in: body
+//  *         required: true
+//  *         properties:
+//  *           firstname:
+//  *             type: string
+//  *           lastname:
+//  *             type: string
+//  *           phoneNumber:
+//  *             type: string
+//  *           email:
+//  *             type: string
+//  *           password:
+//  *             type: string
+//  *           role:
+//  *             type: string
+//  *             enum:
+//  *               - ADMIN
+//  *               - CUSTOMER
+//  *               - VENDOR
+//  *     responses:
+//  *       201:
+//  *         description: Return saved User
+//  *         schema:
+//  *            properties:
+//  *               userId:
+//  *                 type: number
+//  *               firstname:
+//  *                 type: string
+//  *               lastname:
+//  *                 type: string
+//  *               phoneNumber:
+//  *                 type: number
+//  *               email:
+//  *                 type: string
+//  *               role:
+//  *                  type: string
+//  *                  enum:
+//  *                    - ADMIN
+//  *                    - CUSTOMER
+//  *                    - VENDOR
+//  *       400:
+//  *         description: Internal error
+//  */

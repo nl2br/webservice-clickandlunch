@@ -23,7 +23,7 @@ describe('/api/v1/users', () => {
 
   describe('api post/users', () => {
 
-    it('Create a new user', async () => {
+    it('Create a new customer', async () => {
       const res = await request(server)
         .post('/api/v1/users/')
         .send({
@@ -31,16 +31,40 @@ describe('/api/v1/users', () => {
           lastname: 'lebreton',
           phoneNumber: '0678895645',
           email: 'ttest23@test.com',
-          password: 'mypassword'
+          password: 'mypassword',
+          role: 'CUSTOMER'
         });
       // on le recupère depuis la BDD
       const user = await Models.User.findByPk(res.body.userId);
+      
       expect(res.status).toBe(201);
       expect(res.header).toHaveProperty('x-auth-token');
       expect(user).not.toBeNull();
-      expect(res.body.firstname).toEqual(user.dataValues.firstname);
+      expect(res.body.role).toEqual(user.dataValues.role);
 
-      await user.destroy();
+      // await user.destroy();
+    });
+
+    it('Create a new vendor', async () => {
+      const res = await request(server)
+        .post('/api/v1/users/')
+        .send({
+          firstname: 'nathan',
+          lastname: 'lebreton',
+          phoneNumber: '0678895645',
+          email: 'r@test.com',
+          password: 'mypassword',
+          role: 'VENDOR'
+        });
+      // on le recupère depuis la BDD
+      const user = await Models.User.findByPk(res.body.userId);
+      
+      expect(res.status).toBe(201);
+      expect(res.header).toHaveProperty('x-auth-token');
+      expect(user).not.toBeNull();
+      expect(res.body.role).toEqual(user.dataValues.role);
+
+      // await user.destroy();
     });
 
     it('Trying to create a new user with invalid email', async () => {
@@ -51,7 +75,8 @@ describe('/api/v1/users', () => {
           lastname: 'lebreton',
           phoneNumber: '0678895645',
           email: 'ttest23test.com',
-          password: 'mypassword'
+          password: 'mypassword',
+          role: 'CUSTOMER'
         });
 
       expect(res.status).toBe(400);

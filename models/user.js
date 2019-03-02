@@ -13,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     firstname: {
       type: DataTypes.STRING,
+      allowNull: false,
       validate: {
         is: ValidationRegexp.name(), // allow letter uppper lower number space
         notEmpty: true, // don't allow empty strings
@@ -21,6 +22,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     lastname: {
       type: DataTypes.STRING,
+      allowNull: false,
       validate: {
         is: ValidationRegexp.name(), // allow letter uppper lower number space
         notEmpty: true, // don't allow empty strings
@@ -56,7 +58,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     role: {
       type: DataTypes.ENUM, 
-      values: ['ADMIN', 'VENDOR', 'CUSTOMER']
+      values: ['VENDOR', 'CUSTOMER', 'ADMIN'],
+      allowNull: false
     },
     deleted: {
       type: DataTypes.BOOLEAN,

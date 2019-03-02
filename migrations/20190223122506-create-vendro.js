@@ -2,7 +2,7 @@
 
 module.exports = {
   up: (queryInterface, DataTypes) => {
-    return queryInterface.createTable('Customer', {
+    return queryInterface.createTable('Vendor', {
       deleted: {
         type: DataTypes.BOOLEAN,
         defaultValue: 0
@@ -13,6 +13,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('Customer');
+    return queryInterface.dropTable('Vendor');
   }
 };

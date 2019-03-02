@@ -2,7 +2,7 @@
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    // Product belongsToMany Tag
+    // Shop belongsToMany ShopCategory
     return queryInterface.createTable(
       'ShopsCategory',
       {

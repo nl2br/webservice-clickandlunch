@@ -25,28 +25,54 @@ describe('/api/v1/customers', () => {
   describe('GET customers/:id', () => {
 
     it('Return one specific customer', async () => {
-      const customer = await Models.Customer.create({firstname: 'nathan', lastname: 'lebreton'});
-      const res = await request(server).get('/api/v1/customers/' + customer.get('customerId'));
+      // create the user
+      const user = await Models.User.create({
+        firstname: 'nathan', 
+        lastname: 'lebreton',
+        phoneNumber: '0636697845',
+        email: 'hssa@ha.com',
+        password: 'password',
+        role: 'CUSTOMER'
+      });
+
+      let userId = user.get('userId');
+
+      // assocaite the user to the customer table
+      await Models.Customer.create({
+        customerId: userId
+      });
+
+      const res = await request(server).get('/api/v1/customers/' + userId);
+
       expect(res.status).toBe(200);
-      expect(res.body.lastname).toEqual(customer.dataValues.lastname);
+      expect(res.body.lastname).toEqual(user.get('lastname'));
     });
   });
 
   describe('PUT customers/:id', () => {
 
     it('Modify user with valid data', async () => {
-      const customer = await Models.Customer.create({firstname: 'sabrina', lastname: 'lebreton'});
+      const user = await Models.User.create({
+        firstname: 'sabrina', 
+        lastname: 'lebreton',
+        phoneNumber: '0636697845',
+        email: 'j@j.com',
+        password: 'password',
+        role: 'CUSTOMER'
+      });
+      await Models.Customer.create({
+        customerId: user.get('userId')
+      });
+      
+      let token = user.generateAuthToken();
 
       const res = await request(server)
-        .put('/api/v1/customers/' + customer.get('customerId'))
+        .put('/api/v1/customers/' + user.get('userId'))
+        .set('x-auth-token', token)
         .send({firstname: 'marilou'});
-
-      // console.log('TESTTTT:', res.body)
 
       expect(res.status).toBe(200);
       expect(res.body.firstname).toBe('marilou');
-      // const updatedCustomer = await request(server).get('/api/v1/customers/' + customer.get('customerId'));
-      // expect(res.body[1]).toEqual(updatedCustomer.dataValues); // WHY res.body[1] => https://stackoverflow.com/questions/38524938/sequelize-update-record-and-return-result
     });
   });
 

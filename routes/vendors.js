@@ -1,57 +1,57 @@
 /**
- * Customer Routes
- * @module routes/customers
+ * Vendor Routes
+ * @module routes/vendors
  * @requires controllers/userController
  */
 const express = require('express');
 const router = express.Router();
-const Customers = require('../controllers/customerController');
+const Vendors = require('../controllers/vendorController');
 const Users = require('../controllers/userController');
 const auth = require('../middleware/auth');
 const role = require('../middleware/role');
 
 
 /**
- * Get user details for a given customer 
- * @method get/customers/:id
- * @param {number} id id du customer
+ * Get user details for a given vendor 
+ * @method get/vendors/:id
+ * @param {number} id id du vendor
  */
-router.get('/:id', Customers.getCustomer);
+router.get('/:id', Vendors.getVendor);
 
-// Listing all orders for a given Customer 
-// GET /customers/:id/orders (all)
-// router.get('/:id/orders', customerController.getAllCustomerOrders);
+// Listing all orders for a given Vendor 
+// GET /vendors/:id/orders (all)
+// router.get('/:id/orders', vendorController.getAllVendorOrders);
 
-// Listing specific order for a given Customer
-// GET /customers/:customerid/orders/:orderid (all)
-// router.get('/:customerid/orders/:orderid', customerController.getCustomerSpecificOrder);
+// Listing specific order for a given Vendor
+// GET /vendors/:vendorid/orders/:orderid (all)
+// router.get('/:vendorid/orders/:orderid', vendorController.getVendorSpecificOrder);
 
 /**
- * Create a new customer 
- * @method post/customers
+ * Create a new vendor 
+ * @method post/vendors
  */
 router.post('/', Users.postUser);
 
 /**
- * Modify details for a given customer
- * @method put/customers/:id
- * @param {number} customerid id du customer
+ * Modify details for a given vendor
+ * @method put/vendors/:id
+ * @param {number} vendorid id du vendor
  */
-router.put('/:id', [auth, role('CUSTOMER', 'ADMIN')], Customers.putCustomer);
+router.put('/:id', [auth, role('VENDOR', 'ADMIN')], Vendors.putVendor);
 
-// Delete a customer
-// DELETE /customers/:id (admin, pro user)
+// Delete a vendor
+// DELETE /vendors/:id (admin, pro user)
 
 module.exports = router;
 
 
 /**
  * @swagger
- * /api/v1/customers:
+ * /api/v1/vendors:
  *   post:
  *     tags:
- *       - Customer
- *     description: Create a new User of type customer
+ *       - Vendor
+ *     description: Create a new User of type vendor
  *     produces:
  *       - application/json
  *     parameters:
@@ -76,10 +76,10 @@ module.exports = router;
  *               - ADMIN
  *               - CUSTOMER
  *               - VENDOR
- *             default: CUSTOMER
+ *             default: VENDOR
  *     responses:
  *       201:
- *         description: Return saved User of type customer
+ *         description: Return saved User of type vendor
  *         schema:
  *            properties:
  *               userId:
@@ -104,21 +104,21 @@ module.exports = router;
 
 /**
  * @swagger
- * /api/v1/customers/{id}:
+ * /api/v1/vendors/{id}:
  *   get:
  *     tags:
- *       - Customer
- *     description: Get a customer
+ *       - Vendor
+ *     description: Get a vendor
  *     produces:
  *       - application/json
  *     parameters:
  *       - name: id
- *         description: Customer id
+ *         description: Vendor id
  *         in: path
  *         required: true
  *     responses:
  *       200:
- *         description: Return customer detail
+ *         description: Return vendor detail
  *         schema:
  *            properties:
  *               userId:
@@ -137,7 +137,7 @@ module.exports = router;
  *                    - CUSTOMER
  *                    - ADMIN
  *                    - VENDOR
- *                  default: CUSTOMER
+ *                  default: VENDOR
  *       400:
  *         description: Internal Error
  *       404:
@@ -147,20 +147,20 @@ module.exports = router;
  
 /**
  * @swagger
- * /api/v1/customers/{id}:
+ * /api/v1/vendors/{id}:
  *   put:
  *     tags:
- *       - Customer
- *     description: Modify details of a customer for a given id
+ *       - Vendor
+ *     description: Modify details of a vendor for a given id
  *     produces:
  *       - application/json
  *     parameters:
  *       - name: id
- *         description: Customer id
+ *         description: Vendor id
  *         in: path
  *         required: true
- *       - name: customer
- *         description: Customer object
+ *       - name: vendor
+ *         description: Vendor object
  *         in: body
  *         required: true
  *         properties:
@@ -172,7 +172,7 @@ module.exports = router;
  *             type: string
  *     responses:
  *       200:
- *         description: Return customer detail
+ *         description: Return vendor detail
  *       400:
  *         description: Internal Error
  *       404:

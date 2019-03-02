@@ -1,7 +1,7 @@
 module.exports = (sequelize, DataTypes) => {
 
-  let Customer = sequelize.define('Customer', {
-    customerId: {
+  let Vendor = sequelize.define('Vendor', {
+    vendorId: {
       type: DataTypes.INTEGER,
       allowNull: false
     },
@@ -14,33 +14,32 @@ module.exports = (sequelize, DataTypes) => {
     updatedAt: DataTypes.DATE(6)
   });
 
-  Customer.associate = function (models) {
+  Vendor.associate = function (models) {
 
-    Customer.belongsTo(models.User, {
-      foreignKey: 'customerId',
+    Vendor.belongsTo(models.User, {
+      foreignKey: 'vendorId',
       targetKey: 'userId',
       onDelete: 'CASCADE'
     });
 
-    Customer.hasMany(models.Order, { // add foreign key to order
-      foreignKey: 'customerId',
-      sourceKey: 'customerId'
+    Vendor.belongsTo(models.Shop, { // add shop_id to vendor
+      foreignKey: 'shopId'
     });
 
   };
-  
-  Customer.removeAttribute('id');
 
-  return Customer;
+  Vendor.removeAttribute('id');
+
+  return Vendor;
 
 };
 
 /**
  * @swagger
  * definition:
- *   Customer:
+ *   Vendor:
  *     properties:
- *       customerId:
+ *       vendorId:
  *         type: integer
  *       firstname:
  *         type: string

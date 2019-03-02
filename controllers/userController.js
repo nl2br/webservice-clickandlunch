@@ -9,12 +9,12 @@ class Users {
 
   /**
    * @function postUser
-   * Create a new User
+   * Create a new User and send the Token for authentication
    * @param {*} req 
    * @param {*} res 
    */
   static async postUser(req, res) {
-
+    
     // verify if user already exist
     let user = await Models.User.findOne({where:{email: req.body.email}});
     if(user) return res.status(400).send({message: 'User already exist'});
@@ -24,38 +24,61 @@ class Users {
     // generate the hashed password with the salt
     const hashPassword = await bcrypt.hash(req.body.password, salt);
 
-    // TODO: put the type of the user: customer or supplier ???
-    // create the user
-    Models.User.create({
-      firstname: req.body.firstname,
-      lastname: req.body.lastname,
-      phoneNumber: req.body.phoneNumber,
-      email: req.body.email,
-      password: hashPassword,
-      role: req.body.role
-    })
-      .then(user => {
-        // generate the token
-        const token = user.generateAuthToken();
-
-        // send the response without password
-        res
-          .header('x-auth-token', token)
-          .status(201)
-          .json({
-            userId: user.userId,
-            firstname: user.firstname,
-            lastname: user.lastname,
-            phoneNumber: user.phoneNumber,
-            email: user.email,
-            role: req.body.role
-          });
+    try{
+      // create the user
+      user = await Models.User.create({
+        firstname: req.body.firstname,
+        lastname: req.body.lastname,
+        phoneNumber: req.body.phoneNumber,
+        email: req.body.email,
+        password: hashPassword,
+        role: req.body.role
       })
-      .catch(error => {
-        res.status(400).send({message: error.message});
-      });
+        .catch(err => {
+          throw err;
+        });
+
+      // generate the token
+      let token = user.generateAuthToken();
+
+      // add the type
+      switch (user.role) {
+      case 'CUSTOMER':
+        await Models.Customer.create({
+          customerId: user.userId
+        })
+          .catch(err => {
+            throw err;
+          });
+        break;
+      case 'VENDOR':
+        await Models.Vendor.create({
+          vendorId: user.userId
+        })
+          .catch(err => {
+            throw err;
+          });
+        break;
+      }
+
+      // send the response without password
+      return res
+        .header('x-auth-token', token)
+        .status(201)
+        .json({
+          userId: user.userId,
+          firstname: user.firstname,
+          lastname: user.lastname,
+          phoneNumber: user.phoneNumber,
+          email: user.email,
+          role: req.body.role
+        });
+    } catch (ex) {
+      return res.status(400).send({message : ex.message});
+    }
   }
  
+
 
 }
 

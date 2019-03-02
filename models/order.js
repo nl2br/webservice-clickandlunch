@@ -49,6 +49,7 @@ module.exports = (sequelize, DataTypes) => {
     });
     Order.belongsTo(models.Customer, { // customer_id inserted into order
       foreignKey: 'customerId',
+      targetKey: 'customerId'
       // onDelete: 'CASCADE'
     });
   };

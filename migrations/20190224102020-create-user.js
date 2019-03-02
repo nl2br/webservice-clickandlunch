@@ -61,7 +61,13 @@ module.exports = {
       // Timestamps
       createdAt: DataTypes.DATE(6),
       updatedAt: DataTypes.DATE(6)
-    });
+    })
+      .then( () => {
+        return queryInterface.addConstraint('User', ['email'], {
+          type: 'unique',
+          name: 'email'
+        });
+      });
   },
   down: (queryInterface, Sequelize) => {
     return queryInterface.dropTable('User');

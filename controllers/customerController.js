@@ -1,4 +1,79 @@
+/**
+ * @module controller/Customer
+ */
+
 const Models = require('../models/');
+
+class Customers {
+
+  /**
+   * @function getCustomer
+   * Get a User of type customer
+   * @param {*} req 
+   * @param {*} res 
+   */
+  static async getCustomer(req, res) {
+    Models.Customer.findOne({where:{customerId: req.params.id}})
+      .then(async customer => {
+        if(!customer) return res.status(400).send({message: 'No customer for the given id'});
+        let user = await customer.getUser();
+        res.status(200).json({
+          userId: user.dataValues.userId,
+          firstname: user.dataValues.firstname,
+          lastname: user.dataValues.lastname,
+          phoneNumber: user.dataValues.phoneNumber,
+          email: user.dataValues.email,
+          role: req.body.role
+        });
+      })
+      .catch(error => {
+        res.status(500).send({message: error.message});
+      });
+  }
+
+  /**
+   * @function putCustomer
+   * Modify a user
+   * @param {*} req 
+   * @param {*} res 
+   */
+  static async putCustomer(req, res) {
+    
+    // verify if user exist
+    let customer = await Models.Customer.findOne({where:{customerId: req.params.id}});
+    if(!customer) return res.status(400).send({message: 'User doesn\'t exist'});
+
+    let user = await customer.getUser();
+    try{
+      // create the user
+      await user.update({
+        firstname: req.body.firstname || user.dataValues.firstname,
+        lastname: req.body.lastname || user.dataValues.lastname,
+        phoneNumber: req.body.phoneNumber || user.dataValues.phoneNumber
+      })
+        .catch(err => {
+          throw err;
+        });
+
+      // send the response without password
+      return res
+        .status(200)
+        .json({
+          userId: user.userId,
+          firstname: user.firstname,
+          lastname: user.lastname,
+          phoneNumber: user.phoneNumber,
+          email: user.email,
+          role: req.body.role
+        });
+    } catch (ex) {
+      return res.status(400).send({message : ex.message});
+    }
+  }
+ 
+}
+
+module.exports = Customers;
 
 // validation input
 // const Joi = require('joi');
@@ -16,21 +91,6 @@ const Models = require('../models/');
 //     })
 // };
 
-// Listing Customer details for a given Customer id
-// GET /customers/:id (all)
-exports.getCustomer = (req, res, next) => {
-  Models.Customer.findByPk(req.params.id)
-    .then(customerDetails => {
-      if (!customerDetails) {
-        return res.status(404).send({message: 'No Customer Found for the given id'});
-      }
-      return res.status(200).json(customerDetails);
-    })
-    .catch(error => {
-      console.log('error getCustomer : ', error.message);
-      return res.status(400).send(error);
-    });
-};
 
 // Listing all Orders for a given Customer 
 // GET /customers/:id/orders (all)
@@ -70,40 +130,6 @@ exports.getCustomer = (req, res, next) => {
 //     });
 // };
 
-// Create a new Customer
-// POST /Customers (admin, pro user)
-exports.postCustomer = (req, res, next) => {
-  Models.Customer.create({
-    firstname: req.body.firstname,
-    lastname: req.body.lastname
-  })
-    .then(newCustomer => {
-      return res.status(200).json(newCustomer);
-    })
-    .catch(error => {
-      console.log('error postAddCustomer : ', error.message);
-      return res.status(400).send(error);
-    });
-};
 
-// Modify details for a given Customer
-// PUT /Customers/:id (admin, pro user)
-exports.putCustomer = (req, res, next) => {
-  Models.Customer.findById(req.params.id)
-    .then(customer => {
-      if(!customer) {return res.status(400).send('this customer don\'t exist');}
-      return customer.update({
-        firstname: req.body.firstname || customer.firstname,
-        lastname: req.body.lastname || customer.lastname
-      })  
-        .then(() => {
-          res.status(200).send(customer);
-        });
-    })
-    .catch(error => {
-      console.log('error putModifyCustomer : ', error.message);
-      res.status(400).send({message: 'Error while trying to update the customer', data: error.message});
-    });
-};
 // Delete a Customer
 // DELETE /Customers/:id (admin, pro user)

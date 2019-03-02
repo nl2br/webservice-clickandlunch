@@ -49,7 +49,14 @@ describe('/api/v1/orders', () => {
       const product3 = await Models.Product.create({name: 'ananas', price: '9.90',shopId: shopId });
       const product4 = await Models.Product.create({name: 'piepie', price: '9.90',shopId: shopId });
       // création du customer
-      let customer = await Models.Customer.create({firstname: 'Looping', lastname: 'Barracuda'});
+      let customer = await Models.User.create({
+        firstname: 'looping', 
+        lastname: 'barakouda',
+        phoneNumber: '0636697845',
+        email: 'j@j.com',
+        password: 'password',
+        role: 'CUSTOMER'
+      });
       // création de la commande
       let order = await Models.Order.create({date: Date.now(), customerId: customer.get('customerId'), shopId: shopId});
       // ajout des produits dans la commande
@@ -72,7 +79,7 @@ describe('/api/v1/orders', () => {
         where: {shopId: shopId, deleted: 0}
       })
         .then( orders => {
-          // console.log('array order', JSON.stringify(orders));
+          console.log('array order', JSON.stringify(orders));
         });
       // await Models.Product.destroy({where: {}})
       // .catch(error => {
