@@ -8,6 +8,7 @@ const router = express.Router();
 const Shops = require('../controllers/shopController');
 const auth = require('../middleware/auth');
 const role = require('../middleware/role');
+const asyncMiddleware = require('../middleware/async');
 
 /**
  * Listing all shop (all user)

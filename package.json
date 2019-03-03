@@ -7,7 +7,11 @@
     "test": "set NODE_ENV=test&& jest ./tests --runInBand --detectOpenHandles --forceExit",
     "test:reset": "set NODE_ENV=test&& sequelize db:drop && sequelize db:create && sequelize db:migrate && jest ./tests --runInBand --detectOpenHandles --forceExit",
     "server": "set NODE_ENV=development&& nodemon app.js",
-    "server:reset": "set NODE_ENV=development&& sequelize db:drop && sequelize db:create && sequelize db:migrate && sequelize db:seed:all && nodemon app.js"
+    "server:reset": "set NODE_ENV=development&& sequelize db:drop && sequelize db:create && sequelize db:migrate && sequelize db:seed:all && nodemon app.js",
+    "start": "set NODE_ENV=development&& node app.js"
+  },
+  "engines": {
+    "node": "8.11.3"
   },
   "jest": {
     "globals": {
@@ -20,18 +24,19 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "jest": "^24.1.0",
-    "jsdoc": "^3.5.5",
-    "nodemon": "^1.18.10",
-    "supertest": "^3.3.0"
+    "jest": "~24.1.0",
+    "jsdoc": "~3.5.5",
+    "supertest": "~3.3.0"
   },
   "dependencies": {
-    "bcrypt": "^3.0.4",
+    "bcrypt": "~3.0.4",
     "express": "~4.16.4",
-    "joi": "14.1.0",
-    "jsonwebtoken": "^8.5.0",
+    "joi": "~14.1.0",
+    "jsonwebtoken": "~8.5.0",
+    "morgan": "~1.9.1",
     "mysql2": "~1.6.4",
     "sequelize": "~4.41.2",
-    "swagger-jsdoc": "^3.2.6"
+    "swagger-jsdoc": "~3.2.6",
+    "winston": "~3.2.1"
   }
 }

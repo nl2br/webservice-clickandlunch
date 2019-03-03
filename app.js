@@ -1,48 +1,17 @@
+const winston = require('./config/winston');
 const express = require('express');
 const http = require('http');
-const bodyParser = require('body-parser');
-const swaggerSpec = require('./swagger.js');
 
-// import routes
-const homeRouter = require('./routes');
-const productsRouter = require('./routes/products');
-const shopsRouter = require('./routes/shops');
-const customersRouter = require('./routes/customers');
-const vendorsRouter = require('./routes/vendors');
-const usersRouter = require('./routes/users');
-const authRouter = require('./routes/auth');
-
-const Models = require('./models');
 
 // Launch Express
 const app = express();
-// app.use(express.json());
+
+require('./startup/logging')(app);
+require('./startup/routes')(app);
 
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
 
-// Router definition
-app.use('/', homeRouter);
-app.use('/api/v1/products', productsRouter);
-app.use('/api/v1/shops', shopsRouter);
-app.use('/api/v1/customers', customersRouter);
-app.use('/api/v1/vendors', vendorsRouter);
-app.use('/api/v1/users', usersRouter);
-app.use('/api/v1/auth', authRouter);
-
-// route for swagger.json
-app.get('/swagger.json', function(req, res) {
-  res.setHeader('Content-Type', 'application/json');
-  res.send(swaggerSpec);
-});
-// adding static folder for swagger
-app.use(express.static('public'));
-
-// default route if invalid URL input
-app.use((req, res) => {
-  res.status('404').send({message: 'Wrong URL'});
-});
+const Db = require('./models');
 
 // Create the server
 const server = http.createServer(app);
@@ -50,8 +19,7 @@ const server = http.createServer(app);
 // Server launch
 const port = process.env.PORT || 3000;
 if (process.env.NODE_ENV !== 'test') { // https://blog.campvanilla.com/jest-expressjs-and-the-eaddrinuse-error-bac39356c33a
-  // Models.sequelize.sync({force:true}).then(function() {
-  Models.sequelize.sync().then(function() {
+  Db.sequelize.sync().then( () => {
     server.listen(port, () => {
       console.log(`Listening on port ${port}...`);
     });
@@ -59,10 +27,7 @@ if (process.env.NODE_ENV !== 'test') { // https://blog.campvanilla.com/jest-expr
 }
 
 if (process.env.NODE_ENV === 'test') {
-  // Models.sequelize.sync({force:true}).then(function() {
-  Models.sequelize.sync().then(function() {
-
-  });
+    Db.sequelize.sync().then( () => {});
 }
 
 module.exports = server;
