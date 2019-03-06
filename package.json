@@ -8,7 +8,7 @@
     "test:reset": "set NODE_ENV=test&& sequelize db:drop && sequelize db:create && sequelize db:migrate && jest ./tests --runInBand --detectOpenHandles --forceExit",
     "server": "set NODE_ENV=development&& nodemon app.js",
     "server:reset": "set NODE_ENV=development&& sequelize db:drop && sequelize db:create && sequelize db:migrate && sequelize db:seed:all && nodemon app.js",
-    "start": "set NODE_ENV=development&& node app.js"
+    "start": "node app.js"
   },
   "engines": {
     "node": "8.11.3"
