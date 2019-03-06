@@ -9,39 +9,40 @@ const Shops = require('../controllers/shopController');
 const auth = require('../middleware/auth');
 const role = require('../middleware/role');
 const asyncMiddleware = require('../middleware/async');
+const inputValidation = require('../middleware/inputValidation');
 
 /**
  * Listing all shop (all user)
  * @method get/shops
  */
-router.get('/', Shops.getShops);
+router.get('/', inputValidation('get','shops'), asyncMiddleware(Shops.getShops));
 
 /**
  * Listing all shop with pagination (all user)
  * @method get/shops/p/:page
  */
-router.get('/p/:page', Shops.getShops);
+router.get('/p/:page', inputValidation('get','shops'), asyncMiddleware(Shops.getShops));
 
 
 /**
  * Listing all shop of a category with pagination (all user)
  * @method get/shops/p/:page/category/:idCategory
  */
-router.get('/p/:page/category/:idCategory', Shops.getShopsByCategory);
+router.get('/p/:page/category/:idCategory', inputValidation('get', 'shops'), asyncMiddleware(Shops.getShopsByCategory));
 
 /**
  * Get shop details for a given shop  (all user)
  * @method get/shops/:id
  * @param {number} id id du shop
  */
-router.get('/:id', Shops.getShop);
+router.get('/:id', inputValidation('get', 'shops'), asyncMiddleware(Shops.getShop));
 
 /**
  * Listing all product items for a given shop  (all user)
  * @method get/shops/:id/products
  * @param {number} id id du shop
  */
-router.get('/:id/products', Shops.getShopProducts);
+router.get('/:id/products', inputValidation('get', 'shops'), asyncMiddleware(Shops.getShopProducts));
 
 /**
  * Get specific product for a given shop  (all user)
@@ -49,27 +50,28 @@ router.get('/:id/products', Shops.getShopProducts);
  * @param {number} shopid id du shop
  * @param {number} productid id du produit
  */
-router.get('/:shopid/products/:productid', Shops.getShopProduct);
+router.get('/:shopid/products/:productid', inputValidation('get', 'shops'), asyncMiddleware(Shops.getShopProduct));
 
 /**
  * Create a new shop (admin, pro user)
  * @method post/shops
  */
-router.post('/', [auth, role('VENDOR', 'ADMIN')], Shops.postShop);
+router.post('/', [auth, role('VENDOR', 'ADMIN'), inputValidation('post', 'shops')], asyncMiddleware(Shops.postShop));
 
 /**
  * Modify details for a given shop (admin, pro user)
  * @method put/shops/:id
  * @param {number} shopid id du shop
  */
-router.put('/:id', Shops.putShop);
+// TODO: validation input
+router.put('/:id', asyncMiddleware(Shops.putShop));
 
 /**
  * Delete a shop (admin, pro user)
  * @method delete/shops/:id
  * @param {number} shopid id du shop
  */
-router.delete('/:id', Shops.deleteShop);
+router.delete('/:id', inputValidation('delete', 'shops'), asyncMiddleware(Shops.deleteShop));
 
 module.exports = router;
 
@@ -270,20 +272,18 @@ module.exports = router;
 
 /**
  * @swagger
- * /api/v1/shops/:shopid/products/:productid:
+ * /api/v1/shops/{shopid}/products/{productid}:
  *   get:
  *     tags:
  *       - Shop
  *     description: Return a list of shop corresponding to the searched term
  *     parameters:
- *       - in: path
- *         name: shopid
- *         type: number
+ *       - name: shopid
+ *         in: path
  *         required: true
  *         description: id du shop recherché
- *       - in: path
- *         name: productid
- *         type: number
+ *       - name: productid
+ *         in: path
  *         required: true
  *         description: id du produit recherché
  *     produces:
@@ -301,19 +301,20 @@ module.exports = router;
 
 /**
  * @swagger
- * /api/v1/shops/:id/products:
+ * /api/v1/shops/{id}/products:
  *   get:
  *     tags:
  *       - Shop
  *     description: Return a list of product corresponding to the searched shop
- *     parameters:
- *       - in: path
- *         name: id
- *         type: number
- *         required: true
- *         description: id du shop recherché
  *     produces:
  *       - application/json
+ *     parameters:
+ *       - name: id
+ *         description: id du shop recherché
+ *         in: path
+ *         required: true
+ *         schema:
+ *           $ref: '#/definitions/Shop'
  *     responses:
  *       200:
  *         description: Return a products list from the wanted shop

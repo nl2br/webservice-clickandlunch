@@ -1,44 +1,38 @@
 let winston = require('winston');
 
-// define the custom settings for each transport (file, console)
-let options = {
-  file: {
-    level: 'info',
-    filename: `../logs/app.log`,
-    handleExceptions: true,
-    json: true,
-    maxsize: 5242880, // 5MB
-    maxFiles: 5,
-    colorize: false,
-  },
-  console: {
-    level: 'debug',
-    handleExceptions: true,
-    json: false,
-    colorize: true,
-  },
-};
+const logTime = () => (new Date().toISOString());
 
-// instantiate a new Winston Logger with the settings defined above
 let logger = winston.createLogger({
+  level: 'info',
+  format: winston.format.json(),
+  defaultMeta: { service: 'user-service' },
   transports: [
-    new winston.transports.File(options.file),
+    //
+    // - Write to all logs with level `info` and below to `combined.log` 
+    // - Write all logs error (and below) to `error.log`.
+    //
+    new winston.transports.File({ 
+      filename: 'error.log', 
+      timestamp: logTime, 
+      level: 'info',
+      handleExceptions: true,
+      prettyPrint:true
+    }),
+    // new winston.transports.File({ 
+    //   filename: 'combined.log' 
+    // })
   ],
-  exitOnError: false, // do not exit on handled exceptions
+  exitOnError: false
 });
 
 if (process.env.NODE_ENV !== 'production') {
   logger.add(new winston.transports.Console({
-    format: winston.format.simple()
+    format: winston.format.simple(),
+    level:'info',
+    handleExceptions: true,
+    prettyPrint:true,
+    colorized: true
   }));
 }
-
-// create a stream object with a 'write' function that will be used by `morgan`
-logger.stream = {
-  write: function(message, encoding) {
-    // use the 'info' log level so the output will be picked up by both transports (file and console)
-    logger.info(message);
-  },
-};
 
 module.exports = logger;

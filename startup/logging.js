@@ -22,22 +22,19 @@ module.exports = function(app) {
 
   // uncaughtException error handling
   process.on('uncaughtException', (ex) => {
+    console.log('loggign.js uncaughtException ERROR');
     winston.error(ex.message, ex);
     setImmediate(() => process.exit(1));
   });
   
-  // unhandledRejection error handling
+  // unhandledRejection error handling pass to uncaughtException error handling
   process.on('unhandledRejection', (ex) => {
-    // if(ex.name === 'SequelizeDatabaseError'){
-    //   winston.error('erreur sequelize database', ex.message);
-    //   setImmediate(() => process.exit(1));
-    // }
-    winston.error(ex.message, ex);
-    setImmediate(() => process.exit(1));
+    console.log('logging js uncaughtException ERROR');
+    throw ex
   });
 
   // morgan
-  if(app.get('env') === 'development'){
+  if(app.get('env') !== 'production'){
     app.use(morgan('dev'));
     console.log('Morgan enabled ...');
   }

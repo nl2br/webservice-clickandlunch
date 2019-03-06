@@ -3,6 +3,8 @@
  */
 
 const Models = require('../models/');
+const asyncMiddleware = require('../middleware/async');
+const Joi = require('joi');
 
 class Shops {
   // TODO: Listing all shop for a given City id / @function get/:id/shops 
@@ -13,7 +15,7 @@ class Shops {
    * @param {*} req 
    * @param {*} res 
    */
-  static getShops(req, res) {
+  static getShops(req, res, next) {
 
     // getShopsNearby
     if(req.query.hasOwnProperty('lat') && req.query.hasOwnProperty('lon')){
@@ -21,27 +23,21 @@ class Shops {
         .then( result => {
           res.status(200).json(result);
         })
-        .catch(error => {
-          console.log('error getShops : ', error.message);
-          res.status(400).send({message: error.message});
-        });
+        .catch(err => {
+          res.status(400).json({message: err.message});
+        })
     }
     
-    //TODO: shops?name=XXX + swagger doc 
+    // getShopsByName
     if(req.query.hasOwnProperty('name')){
       Shops.getShopsByName(req.query.name)
         .then( result => {
           res.status(200).json(result);
         })
-        .catch(error => {
-          console.log('error getShops : ', error.message);
-          res.status(400).send({message: error.message});
-        });
+        .catch(err => {
+          res.status(400).json({message: err.message});
+        })
     }
-
-    // TODO: handle route with idcategory when MODEL PRODUCT CATEGORY done
-    // if(req.query.idcategory){
-    // }
 
     // getShops with pagination
     if(req.params.hasOwnProperty('page')){
@@ -59,26 +55,22 @@ class Shops {
             offset: offset
           })
             .then(result => {
-              if(data.count === 0) { 
-                return res.status(404).send({message: 'No shops found'}); 
+              if(!result.length) { 
+                const err = new Error('No shops found !!!');
+                err.status = 404;
+                return next(err);
               }
               res.status(200).json({'result': result, 'count': data.count, 'pages': pages});
             })
-            .catch(error => {
-              console.log('error getShops', error.message);
-              res.status(400).send({message: error.message});
-            });
         })
-        .catch(error => {
-          console.log('error getShops', error.message);
-          res.status(400).send({message: error.message});
-        });
     }
 
     // aucun paramètre n'est demandé -> error 400
     if(Object.getOwnPropertyNames(req.params).length < 1 
       && Object.getOwnPropertyNames(req.query).length < 1){
-      res.status(400).send({message: 'Please use a valid API route'});
+        const err = new Error('Please use a valid Shop route');
+        err.status = 400;
+        return next(err);
     }
   }
 
@@ -94,18 +86,15 @@ class Shops {
       },{raw: true})
         .then(result => {
           if (Array.isArray(result) && !result.length) {
-            reject({message: 'No shops Found'});
+            reject({message: 'No shops Found for the given name'});
           }
           resolve(result);
         })
-        .catch(error => {
-          console.log('error getShopByName : ', error.message);
-          reject({message: error});
-        });
     });
   }
 
-  static getShopsByCategory(req, res) {
+  static getShopsByCategory(req, res, next) {
+
     let limit = 20;   // number of records per page
     let offset = 0;
 
@@ -123,6 +112,8 @@ class Shops {
         return Models.Shop.findAll({
           include: [{
             model: Models.ShopCategory,
+            required: true,
+            where: {shopCategoryId: req.params.idCategory},
             attributes: ['shopCategoryId', 'name']
           }],
           where: {deleted: 0},
@@ -130,20 +121,14 @@ class Shops {
           offset: offset
         })
           .then(result => {
-            if(data.count === 0) { 
-              return res.status(404).send({message: 'No shops for the given id category'}); 
+            if(!result.length) { 
+              const err = new Error('No shops for the given id category');
+              err.status = 404;
+              return next(err);
             }
             res.status(200).json({'result': result, 'count': data.count, 'pages': pages});
           })
-          .catch(error => {
-            console.log('error getShops', error.message);
-            res.status(400).send({message: error.message});
-          });
       })
-      .catch(error => {
-        console.log('error getShops', error.message);
-        res.status(400).send({message: error.message});
-      });
   }
 
   /**
@@ -175,10 +160,6 @@ class Shops {
           }
           resolve(result);
         })
-        .catch(error => {
-          console.log('error getShopsNearby : ', error.message);
-          reject({message: error});
-        });
     });
   }
 
@@ -189,18 +170,17 @@ class Shops {
    * @param {int} req.params.id id du shop
    * @param {*} res 
    */
-  static getShop(req, res) {
+  static getShop(req, res, next) {
+
     Models.Shop.findByPk(req.params.id)
       .then(result => {
         if (!result) {
-          return res.status(404).send({message: 'No Shop Found for the given id'});
+          const err = new Error('No Shop Found for the given id');
+          err.status = 404;
+          return next(err);
         }
         res.status(200).json(result);
       })
-      .catch(error => {
-        console.log('error getShop : ', error.message);
-        res.status(400).send({message: error.message});
-      });
   }
 
   /**
@@ -210,7 +190,7 @@ class Shops {
    * @param {int} req.params.id id du shop
    * @param {*} res 
    */
-  static getShopProducts(req, res) {
+  static getShopProducts(req, res, next) {
     Models.Product.findAll({
       where: {
         shopId: req.params.id,
@@ -218,15 +198,13 @@ class Shops {
       }
     })
       .then(result => {
-        if (Array.isArray(result) && !result.length) {
-          return res.status(404).send({message: 'No Products Found for the given id'});
+        if(Array.isArray(result) && !result.length) {
+          const err = new Error('No Products Found for the given id');
+          err.status = 404;
+          return next(err);
         }
         res.status(200).json(result);
       })
-      .catch(error => {
-        console.log('error getShopProducts : ', error.message);
-        res.status(400).send({message: error.message});
-      });
   }
 
   /**
@@ -237,20 +215,18 @@ class Shops {
    * @param {int} req.params.shopid id du shop à trouver
    * @param {*} res 
    */
-  static getShopProduct(req, res) {
+  static getShopProduct(req, res, next) {
     Models.Product.findOne({
       where: { productId: req.params.productid, shopId: req.params.shopid },
     })
       .then(result => {
         if (!result) {
-          return res.status(404).send({message: 'Product or Shop Not Found'});
+          const err = new Error('Product or Shop Not Found');
+          err.status = 404;
+          return next(err);
         }
         res.status(200).json(result);
       })
-      .catch(error => {
-        console.log('error getShopProduct : ', error.message);
-        res.status(400).send({message: error.message});
-      });
   }
 
   /**
@@ -259,7 +235,7 @@ class Shops {
    * @param {*} req 
    * @param {*} res 
    */
-  static postShop(req, res) {
+  static postShop(req, res, next) {
     // TODO: JOI sur longitude latitude 
     return Models.Shop.create({
       name: req.body.name,
@@ -291,10 +267,6 @@ class Shops {
       .then(result => {
         res.status(201).json(result);
       })
-      .catch(error => {
-        console.log('error postShop : ', error.message);
-        res.status(400).send({message: error.message});
-      });
   }
 
   /**
@@ -304,44 +276,35 @@ class Shops {
    * @param {int} req.params.id id du shop
    * @param {*} res 
    */
-  static putShop(req, res) {
-    Models.Shop.findById(req.params.id)
-      .then(shop => {
-        if(!shop) {return res.status(404).send({message:'this shop don\'t exist'});}
-        if(req.body.longitude && req.body.latitude){
-          return shop.update({
-            name: req.body.name || shop.name,
-            siret: req.body.siret || shop.siret,
-            siren: req.body.siren || shop.siren,
-            phoneNumber: req.body.phoneNumber || shop.phoneNumber,
-            email: req.body.email || shop.email,
-            location: {
-              type: 'Point',
-              coordinates: [req.body.longitude,req.body.latitude],
-              crs: {type: 'name', properties: { name: 'EPSG:4326'}}
-            }
-          })  
-            .then(() => {
-              res.status(200).send(shop);
-            });
-        }else{
-          return shop.update({
-            name: req.body.name || shop.name,
-            siret: req.body.siret || shop.siret,
-            siren: req.body.siren || shop.siren,
-            phoneNumber: req.body.phoneNumber || shop.phoneNumber,
-            email: req.body.email || shop.email,
-            location: shop.location
-          })  
-            .then(() => {
-              res.status(200).send(shop);
-            });
-        }
-      })
-      .catch(error => {
-        console.log('error putShop : ', error.message);
-        res.status(400).send({message: 'Error while trying to update the shop', data: error.message});
-      });
+  static async putShop(req, res, next) {
+    let shop = await Models.Shop.findByPk(req.params.id)
+    if(!shop) {
+      const err = new Error('this shop don\'t exist');
+      err.status = 404;
+      return next(err);
+    }
+
+    let location;
+    if(req.body.hasOwnProperty('longitude') && req.body.hasOwnProperty('latitude')){
+      location = {
+        type: 'Point',
+        coordinates: [req.body.longitude,req.body.latitude],
+        crs: {type: 'name', properties: { name: 'EPSG:4326'}}
+      }
+    }else{
+      location = shop.location
+    }
+    
+    await shop.update({
+      name: req.body.name || shop.name,
+      siret: req.body.siret || shop.siret,
+      siren: req.body.siren || shop.siren,
+      phoneNumber: req.body.phoneNumber || shop.phoneNumber,
+      email: req.body.email || shop.email,
+      location: location
+    })  
+
+    res.status(200).send(shop);
   }
 
   /**
@@ -351,10 +314,14 @@ class Shops {
    * @param {int} req.params.id id du shop
    * @param {*} res 
    */
-  static deleteShop(req, res) {
+  static deleteShop(req, res, next) {
     Models.Shop.findById(req.params.id)
       .then(shop => {
-        if(!shop) {return res.status(404).send({message: 'this shop don\'t exist'});}
+        if(!shop) {
+          const err = new Error('this shop don\'t exist');
+          err.status = 404;
+          return next(err);
+        }
         return shop.update({
           deleted: 1
         })  
@@ -362,10 +329,6 @@ class Shops {
             res.status(200).send(shop);
           });
       })
-      .catch(error => {
-        console.log('error deleteShop : ', error.message);
-        res.status(400).send({message: 'Error while trying to delete the shop', data: error.message});
-      });
   }
 
 }

@@ -117,7 +117,7 @@ describe('/api/v1/shops', () => {
     it('Return error 400', async () => {
       const res = await request(server).get('/api/v1/shops');
       expect(res.status).toBe(400);
-      expect(res.body.message).toBe('Please use a valid API route');
+      expect(res.body.message).toBe('Please use a valid Shop route');
     });
 
   });
@@ -382,7 +382,7 @@ describe('/api/v1/shops', () => {
           crs: {type: 'name', properties: { name: 'EPSG:4326'}}
         }
       });
-
+      
       const res = await request(server)
         .put('/api/v1/shops/' + shop.get('shopId'))
         .send({
@@ -399,7 +399,6 @@ describe('/api/v1/shops', () => {
         });
 
       expect(res.status).toBe(400);
-      expect(res.body.message).toBe('Error while trying to update the shop');
     });
 
     it('Should report error : Modify shop with a not existing id', async () => {
@@ -440,6 +439,7 @@ describe('/api/v1/shops', () => {
 
     it('Should send error : Get shop details for a not existing shop', async () => {
       const res = await request(server).delete('/api/v1/shops/999');
+
       expect(res.status).toBe(404);
       expect(res).toHaveProperty('error');
       expect(res.body.message).toBe('this shop don\'t exist');

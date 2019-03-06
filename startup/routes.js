@@ -27,22 +27,22 @@ module.exports = function (app) {
   app.use('/api/v1/vendors', vendorsRouter);
   app.use('/api/v1/users', usersRouter);
   app.use('/api/v1/auth', authRouter);
-
-  // handling express error
-  app.use(error);
-
+  
   // route for swagger.json
   app.get('/swagger.json', function(req, res) {
     res.setHeader('Content-Type', 'application/json');
     res.send(swaggerSpec);
   });
-
+  
   // adding static folder for swagger
   app.use(express.static('public'));
-
+  
   // default route if invalid URL input
   app.use((req, res) => {
     res.status('404').send({message: 'Wrong URL'});
   })
 
+  // handling express error
+  app.use(error);
+  
 }
