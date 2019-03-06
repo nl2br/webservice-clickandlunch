@@ -1,0 +1,27 @@
+{
+  "development": {
+    "username": "root",
+    "password": "groot",
+    "database": "clickandlunch",
+    "dialect": "mysql",
+    "host": "127.0.0.1",
+    "port": "3306"
+  },
+  "test": {
+    "username": "root",
+    "password": "groot",
+    "database": "clickandlunch_test",
+    "dialect": "mysql",
+    "host": "127.0.0.1",
+    "port": "3306"
+  },
+  "production": {
+    "username": "root",
+    "password": "groot",
+    "database": "clickandlunch",
+    "dialect": "mysql",
+    "host": "127.0.0.1",
+    "port": "3306"
+  },
+  "jwtPrivateKey": "mysecretkey"
+}
