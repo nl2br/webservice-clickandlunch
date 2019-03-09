@@ -16,12 +16,13 @@
     "port": "3306"
   },
   "production": {
-    "username": "root",
-    "password": "groot",
-    "database": "clickandlunch",
-    "dialect": "mysql",
-    "host": "127.0.0.1",
-    "port": "3306"
+    "username": "xskslafptngfld",
+    "password": "17574b4dbacd999d36aba69a50776facd9558c3503b0232f5d1fb288f95bc99d",
+    "database": "d7ouvsn1e42gon",
+    "dialect": "postgres",
+    "host": "ec2-54-221-201-212.compute-1.amazonaws.com",
+    "port": "5432",
+    "use_env_variable": "DATABASE_URL"
   },
   "jwtPrivateKey": "mysecretkey"
 }

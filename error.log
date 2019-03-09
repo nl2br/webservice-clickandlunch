@@ -1,87 +1,37 @@
-{"message":"400 - Please use a valid Shop route - /api/v1/shops - GET - ::ffff:127.0.0.1","level":"error","service":"user-service"}
-{"message":"404 - No Shop Found for the given id - /api/v1/shops/999 - GET - ::ffff:127.0.0.1","level":"error","service":"user-service"}
-{"message":"404 - this shop don't exist - /api/v1/shops/999 - PUT - ::ffff:127.0.0.1","level":"error","service":"user-service"}
-{"message":"404 - this shop don't exist - /api/v1/shops/999 - DELETE - ::ffff:127.0.0.1","level":"error","service":"user-service"}
-{"message":"404 - No shops found !!! - /api/v1/shops/p/1 - GET - ::ffff:127.0.0.1","level":"error","service":"user-service"}
-{"message":"400 - Please use a valid Shop route - /api/v1/shops - GET - ::ffff:127.0.0.1","level":"error","service":"user-service"}
-{"message":"404 - No Shop Found for the given id - /api/v1/shops/999 - GET - ::ffff:127.0.0.1","level":"error","service":"user-service"}
-{"message":"404 - this shop don't exist - /api/v1/shops/999 - PUT - ::ffff:127.0.0.1","level":"error","service":"user-service"}
-{"message":"404 - this shop don't exist - /api/v1/shops/999 - DELETE - ::ffff:127.0.0.1","level":"error","service":"user-service"}
-{"message":"() => new Date().toISOString() - 400 - Please use a valid Shop route - /api/v1/shops - GET - ::ffff:127.0.0.1","level":"error","service":"user-service"}
-{"message":"() => new Date().toISOString() - 404 - No Shop Found for the given id - /api/v1/shops/999 - GET - ::ffff:127.0.0.1","level":"error","service":"user-service"}
-{"message":"() => new Date().toISOString() - 404 - this shop don't exist - /api/v1/shops/999 - PUT - ::ffff:127.0.0.1","level":"error","service":"user-service"}
-{"message":"() => new Date().toISOString() - 404 - this shop don't exist - /api/v1/shops/999 - DELETE - ::ffff:127.0.0.1","level":"error","service":"user-service"}
-{"message":"() => new Date().toISOString() - 400 - Please use a valid Shop route - /api/v1/shops - GET ","level":"error","service":"user-service"}
-{"message":"() => new Date().toISOString() - 404 - No Shop Found for the given id - /api/v1/shops/999 - GET ","level":"error","service":"user-service"}
-{"message":"SequelizeValidationError - () => new Date().toISOString() - 500 - Validation error: Validation isNumeric on siret failed,\nValidation error: Validation isEmail on email failed - /api/v1/shops - POST ","level":"error","service":"user-service"}
-{"message":"SequelizeValidationError - () => new Date().toISOString() - 500 - Validation error: Validation isNumeric on siret failed,\nValidation error: Validation len on siren failed,\nValidation error: Validation is on phoneNumber failed,\nValidation error: Validation isEmail on email failed - /api/v1/shops/5725 - PUT ","level":"error","service":"user-service"}
-{"message":"() => new Date().toISOString() - 404 - this shop don't exist - /api/v1/shops/999 - PUT ","level":"error","service":"user-service"}
-{"message":"() => new Date().toISOString() - 404 - this shop don't exist - /api/v1/shops/999 - DELETE ","level":"error","service":"user-service"}
-{"message":"() => new Date().toISOString() - 400 - Please use a valid Shop route - /api/v1/shops - GET ","level":"error","service":"user-service"}
-{"message":"() => new Date().toISOString() - 404 - No Shop Found for the given id - /api/v1/shops/999 - GET ","level":"error","service":"user-service"}
-{"message":"SequelizeValidationError - () => new Date().toISOString() - 500 - Validation error: Validation isNumeric on siret failed,\nValidation error: Validation isEmail on email failed - /api/v1/shops - POST ","level":"error","service":"user-service"}
-{"message":"SequelizeValidationError - () => new Date().toISOString() - 500 - Validation error: Validation isNumeric on siret failed,\nValidation error: Validation len on siren failed,\nValidation error: Validation is on phoneNumber failed,\nValidation error: Validation isEmail on email failed - /api/v1/shops/5738 - PUT ","level":"error","service":"user-service"}
-{"message":"() => new Date().toISOString() - 404 - this shop don't exist - /api/v1/shops/999 - PUT ","level":"error","service":"user-service"}
-{"message":"() => new Date().toISOString() - 404 - this shop don't exist - /api/v1/shops/999 - DELETE ","level":"error","service":"user-service"}
-{"message":"() => new Date().toISOString() - 400 - Please use a valid Shop route - /api/v1/shops - GET ","level":"error","service":"user-service"}
-{"message":"() => new Date().toISOString() - 404 - No Shop Found for the given id - /api/v1/shops/999 - GET ","level":"error","service":"user-service"}
-{"message":"SequelizeValidationError - () => new Date().toISOString() - 500 - Validation error: Validation isNumeric on siret failed,\nValidation error: Validation isEmail on email failed - /api/v1/shops - POST ","level":"error","service":"user-service"}
-{"message":"SequelizeValidationError - () => new Date().toISOString() - 500 - Validation error: Validation isNumeric on siret failed,\nValidation error: Validation len on siren failed,\nValidation error: Validation is on phoneNumber failed,\nValidation error: Validation isEmail on email failed - /api/v1/shops/5826 - PUT ","level":"error","service":"user-service"}
-{"message":"() => new Date().toISOString() - 404 - this shop don't exist - /api/v1/shops/999 - PUT ","level":"error","service":"user-service"}
-{"message":"() => new Date().toISOString() - 404 - this shop don't exist - /api/v1/shops/999 - DELETE ","level":"error","service":"user-service"}
-{"message":"() => new Date().toISOString() - 400 - Please use a valid Shop route - /api/v1/shops - GET ","level":"error","service":"user-service"}
-{"message":"() => new Date().toISOString() - 404 - No Shop Found for the given id - /api/v1/shops/999 - GET ","level":"error","service":"user-service"}
-{"message":"SequelizeValidationError - () => new Date().toISOString() - 500 - Validation error: Validation isNumeric on siret failed,\nValidation error: Validation isEmail on email failed - /api/v1/shops - POST ","level":"error","service":"user-service"}
-{"message":"SequelizeValidationError - () => new Date().toISOString() - 500 - Validation error: Validation isNumeric on siret failed,\nValidation error: Validation len on siren failed,\nValidation error: Validation is on phoneNumber failed,\nValidation error: Validation isEmail on email failed - /api/v1/shops/5845 - PUT ","level":"error","service":"user-service"}
-{"message":"() => new Date().toISOString() - 404 - this shop don't exist - /api/v1/shops/999 - PUT ","level":"error","service":"user-service"}
-{"message":"() => new Date().toISOString() - 404 - this shop don't exist - /api/v1/shops/999 - DELETE ","level":"error","service":"user-service"}
-{"message":"() => new Date().toISOString() - 400 - Please use a valid Shop route - /api/v1/shops - GET ","level":"error","service":"user-service"}
-{"message":"() => new Date().toISOString() - 404 - No Shop Found for the given id - /api/v1/shops/5858 - GET ","level":"error","service":"user-service"}
-{"message":"() => new Date().toISOString() - 404 - No Shop Found for the given id - /api/v1/shops/999 - GET ","level":"error","service":"user-service"}
-{"message":"SequelizeValidationError - () => new Date().toISOString() - 500 - Validation error: Validation isNumeric on siret failed,\nValidation error: Validation isEmail on email failed - /api/v1/shops - POST ","level":"error","service":"user-service"}
-{"message":"SequelizeValidationError - () => new Date().toISOString() - 500 - Validation error: Validation isNumeric on siret failed,\nValidation error: Validation len on siren failed,\nValidation error: Validation is on phoneNumber failed,\nValidation error: Validation isEmail on email failed - /api/v1/shops/5866 - PUT ","level":"error","service":"user-service"}
-{"message":"() => new Date().toISOString() - 404 - this shop don't exist - /api/v1/shops/999 - PUT ","level":"error","service":"user-service"}
-{"message":"() => new Date().toISOString() - 404 - this shop don't exist - /api/v1/shops/999 - DELETE ","level":"error","service":"user-service"}
-{"message":"2019-03-06T20:35:02.152Z - 404 - No shops found !!! - /api/v1/shops/p/1 - GET ","level":"error","service":"user-service"}
-{"message":"2019-03-06T20:35:02.288Z - 400 - Please use a valid Shop route - /api/v1/shops - GET ","level":"error","service":"user-service"}
-{"message":"2019-03-06T20:35:02.425Z - 404 - No Shop Found for the given id - /api/v1/shops/999 - GET ","level":"error","service":"user-service"}
-{"message":"SequelizeValidationError - 2019-03-06T20:35:02.699Z - 500 - Validation error: Validation isNumeric on siret failed,\nValidation error: Validation isEmail on email failed - /api/v1/shops - POST ","level":"error","service":"user-service"}
-{"message":"SequelizeValidationError - 2019-03-06T20:35:02.798Z - 500 - Validation error: Validation isNumeric on siret failed,\nValidation error: Validation len on siren failed,\nValidation error: Validation is on phoneNumber failed,\nValidation error: Validation isEmail on email failed - /api/v1/shops/5882 - PUT ","level":"error","service":"user-service"}
-{"message":"2019-03-06T20:35:02.798Z - 404 - this shop don't exist - /api/v1/shops/999 - PUT ","level":"error","service":"user-service"}
-{"message":"2019-03-06T20:35:02.868Z - 404 - this shop don't exist - /api/v1/shops/999 - DELETE ","level":"error","service":"user-service"}
-{"message":"2019-03-06T20:35:49.809Z - 400 - Please use a valid Shop route - /api/v1/shops - GET ","level":"error","service":"user-service"}
-{"message":"2019-03-06T20:35:49.867Z - 404 - No Shop Found for the given id - /api/v1/shops/999 - GET ","level":"error","service":"user-service"}
-{"message":"SequelizeValidationError - 2019-03-06T20:35:50.107Z - 500 - Validation error: Validation isNumeric on siret failed,\nValidation error: Validation isEmail on email failed - /api/v1/shops - POST ","level":"error","service":"user-service"}
-{"message":"SequelizeValidationError - 2019-03-06T20:35:50.195Z - 500 - Validation error: Validation isNumeric on siret failed,\nValidation error: Validation len on siren failed,\nValidation error: Validation is on phoneNumber failed,\nValidation error: Validation isEmail on email failed - /api/v1/shops/5902 - PUT ","level":"error","service":"user-service"}
-{"message":"2019-03-06T20:35:50.210Z - 404 - this shop don't exist - /api/v1/shops/999 - PUT ","level":"error","service":"user-service"}
-{"message":"2019-03-06T20:35:50.226Z - 404 - this shop don't exist - /api/v1/shops/999 - DELETE ","level":"error","service":"user-service"}
-{"message":"2019-03-06T20:36:36.209Z - 400 - Please use a valid Shop route - /api/v1/shops - GET ","level":"error","service":"user-service"}
-{"message":"2019-03-06T20:36:36.270Z - 404 - No Shop Found for the given id - /api/v1/shops/999 - GET ","level":"error","service":"user-service"}
-{"message":"SequelizeValidationError - 2019-03-06T20:36:36.542Z - 500 - Validation error: Validation isNumeric on siret failed,\nValidation error: Validation isEmail on email failed - /api/v1/shops - POST ","level":"error","service":"user-service"}
-{"message":"SequelizeValidationError - 2019-03-06T20:36:36.586Z - 500 - Validation error: Validation isNumeric on siret failed,\nValidation error: Validation len on siren failed,\nValidation error: Validation is on phoneNumber failed,\nValidation error: Validation isEmail on email failed - /api/v1/shops/5924 - PUT ","level":"error","service":"user-service"}
-{"message":"2019-03-06T20:36:36.586Z - 404 - this shop don't exist - /api/v1/shops/999 - PUT ","level":"error","service":"user-service"}
-{"message":"2019-03-06T20:36:36.620Z - 404 - this shop don't exist - /api/v1/shops/999 - DELETE ","level":"error","service":"user-service"}
-{"message":"2019-03-06T20:37:26.664Z - 400 - Please use a valid Shop route - /api/v1/shops - GET ","level":"error","service":"user-service"}
-{"message":"2019-03-06T20:37:26.726Z - 404 - No Shop Found for the given id - /api/v1/shops/999 - GET ","level":"error","service":"user-service"}
-{"message":"2019-03-06T20:37:26.976Z - SequelizeValidationError - 500 - Validation error: Validation isNumeric on siret failed,\nValidation error: Validation isEmail on email failed - /api/v1/shops - POST ","level":"error","service":"user-service"}
-{"message":"2019-03-06T20:37:27.033Z - SequelizeValidationError - 500 - Validation error: Validation isNumeric on siret failed,\nValidation error: Validation len on siren failed,\nValidation error: Validation is on phoneNumber failed,\nValidation error: Validation isEmail on email failed - /api/v1/shops/5944 - PUT ","level":"error","service":"user-service"}
-{"message":"2019-03-06T20:37:27.039Z - 404 - this shop don't exist - /api/v1/shops/999 - PUT ","level":"error","service":"user-service"}
-{"message":"2019-03-06T20:37:27.061Z - 404 - this shop don't exist - /api/v1/shops/999 - DELETE ","level":"error","service":"user-service"}
-{"message":"2019-03-06T20:38:15.596Z - 400 - Please use a valid Shop route - /api/v1/shops - GET ","level":"error","service":"user-service"}
-{"message":"2019-03-06T20:38:15.649Z - 404 - No Shop Found for the given id - /api/v1/shops/999 - GET ","level":"error","service":"user-service"}
-{"message":"2019-03-06T20:38:15.913Z - SequelizeValidationError - 500 - Validation error: Validation isNumeric on siret failed,\nValidation error: Validation isEmail on email failed - /api/v1/shops - POST ","level":"error","service":"user-service"}
-{"message":"2019-03-06T20:38:15.968Z - SequelizeValidationError - 500 - Validation error: Validation isNumeric on siret failed,\nValidation error: Validation len on siren failed,\nValidation error: Validation is on phoneNumber failed,\nValidation error: Validation isEmail on email failed - /api/v1/shops/5964 - PUT ","level":"error","service":"user-service"}
-{"message":"2019-03-06T20:38:15.974Z - 404 - this shop don't exist - /api/v1/shops/999 - PUT ","level":"error","service":"user-service"}
-{"message":"2019-03-06T20:38:15.999Z - 404 - this shop don't exist - /api/v1/shops/999 - DELETE ","level":"error","service":"user-service"}
-{"message":"2019-03-06T20:39:10.826Z - 400 - Please use a valid Shop route - /api/v1/shops - GET ","level":"error","service":"user-service"}
-{"message":"2019-03-06T20:39:10.987Z - 404 - No Shop Found for the given id - /api/v1/shops/999 - GET ","level":"error","service":"user-service"}
-{"message":"2019-03-06T20:39:11.748Z - SequelizeValidationError - 500 - Validation error: Validation isNumeric on siret failed,\nValidation error: Validation isEmail on email failed - /api/v1/shops - POST ","level":"error","service":"user-service"}
-{"message":"2019-03-06T20:39:11.843Z - SequelizeValidationError - 500 - Validation error: Validation isNumeric on siret failed,\nValidation error: Validation len on siren failed,\nValidation error: Validation is on phoneNumber failed,\nValidation error: Validation isEmail on email failed - /api/v1/shops/5982 - PUT ","level":"error","service":"user-service"}
-{"message":"2019-03-06T20:39:11.872Z - 404 - this shop don't exist - /api/v1/shops/999 - PUT ","level":"error","service":"user-service"}
-{"message":"2019-03-06T20:39:11.929Z - 404 - this shop don't exist - /api/v1/shops/999 - DELETE ","level":"error","service":"user-service"}
-{"message":"2019-03-06T20:39:44.282Z - 400 - Please use a valid Shop route - /api/v1/shops - GET ","level":"error","service":"user-service"}
-{"message":"2019-03-06T20:39:44.369Z - 404 - No Shop Found for the given id - /api/v1/shops/999 - GET ","level":"error","service":"user-service"}
-{"message":"2019-03-06T20:39:44.688Z - SequelizeValidationError - 500 - Validation error: Validation isNumeric on siret failed,\nValidation error: Validation isEmail on email failed - /api/v1/shops - POST ","level":"error","service":"user-service"}
-{"message":"2019-03-06T20:39:44.781Z - SequelizeValidationError - 500 - Validation error: Validation isNumeric on siret failed,\nValidation error: Validation len on siren failed,\nValidation error: Validation is on phoneNumber failed,\nValidation error: Validation isEmail on email failed - /api/v1/shops/6002 - PUT ","level":"error","service":"user-service"}
-{"message":"2019-03-06T20:39:44.796Z - 404 - this shop don't exist - /api/v1/shops/999 - PUT ","level":"error","service":"user-service"}
-{"message":"2019-03-06T20:39:44.851Z - 404 - this shop don't exist - /api/v1/shops/999 - DELETE ","level":"error","service":"user-service"}
+{"message":"2019-03-08T23:30:12.246Z - 400 - Please use a valid Shop route - /api/v1/shops - GET ","level":"error","service":"user-service"}
+{"message":"2019-03-08T23:30:12.412Z - 404 - No Shop Found for the given id - /api/v1/shops/999 - GET ","level":"error","service":"user-service"}
+{"message":"2019-03-08T23:30:12.681Z - SequelizeValidationError - 500 - Validation error: Validation isNumeric on siret failed,\nValidation error: Validation isEmail on email failed - /api/v1/shops - POST ","level":"error","service":"user-service"}
+{"message":"2019-03-08T23:30:12.727Z - SequelizeValidationError - 500 - Validation error: Validation isNumeric on siret failed,\nValidation error: Validation len on siren failed,\nValidation error: Validation is on phoneNumber failed,\nValidation error: Validation isEmail on email failed - /api/v1/shops/6026 - PUT ","level":"error","service":"user-service"}
+{"message":"2019-03-08T23:30:12.727Z - 404 - this shop don't exist - /api/v1/shops/999 - PUT ","level":"error","service":"user-service"}
+{"message":"2019-03-08T23:30:12.759Z - 404 - this shop don't exist - /api/v1/shops/999 - DELETE ","level":"error","service":"user-service"}
+{"message":"2019-03-08T23:30:16.633Z - 404 - No shops found !!! - /api/v1/shops/p/1 - GET ","level":"error","service":"user-service"}
+{"message":"2019-03-08T23:30:16.862Z - 400 - Please use a valid Shop route - /api/v1/shops - GET ","level":"error","service":"user-service"}
+{"message":"2019-03-08T23:30:16.974Z - 404 - No Shop Found for the given id - /api/v1/shops/999 - GET ","level":"error","service":"user-service"}
+{"message":"2019-03-08T23:30:17.381Z - SequelizeValidationError - 500 - Validation error: Validation isNumeric on siret failed,\nValidation error: Validation isEmail on email failed - /api/v1/shops - POST ","level":"error","service":"user-service"}
+{"message":"2019-03-08T23:30:17.696Z - SequelizeValidationError - 500 - Validation error: Validation isNumeric on siret failed,\nValidation error: Validation len on siren failed,\nValidation error: Validation is on phoneNumber failed,\nValidation error: Validation isEmail on email failed - /api/v1/shops/6042 - PUT ","level":"error","service":"user-service"}
+{"message":"2019-03-08T23:30:17.712Z - 404 - this shop don't exist - /api/v1/shops/999 - PUT ","level":"error","service":"user-service"}
+{"message":"2019-03-08T23:30:17.790Z - 404 - this shop don't exist - /api/v1/shops/999 - DELETE ","level":"error","service":"user-service"}
+{"message":"2019-03-08T23:30:42.276Z - 400 - Please use a valid Shop route - /api/v1/shops - GET ","level":"error","service":"user-service"}
+{"message":"2019-03-08T23:30:42.364Z - 404 - No Shop Found for the given id - /api/v1/shops/999 - GET ","level":"error","service":"user-service"}
+{"message":"2019-03-08T23:30:42.680Z - SequelizeValidationError - 500 - Validation error: Validation isNumeric on siret failed,\nValidation error: Validation isEmail on email failed - /api/v1/shops - POST ","level":"error","service":"user-service"}
+{"message":"2019-03-08T23:30:42.776Z - SequelizeValidationError - 500 - Validation error: Validation isNumeric on siret failed,\nValidation error: Validation len on siren failed,\nValidation error: Validation is on phoneNumber failed,\nValidation error: Validation isEmail on email failed - /api/v1/shops/6062 - PUT ","level":"error","service":"user-service"}
+{"message":"2019-03-08T23:30:42.781Z - 404 - this shop don't exist - /api/v1/shops/999 - PUT ","level":"error","service":"user-service"}
+{"message":"2019-03-08T23:30:42.846Z - 404 - this shop don't exist - /api/v1/shops/999 - DELETE ","level":"error","service":"user-service"}
+{"message":"2019-03-09T13:08:22.548Z - 400 - Please use a valid Shop route - /api/v1/shops - GET ","level":"error","service":"user-service"}
+{"message":"2019-03-09T13:08:22.648Z - 404 - No Shop Found for the given id - /api/v1/shops/999 - GET ","level":"error","service":"user-service"}
+{"message":"2019-03-09T13:08:22.889Z - SequelizeValidationError - 500 - Validation error: Validation isNumeric on siret failed,\nValidation error: Validation isEmail on email failed - /api/v1/shops - POST ","level":"error","service":"user-service"}
+{"message":"2019-03-09T13:08:22.932Z - SequelizeValidationError - 500 - Validation error: Validation isNumeric on siret failed,\nValidation error: Validation len on siren failed,\nValidation error: Validation is on phoneNumber failed,\nValidation error: Validation isEmail on email failed - /api/v1/shops/6087 - PUT ","level":"error","service":"user-service"}
+{"message":"2019-03-09T13:08:22.938Z - 404 - this shop don't exist - /api/v1/shops/999 - PUT ","level":"error","service":"user-service"}
+{"message":"2019-03-09T13:08:22.961Z - 404 - this shop don't exist - /api/v1/shops/999 - DELETE ","level":"error","service":"user-service"}
+{"message":"2019-03-09T13:16:23.906Z - 400 - Please use a valid Shop route - /api/v1/shops - GET ","level":"error","service":"user-service"}
+{"message":"2019-03-09T13:16:23.971Z - 404 - No Shop Found for the given id - /api/v1/shops/999 - GET ","level":"error","service":"user-service"}
+{"message":"2019-03-09T13:16:24.174Z - SequelizeValidationError - 500 - Validation error: Validation isNumeric on siret failed,\nValidation error: Validation isEmail on email failed - /api/v1/shops - POST ","level":"error","service":"user-service"}
+{"message":"2019-03-09T13:16:24.274Z - SequelizeValidationError - 500 - Validation error: Validation isNumeric on siret failed,\nValidation error: Validation len on siren failed,\nValidation error: Validation is on phoneNumber failed,\nValidation error: Validation isEmail on email failed - /api/v1/shops/6106 - PUT ","level":"error","service":"user-service"}
+{"message":"2019-03-09T13:16:24.274Z - 404 - this shop don't exist - /api/v1/shops/999 - PUT ","level":"error","service":"user-service"}
+{"message":"2019-03-09T13:16:24.312Z - 404 - this shop don't exist - /api/v1/shops/999 - DELETE ","level":"error","service":"user-service"}
+{"message":"2019-03-09T13:17:34.305Z - 400 - Please use a valid Shop route - /api/v1/shops - GET ","level":"error","service":"user-service"}
+{"message":"2019-03-09T13:17:34.383Z - 404 - No Shop Found for the given id - /api/v1/shops/999 - GET ","level":"error","service":"user-service"}
+{"message":"2019-03-09T13:17:34.607Z - SequelizeValidationError - 500 - Validation error: Validation isNumeric on siret failed,\nValidation error: Validation isEmail on email failed - /api/v1/shops - POST ","level":"error","service":"user-service"}
+{"message":"2019-03-09T13:17:34.697Z - SequelizeValidationError - 500 - Validation error: Validation isNumeric on siret failed,\nValidation error: Validation len on siren failed,\nValidation error: Validation is on phoneNumber failed,\nValidation error: Validation isEmail on email failed - /api/v1/shops/6126 - PUT ","level":"error","service":"user-service"}
+{"message":"2019-03-09T13:17:34.705Z - 404 - this shop don't exist - /api/v1/shops/999 - PUT ","level":"error","service":"user-service"}
+{"message":"2019-03-09T13:17:34.730Z - 404 - this shop don't exist - /api/v1/shops/999 - DELETE ","level":"error","service":"user-service"}
