@@ -64,7 +64,7 @@ class Products {
       (select product.description from product where product.productId = menu.productId) description,
       (select product.price from product where product.productId = menu.productId) price, 
       (select product.productType from product where product.productId = menu.productId) productType
-      from product
+      from Product
       inner join menu on menu.menuId = product.productId
       where product.productId = ?`, { 
       type: Models.sequelize.QueryTypes.SELECT,
