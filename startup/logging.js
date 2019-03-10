@@ -22,14 +22,14 @@ module.exports = function(app) {
 
   // uncaughtException error handling
   process.on('uncaughtException', (ex) => {
-    console.log('loggign.js uncaughtException ERROR');
+    console.log('loggign.js uncaughtException ERROR', ex);
     winston.error(ex.message, ex);
     setImmediate(() => process.exit(1));
   });
   
   // unhandledRejection error handling pass to uncaughtException error handling
   process.on('unhandledRejection', (ex) => {
-    console.log('logging js uncaughtException ERROR');
+    console.log('logging js uncaughtException ERROR', ex);
     throw ex
   });
 
