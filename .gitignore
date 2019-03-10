@@ -8,13 +8,13 @@ node_modules
 coverage
 
 # swagger api
-public/swagger-doc
+#public/swagger-doc
 
 # public
-public
+#public
 
 # config
 config/config.json
 
 # eslint
-.eslintrc.json
+#.eslintrc.json

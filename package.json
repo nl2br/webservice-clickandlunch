@@ -8,7 +8,7 @@
     "test:reset": "set NODE_ENV=test&& sequelize db:drop && sequelize db:create && sequelize db:migrate && jest ./tests --runInBand --detectOpenHandles --forceExit",
     "server": "set NODE_ENV=development&& nodemon app.js",
     "server:reset": "set NODE_ENV=development&& sequelize db:drop && sequelize db:create && sequelize db:migrate && sequelize db:seed:all && nodemon app.js",
-    "start": "set NODE_ENV=development&& node app.js"
+    "start": "node app.js"
   },
   "engines": {
     "node": "8.11.3"
@@ -35,6 +35,7 @@
     "jsonwebtoken": "~8.5.0",
     "morgan": "~1.9.1",
     "mysql2": "~1.6.4",
+    "pg": "^7.8.2",
     "sequelize": "~4.41.2",
     "swagger-jsdoc": "~3.2.6",
     "winston": "^3.2.1"

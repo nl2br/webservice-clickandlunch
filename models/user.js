@@ -62,7 +62,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     deleted: {
-      type: DataTypes.BOOLEAN,
+      type: DataTypes.TINYINT,
       defaultValue: 0
     },
     // Timestamps

@@ -434,7 +434,7 @@ describe('/api/v1/shops', () => {
         .send({deleted: 1});
 
       expect(res.status).toBe(200);
-      expect(res.body.deleted).toBe(true);
+      expect(res.body.deleted).toBe(1);
     });
 
     it('Should send error : Get shop details for a not existing shop', async () => {
