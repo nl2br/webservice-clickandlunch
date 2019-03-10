@@ -76,7 +76,7 @@ module.exports = (sequelize, DataTypes) => {
     // TODO: créer le modèle BANKACCOUNT
     // TODO: créer le modèle PROFESSIONNAL
     deleted: {
-      type: DataTypes.TINYINT,
+      type: DataTypes.BOOLEAN,
       defaultValue: 0
     },
     createdAt: DataTypes.DATE(6),
