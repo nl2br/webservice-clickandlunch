@@ -77,7 +77,7 @@ module.exports = (sequelize, DataTypes) => {
     // TODO: créer le modèle PROFESSIONNAL
     deleted: {
       type: DataTypes.BOOLEAN,
-      defaultValue: 0
+      defaultValue: false
     },
     createdAt: DataTypes.DATE(6),
     updatedAt: DataTypes.DATE(6)
