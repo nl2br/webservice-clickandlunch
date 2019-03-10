@@ -16,7 +16,7 @@ if(config.use_env_variable){
   sequelize = new Sequelize(
     process.env[config.use_env_variable],
     {
-      dialect: postgres,
+      dialect: 'postgres',
       define: { 
         timestamps: true, 
         freezeTableName: true, 
