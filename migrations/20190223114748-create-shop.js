@@ -3,7 +3,7 @@ const ValidationRegexp = require('../utils/validationRegex');
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('Shop', {
+    return queryInterface.createTable('shop', {
       shopId: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -82,6 +82,6 @@ module.exports = {
       });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('Shop');
+    return queryInterface.dropTable('shop');
   }
 };
