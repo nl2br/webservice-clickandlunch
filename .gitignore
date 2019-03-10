@@ -14,7 +14,7 @@ coverage
 #public
 
 # config
-config/config.json
+#config/config.json
 
 # eslint
 #.eslintrc.json

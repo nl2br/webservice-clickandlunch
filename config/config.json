@@ -1,0 +1,31 @@
+{
+  "development": {
+    "username": "root",
+    "password": "groot",
+    "database": "clickandlunch",
+    "dialect": "mysql",
+    "host": "127.0.0.1",
+    "port": "3306"
+  },
+  "test": {
+    "username": "root",
+    "password": "groot",
+    "database": "clickandlunch_test",
+    "dialect": "mysql",
+    "host": "127.0.0.1",
+    "port": "3306"
+  },
+  "production": {
+    "username": "",
+    "password": "",
+    "database": "",
+    "dialect": "mysql",
+    "host": "127.0.0.1",
+    "port": "3306"
+  },
+  "herokuprod": {
+    "use_env_variable": "DATABASE_URL",
+    "dialect": "postgres"
+  },
+  "jwtPrivateKey": "mysecretkey"
+}
