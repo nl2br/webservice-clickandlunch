@@ -22,8 +22,8 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     deleted: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false
+      type: DataTypes.INTEGER,
+      defaultValue: 0
     },
     createdAt: DataTypes.DATE(6),
     updatedAt: DataTypes.DATE(6)

@@ -6,8 +6,8 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     deleted: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false
+      type: DataTypes.INTEGER,
+      defaultValue: 0
     },
     // Timestamps
     createdAt: DataTypes.DATE(6),
