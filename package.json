@@ -1,7 +1,7 @@
 {
-  "name": "mdsserver",
+  "name": "clickandlunch",
   "version": "1.0.0",
-  "description": "",
+  "description": "API",
   "main": "app.js",
   "scripts": {
     "test": "set NODE_ENV=test&& jest ./tests --runInBand --detectOpenHandles --forceExit",
