@@ -7,7 +7,7 @@ const config = require(__dirname + '/../config/config.json')[env];
 
 const db = {};
 
-// let logConsoleSequelize = process.env.NODE_ENV === 'test' ? true : false;
+// let logConsoleSequelize = process.env.NODE_ENV === 'test' ? true : false; 
 let logConsoleSequelize = process.env.NODE_ENV === 'test' ? false : false;
 
 let sequelize;
