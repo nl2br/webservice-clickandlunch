@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
 
-  let OrderDetail = sequelize.define('OrderDetail', {
+  let OrderDetail = sequelize.define('order_detail', {
     orderId: {
       type: DataTypes.INTEGER,
       primaryKey: true,

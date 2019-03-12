@@ -4,7 +4,7 @@ const config = require('../config/config.json');
 
 module.exports = (sequelize, DataTypes) => {
 
-  let User = sequelize.define('User', {
+  let User = sequelize.define('user', {
     userId: {
       type: DataTypes.INTEGER,
       primaryKey: true,

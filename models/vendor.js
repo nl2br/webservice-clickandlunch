@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
 
-  let Vendor = sequelize.define('Vendor', {
+  let Vendor = sequelize.define('vendor', {
     vendorId: {
       type: DataTypes.INTEGER,
       allowNull: false

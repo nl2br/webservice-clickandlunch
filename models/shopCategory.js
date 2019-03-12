@@ -5,7 +5,7 @@
 
 module.exports = (sequelize, DataTypes) => {
 
-  let ShopCategory = sequelize.define('ShopCategory', {
+  let ShopCategory = sequelize.define('shop_category', {
     shopCategoryId: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -32,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
   // Class Method
   ShopCategory.associate = function (models) {
     ShopCategory.belongsToMany(models.Shop, { // add foreign key to Product
-      through: 'ShopsCategory',
+      through: 'shops_category',
       foreignKey: 'shopCategoryId'
     });
   };

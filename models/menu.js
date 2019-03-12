@@ -5,7 +5,7 @@
 module.exports = (sequelize, DataTypes) => {
 
   // Model definition
-  const Menu = sequelize.define('Menu', {
+  const Menu = sequelize.define('menu', {
     menuId: {
       type: DataTypes.INTEGER,
       primaryKey: true,

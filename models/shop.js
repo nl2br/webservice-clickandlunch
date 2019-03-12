@@ -6,7 +6,7 @@ const ValidationRegexp = require('../utils/validationRegex');
 
 module.exports = (sequelize, DataTypes) => {
 
-  let Shop = sequelize.define('Shop', {
+  let Shop = sequelize.define('shop', {
     shopId: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -90,7 +90,7 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'shopId'
     });
     Shop.belongsToMany(models.ShopCategory, { // add foreign key to Product
-      through: 'ShopsCategory',
+      through: 'shops_category',
       foreignKey: 'shopId'
     });
   };

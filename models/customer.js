@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
 
-  let Customer = sequelize.define('Customer', {
+  let Customer = sequelize.define('customer', {
     customerId: {
       type: DataTypes.INTEGER,
       allowNull: false

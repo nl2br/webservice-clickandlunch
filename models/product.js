@@ -6,7 +6,7 @@ const ValidationRegexp = require('../utils/validationRegex');
 module.exports = (sequelize, DataTypes) => {
 
   // Model definition
-  const Product = sequelize.define('Product', {
+  const Product = sequelize.define('product', {
     productId: {
       type: DataTypes.INTEGER,
       primaryKey: true,
