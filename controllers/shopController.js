@@ -147,7 +147,7 @@ class Shops {
       // rend en mètre
       Models.sequelize.query(`SELECT shopId, name, phoneNumber, email, 
         ROUND(ST_Distance(POINT(?,?), location), 6) * 106000 AS distance
-        FROM Shop
+        FROM shop
         WHERE ST_Distance(POINT(?,?), location) * 106000 < ?
         AND deleted = 0
         ORDER BY distance ASC`, { 
