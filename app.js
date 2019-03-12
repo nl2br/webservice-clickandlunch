@@ -13,7 +13,6 @@ const server = http.createServer(app);
 
 // Server launch
 const port = process.env.PORT || 3000;
-
 if (process.env.NODE_ENV !== 'test') { 
   Db.sequelize.sync().then( () => {
     server.listen(port, () => {
