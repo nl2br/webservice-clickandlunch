@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
 
-  let Order = sequelize.define('order', {
+  let Order = sequelize.define('Order', {
     orderId: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -40,6 +40,8 @@ module.exports = (sequelize, DataTypes) => {
     // Timestamps
     createdAt: DataTypes.DATE(6),
     updatedAt: DataTypes.DATE(6)
+  },{
+    tableName: 'order'
   });
 
   Order.associate = (models) => {

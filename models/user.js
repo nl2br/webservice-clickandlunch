@@ -4,7 +4,7 @@ const config = require('../config/config.json');
 
 module.exports = (sequelize, DataTypes) => {
 
-  let User = sequelize.define('user', {
+  let User = sequelize.define('User', {
     userId: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -68,6 +68,8 @@ module.exports = (sequelize, DataTypes) => {
     // Timestamps
     createdAt: DataTypes.DATE(6),
     updatedAt: DataTypes.DATE(6)
+  },{
+    tableName: 'user'
   });
 
   // Adding an instance level method

@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
 
-  let Vendor = sequelize.define('vendor', {
+  let Vendor = sequelize.define('Vendor', {
     vendorId: {
       type: DataTypes.INTEGER,
       allowNull: false
@@ -12,6 +12,8 @@ module.exports = (sequelize, DataTypes) => {
     // Timestamps
     createdAt: DataTypes.DATE(6),
     updatedAt: DataTypes.DATE(6)
+  },{
+    tableName: 'vendor'
   });
 
   Vendor.associate = function (models) {

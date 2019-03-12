@@ -6,7 +6,7 @@ const ValidationRegexp = require('../utils/validationRegex');
 
 module.exports = (sequelize, DataTypes) => {
 
-  let Shop = sequelize.define('shop', {
+  let Shop = sequelize.define('Shop', {
     shopId: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -81,6 +81,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     createdAt: DataTypes.DATE(6),
     updatedAt: DataTypes.DATE(6)
+  },{
+    tableName: 'shop'
   });
 
 

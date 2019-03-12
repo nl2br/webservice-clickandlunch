@@ -6,7 +6,7 @@ const ValidationRegexp = require('../utils/validationRegex');
 module.exports = (sequelize, DataTypes) => {
 
   // Model definition
-  const Product = sequelize.define('product', {
+  const Product = sequelize.define('Product', {
     productId: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -59,6 +59,8 @@ module.exports = (sequelize, DataTypes) => {
     // Timestamps
     createdAt: DataTypes.DATE(6),
     updatedAt: DataTypes.DATE(6)
+  },{
+    tableName: 'product'
   });
 
   // Class Method

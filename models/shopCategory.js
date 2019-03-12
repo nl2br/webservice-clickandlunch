@@ -5,7 +5,7 @@
 
 module.exports = (sequelize, DataTypes) => {
 
-  let ShopCategory = sequelize.define('shop_category', {
+  let ShopCategory = sequelize.define('ShopCategory', {
     shopCategoryId: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -27,6 +27,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     createdAt: DataTypes.DATE(6),
     updatedAt: DataTypes.DATE(6)
+  },{
+    tableName: 'shop_category'
   });
 
   // Class Method

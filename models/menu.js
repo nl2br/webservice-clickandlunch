@@ -5,7 +5,7 @@
 module.exports = (sequelize, DataTypes) => {
 
   // Model definition
-  const Menu = sequelize.define('menu', {
+  const Menu = sequelize.define('Menu', {
     menuId: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -19,6 +19,8 @@ module.exports = (sequelize, DataTypes) => {
     // Timestamps
     createdAt: DataTypes.DATE(6),
     updatedAt: DataTypes.DATE(6)
+  },{
+    tableName: 'menu'
   });
 
   Menu.removeAttribute('id');

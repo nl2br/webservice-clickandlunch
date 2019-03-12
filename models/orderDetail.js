@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
 
-  let OrderDetail = sequelize.define('order_detail', {
+  let OrderDetail = sequelize.define('OrderDetail', {
     orderId: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -27,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
     createdAt: DataTypes.DATE(6),
     updatedAt: DataTypes.DATE(6)
   },{
-    tableName: 'orderDetail'
+    tableName: 'order_detail'
   });
 
   OrderDetail.removeAttribute('id');
