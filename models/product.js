@@ -11,7 +11,8 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
-      allowNull: false
+      allowNull: false,
+      field: 'product_id',
     },
     name: {
       type: DataTypes.STRING,
@@ -42,7 +43,8 @@ module.exports = (sequelize, DataTypes) => {
     // TODO: créer un enum js productType plutot qu'un enum MySQL
     productType: {
       type: DataTypes.ENUM, 
-      values: ['STARTER', 'DISH', 'DESSERT','DRINK','OTHER','MENU']
+      values: ['STARTER', 'DISH', 'DESSERT','DRINK','OTHER','MENU'],
+      field: 'product_type',
     },
     // TODO: créer le modèle PHOTO puis ajouter les relations
     // shopId: {
@@ -55,11 +57,8 @@ module.exports = (sequelize, DataTypes) => {
     deleted: {
       type: DataTypes.INTEGER,
       defaultValue: 0
-    },
-    // Timestamps
-    createdAt: DataTypes.DATE(6),
-    updatedAt: DataTypes.DATE(6)
-  },{
+    }
+  }, {
     tableName: 'product'
   });
 

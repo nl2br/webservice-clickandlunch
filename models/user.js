@@ -9,7 +9,8 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
-      allowNull: false
+      allowNull: false,
+      field: 'user_id',
     },
     firstname: {
       type: DataTypes.STRING,
@@ -34,7 +35,8 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         is: ValidationRegexp.phone()
-      }
+      },
+      field: 'phone_number',
     },
     email: {
       type: DataTypes.STRING,
@@ -64,10 +66,7 @@ module.exports = (sequelize, DataTypes) => {
     deleted: {
       type: DataTypes.INTEGER,
       defaultValue: 0
-    },
-    // Timestamps
-    createdAt: DataTypes.DATE(6),
-    updatedAt: DataTypes.DATE(6)
+    }
   },{
     tableName: 'user'
   });

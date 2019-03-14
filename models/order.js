@@ -5,7 +5,8 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
-      allowNull: false
+      allowNull: false,
+      field: 'order_id',
     },
     date: {
       type: DataTypes.DATE,
@@ -20,7 +21,8 @@ module.exports = (sequelize, DataTypes) => {
       // references: {
       //   model: 'Customer',
       //   key: 'customer_id'
-      // }
+      // },
+      field: 'customer_id',
     },
     shopId: {
       type: DataTypes.INTEGER,
@@ -31,16 +33,14 @@ module.exports = (sequelize, DataTypes) => {
       // references: {
       //   model: 'Shop',
       //   key: 'shop_id'
-      // }
+      // },
+      field: 'shop_id',
     },
     deleted: {
       type: DataTypes.INTEGER,
       defaultValue: 0
-    },
-    // Timestamps
-    createdAt: DataTypes.DATE(6),
-    updatedAt: DataTypes.DATE(6)
-  },{
+    }
+  }, {
     tableName: 'order'
   });
 

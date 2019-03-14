@@ -75,21 +75,41 @@ class Shops {
   }
 
   static getShopsByName(searchTerm) {
+       
     let name = searchTerm.slice(1,-1);
+
     return new Promise((resolve, reject) => {
-      Models.Shop.findAll({
-        where: {
-          $or: [
-            { 'name': { like: '%' + name.trim() + '%' } }
-          ]
-        }
-      },{raw: true})
-        .then(result => {
-          if (Array.isArray(result) && !result.length) {
-            reject({message: 'No shops Found for the given name'});
+
+      if(process.env.NODE_ENV === 'testpostgres' || process.env.NODE_ENV === 'herokuprod'){
+        Models.Shop.findAll({
+          where: {
+            $or: [
+              { 'name': { ilike: '%' + name.trim() + '%' } }
+            ]
           }
-          resolve(result);
-        })
+        },{raw: true})
+          .then(result => {
+            if (Array.isArray(result) && !result.length) {
+              reject({message: 'No shops Found for the given name'});
+            }
+            resolve(result);
+          })
+      }else{
+        Models.Shop.findAll({
+          where: {
+            $or: [
+              { 'name': { like: '%' + name.trim() + '%' } }
+            ]
+          }
+        },{raw: true})
+          .then(result => {
+            if (Array.isArray(result) && !result.length) {
+              reject({message: 'No shops Found for the given name'});
+            }
+            resolve(result);
+          })
+      }
+      
     });
   }
 
@@ -145,21 +165,34 @@ class Shops {
       const range = query.range ? query.range : 1000; // distance à 1km par defaut
       // Note x is longitude and y is latitude
       // rend en mètre
-      Models.sequelize.query(`SELECT shopId, name, phoneNumber, email, 
-        ROUND(ST_Distance(POINT(?,?), location), 6) * 106000 AS distance
-        FROM shop
-        WHERE ST_Distance(POINT(?,?), location) * 106000 < ?
-        AND deleted = 0
-        ORDER BY distance ASC`, { 
-        type: Models.sequelize.QueryTypes.SELECT,
-        replacements: [query.lon, query.lat, query.lon, query.lat, range]
-      })
-        .then(result => {
-          if (Array.isArray(result) && !result.length) {
-            reject({message: 'No shops Found arround the coordinates'});
-          }
-          resolve(result);
+      if(process.env.NODE_ENV === 'testpostgres' || process.env.NODE_ENV === 'herokuprod'){
+        Models.sequelize.query(`SELECT shop_id, name, phone_number, email, ST_Distance('SRID=4326;POINT(${query.lon} ${query.lat})'::geometry, location::geometry) * 106000 AS distance FROM shop WHERE ST_Distance('SRID=4326;POINT(${query.lon} ${query.lat})'::geometry, location::geometry) * 106000 < ${range} AND deleted = 0 ORDER BY distance ASC`, { 
+          type: Models.sequelize.QueryTypes.SELECT,
         })
+          .then(result => {
+            if (Array.isArray(result) && !result.length) {
+              reject({message: 'No shops Found arround the coordinates'});
+            }
+            resolve(result);
+          })
+      }else{
+        Models.sequelize.query(`SELECT shop_id, name, phone_number, email,
+          ROUND(ST_Distance(POINT(?,?), location), 6) * 106000 AS distance
+          FROM shop
+          WHERE ST_Distance(POINT(?,?), location) * 106000 < ?
+          AND deleted = 0
+          ORDER BY distance ASC`, { 
+          type: Models.sequelize.QueryTypes.SELECT,
+          replacements: [query.lon, query.lat, query.lon, query.lat, range]
+        })
+          .then(result => {
+            if (Array.isArray(result) && !result.length) {
+              reject({message: 'No shops Found arround the coordinates'});
+            }
+            resolve(result);
+          })
+      }
+
     });
   }
 
@@ -292,7 +325,11 @@ class Shops {
         crs: {type: 'name', properties: { name: 'EPSG:4326'}}
       }
     }else{
-      location = shop.location
+      location = {
+        type: 'Point',
+        coordinates: [shop.location.coordinates[0], shop.location.coordinates[1]],
+        crs: {type: 'name', properties: { name: 'EPSG:4326'}}
+      }
     }
     
     await shop.update({

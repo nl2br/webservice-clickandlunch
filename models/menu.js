@@ -9,17 +9,16 @@ module.exports = (sequelize, DataTypes) => {
     menuId: {
       type: DataTypes.INTEGER,
       primaryKey: true,
-      allowNull: false
+      allowNull: false,
+      field: 'menu_id',
     },
     productId: {
       type: DataTypes.INTEGER,
       primaryKey: true,
-      allowNull: false
-    },
-    // Timestamps
-    createdAt: DataTypes.DATE(6),
-    updatedAt: DataTypes.DATE(6)
-  },{
+      allowNull: false,
+      field: 'product_id',
+    }
+  }, {
     tableName: 'menu'
   });
 

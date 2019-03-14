@@ -10,7 +10,8 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
-      allowNull: false
+      allowNull: false,
+      field: 'shop_category_id',
     },
     name: {
       type: DataTypes.STRING,
@@ -24,18 +25,16 @@ module.exports = (sequelize, DataTypes) => {
     deleted: {
       type: DataTypes.INTEGER,
       defaultValue: 0
-    },
-    createdAt: DataTypes.DATE(6),
-    updatedAt: DataTypes.DATE(6)
-  },{
-    tableName: 'shop_category'
+    }
+  }, {
+    tableName: 'shopcategory'
   });
 
   // Class Method
   ShopCategory.associate = function (models) {
     ShopCategory.belongsToMany(models.Shop, { // add foreign key to Product
-      through: 'shops_category',
-      foreignKey: 'shopCategoryId'
+      through: 'shopscategory',
+      foreignKey: 'shop_category_id'
     });
   };
 

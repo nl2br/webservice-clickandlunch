@@ -59,14 +59,14 @@ class Products {
   }
 
   static getMenuProducts(menuId) {
-    const listProducts = Models.sequelize.query(`select menu.productId, 
-      (select product.name from product where product.productId = menu.productId) name,
-      (select product.description from product where product.productId = menu.productId) description,
-      (select product.price from product where product.productId = menu.productId) price, 
-      (select product.productType from product where product.productId = menu.productId) productType
+    const listProducts = Models.sequelize.query(`select menu.product_id, 
+      (select product.name from product where product.product_id = menu.product_id) name,
+      (select product.description from product where product.product_id = menu.product_id) description,
+      (select product.price from product where product.product_id = menu.product_id) price, 
+      (select product.productType from product where product.product_id = menu.product_id) productType
       from product
-      inner join menu on menu.menuId = product.productId
-      where product.productId = ?`, { 
+      inner join menu on menu.menu_id = product.product_id
+      where product.product_id = ?`, { 
       type: Models.sequelize.QueryTypes.SELECT,
       replacements: [menuId]
     });

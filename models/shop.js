@@ -11,7 +11,8 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
-      allowNull: false
+      allowNull: false,
+      field: 'shop_id',
     },
     name: {
       type: DataTypes.STRING,
@@ -43,7 +44,8 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         is: ValidationRegexp.phone()
-      }
+      },
+      field: 'phone_number',
     },
     email: {
       type: DataTypes.STRING,
@@ -71,17 +73,13 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     // TODO: créer le modèle PHOTO puis ajouter les relations
-    // TODO: créer le modèle SHOPCATEGORY
     // TODO: créer le modèle CONFIGURATION
     // TODO: créer le modèle BANKACCOUNT
-    // TODO: créer le modèle PROFESSIONNAL
     deleted: {
       type: DataTypes.INTEGER,
       defaultValue: 0
-    },
-    createdAt: DataTypes.DATE(6),
-    updatedAt: DataTypes.DATE(6)
-  },{
+    }
+  }, {
     tableName: 'shop'
   });
 
@@ -89,11 +87,11 @@ module.exports = (sequelize, DataTypes) => {
   // Class Method
   Shop.associate = function (models) {
     Shop.hasMany(models.Product, { // add foreign key to Product
-      foreignKey: 'shopId'
+      foreignKey: 'shop_id'
     });
     Shop.belongsToMany(models.ShopCategory, { // add foreign key to Product
-      through: 'shops_category',
-      foreignKey: 'shopId'
+      through: 'shopscategory',
+      foreignKey: 'shop_id'
     });
   };
 

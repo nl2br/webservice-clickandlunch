@@ -4,11 +4,12 @@ const Sequelize = require('sequelize');
 const basename = path.basename(module.filename);
 const env = process.env.NODE_ENV || 'development';
 const config = require(__dirname + '/../config/config.json')[env];
+const decamelize = require('decamelize');
 
 const db = {};
 
-// let logConsoleSequelize = process.env.NODE_ENV === 'test' ? true : false; 
-let logConsoleSequelize = process.env.NODE_ENV === 'test' ? false : false;
+// let logConsoleSequelize = process.env.NODE_ENV === 'test' ? true : false;
+let logConsoleSequelize = process.env.NODE_ENV === 'testpostgres' ? false : false;
 
 let sequelize;
 // on initialize sequelize avec postgres si ENV = herokuprod sinon avec MySQL
@@ -38,7 +39,7 @@ if(config.use_env_variable){
       define: { 
         timestamps: true, 
         freezeTableName: true, 
-        underscored: false
+        underscored: true
       },
       timezone: 'Europe/Paris',
       logging: logConsoleSequelize
@@ -51,6 +52,15 @@ if(config.use_env_variable){
 console.log(`ENV to "${process.env.NODE_ENV}"`);
   
 
+// convert camelCase fields to underscored
+// sequelize.addHook('beforeDefine', (attributes) => {
+//   Object.keys(attributes).forEach((key) => {
+//     // typeof check provided by @devalnor 
+//     if (typeof attributes[key] !== "function" ) {
+//        attributes[key].field = decamelize(key);
+//     }
+//   });
+// });
 
 fs
   .readdirSync(__dirname)
@@ -68,7 +78,10 @@ Object.keys(db).forEach((modelName) => {
   }
 });
 
+
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
+
+
 
 module.exports = db;
