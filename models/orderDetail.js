@@ -8,7 +8,8 @@ module.exports = (sequelize, DataTypes) => {
       // references: {
       //   model: 'Order',
       //   key: 'order_id'
-      // }
+      // },
+      field: 'order_id',
     },
     productId: {
       type: DataTypes.INTEGER,
@@ -17,17 +18,15 @@ module.exports = (sequelize, DataTypes) => {
       // references: {
       //   model: 'Product',
       //   key: 'product_id'
-      // }
+      // },
+      field: 'product_id',
     },
     quantity: {
       type: DataTypes.INTEGER,
       defaultValue: 1,
-    },
-    // Timestamps
-    createdAt: DataTypes.DATE(6),
-    updatedAt: DataTypes.DATE(6)
+    }
   },{
-    tableName: 'orderDetail'
+    tableName: 'orderdetail'
   });
 
   OrderDetail.removeAttribute('id');

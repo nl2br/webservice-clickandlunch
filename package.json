@@ -6,6 +6,7 @@
   "scripts": {
     "test": "set NODE_ENV=test&& jest ./tests --runInBand --detectOpenHandles --forceExit",
     "test:reset": "set NODE_ENV=test&& sequelize db:drop && sequelize db:create && sequelize db:migrate && jest ./tests --runInBand --detectOpenHandles --forceExit",
+    "testpg": "set NODE_ENV=testpostgres&& jest ./tests --runInBand --detectOpenHandles --forceExit",
     "server": "set NODE_ENV=development&& nodemon app.js",
     "server:reset": "set NODE_ENV=development&& sequelize db:drop && sequelize db:create && sequelize db:migrate && sequelize db:seed:all && nodemon app.js",
     "start": "node app.js"
@@ -37,6 +38,7 @@
     "mysql2": "~1.6.4",
     "pg": "^7.8.2",
     "sequelize": "~4.41.2",
+    "sequelize-cli": "^5.4.0",
     "swagger-jsdoc": "~3.2.6",
     "winston": "^3.2.1"
   }

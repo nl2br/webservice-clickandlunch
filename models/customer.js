@@ -3,15 +3,15 @@ module.exports = (sequelize, DataTypes) => {
   let Customer = sequelize.define('Customer', {
     customerId: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: false,
+      field: 'customer_id',
     },
     deleted: {
-      type: DataTypes.TINYINT,
+      type: DataTypes.INTEGER,
       defaultValue: 0
-    },
-    // Timestamps
-    createdAt: DataTypes.DATE(6),
-    updatedAt: DataTypes.DATE(6)
+    }
+  }, {
+    tableName: 'customer'
   });
 
   Customer.associate = function (models) {
@@ -23,8 +23,8 @@ module.exports = (sequelize, DataTypes) => {
     });
 
     Customer.hasMany(models.Order, { // add foreign key to order
-      foreignKey: 'customerId',
-      sourceKey: 'customerId'
+      foreignKey: 'customer_id',
+      sourceKey: 'customer_id'
     });
 
   };
