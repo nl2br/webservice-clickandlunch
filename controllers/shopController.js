@@ -79,6 +79,25 @@ class Shops {
     let name = searchTerm.slice(1,-1);
 
     return new Promise((resolve, reject) => {
+      // FIXME: faire fonctionner la même requête sur postgres et mysql 
+      // Models.Shop.findAll({
+      //   where: {
+      //     $and: [
+      //       Models.sequelize.where(
+      //         Models.sequelize.fn(
+      //           'lower', Models.sequelize.col('name')
+      //         ),
+      //         { like: '%' + name.trim() + '%' } 
+      //       ),
+      //     ]
+      //   }
+      // },{raw: true})
+      //   .then(result => {
+      //     if (Array.isArray(result) && !result.length) {
+      //       reject({message: 'No shops Found for the given name'});
+      //     }
+      //     resolve(result);
+      //   })
 
       if(process.env.NODE_ENV === 'testpostgres' || process.env.NODE_ENV === 'herokuprod'){
         Models.Shop.findAll({

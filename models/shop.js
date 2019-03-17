@@ -79,8 +79,15 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       defaultValue: 0
     }
-  }, {
-    tableName: 'shop'
+  },{
+    tableName: 'shop',
+    // FIXME: using mysql 'like' with postgres
+    // indexes: [{
+    //   name: 'name_search',
+    //   unique: true,
+    //   fields: [sequelize.fn('lower', sequelize.col('name'))], // postgres index for unsensitive case
+    //   operator: 'varchar_pattern_ops'
+    // }]
   });
 
 
