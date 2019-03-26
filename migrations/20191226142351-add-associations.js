@@ -19,6 +19,22 @@ module.exports = {
       .then(() => {
         // Customer belongsto User
         return queryInterface.addColumn(
+          'shop_photo', // name of Source model
+          'shop_id', // name of the key we're adding 
+          {
+            type: Sequelize.INTEGER,
+            references: {
+              model: 'Shop', // name of Target model
+              key: 'shopId', // key in Target model that we're referencing
+            },
+            onUpdate: 'CASCADE',
+            onDelete: 'CASCADE',
+          }
+        );
+      })
+      .then(() => {
+        // Customer belongsto User
+        return queryInterface.addColumn(
           'Customer', // name of Source model
           'customerId', // name of the key we're adding 
           {

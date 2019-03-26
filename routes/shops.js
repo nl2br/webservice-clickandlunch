@@ -10,6 +10,10 @@ const auth = require('../middleware/auth');
 const role = require('../middleware/role');
 const asyncMiddleware = require('../middleware/async');
 const inputValidation = require('../middleware/inputValidation');
+const multer  = require('multer');
+
+const multipleUpload = multer().array('file');
+const singleUpload = multer().single('file');
 
 /**
  * Listing all shop (all user)
@@ -56,7 +60,7 @@ router.get('/:shopid/products/:productid', inputValidation('get', 'shops'), asyn
  * Create a new shop (admin, pro user)
  * @method post/shops
  */
-router.post('/', [auth, role('VENDOR', 'ADMIN'), inputValidation('post', 'shops')], asyncMiddleware(Shops.postShop));
+router.post('/', [auth, role('VENDOR', 'ADMIN'), inputValidation('post', 'shops'), singleUpload], asyncMiddleware(Shops.postShop));
 
 /**
  * Modify details for a given shop (admin, pro user)
@@ -351,30 +355,56 @@ module.exports = router;
  *     description: Create a new shop
  *     produces:
  *       - application/json
+ *     consumes:
+ *       - multipart/form-data
  *     parameters:
- *       - name: shop
- *         description: Shop object
- *         in: body
+ *       - name: name
+ *         in: formData
+ *         description: name of the shop
  *         required: true
- *         properties:
- *           name:
- *             type: string
- *           siret:
- *             type: string
- *           siren:
- *             type: string
- *           phoneNumber:
- *             type: string
- *           email:
- *             type: string
- *           longitude:
- *             type: number
- *           latitude:
- *             type: number
- *           categories:
- *             type: array
- *             items:
- *                type: number
+ *         type: string
+ *       - name: siret
+ *         in: formData
+ *         description: siret of the shop
+ *         required: true
+ *         type: string
+ *       - name: siren
+ *         in: formData
+ *         description: siren of the shop
+ *         required: true
+ *       - name: phoneNumber
+ *         in: formData
+ *         description: phone number of the shop
+ *         required: true
+ *         type: string
+ *       - name: email
+ *         in: formData
+ *         description: email of the shop
+ *         required: true
+ *         type: string
+ *       - name: longitude
+ *         in: formData
+ *         description: longitude of the shop
+ *         required: true
+ *         type: string
+ *       - name: latitude
+ *         in: formData
+ *         description: latitude of the shop
+ *         required: true
+ *         type: string
+ *       - name: categories
+ *         in: formData
+ *         description: id category, id category, ...
+ *         required: false
+ *         type: array
+ *         items :
+ *            type: integer
+ *         default: [1,2]   
+ *       - name: file
+ *         in: formData
+ *         description: The uploaded file data
+ *         required: false
+ *         type: file
  *     responses:
  *       201:
  *         description: Return saved shop
@@ -383,6 +413,48 @@ module.exports = router;
  *     security:
  *       - JWT: []
  */
+
+// /**
+//  * @swagger
+//  * /api/v1/shops:
+//  *   post:
+//  *     tags:
+//  *       - Shop
+//  *     description: Create a new shop
+//  *     produces:
+//  *       - application/json
+//  *     parameters:
+//  *       - name: shop
+//  *         description: Shop object
+//  *         in: body
+//  *         required: true
+//  *         properties:
+//  *           name:
+//  *             type: string
+//  *           siret:
+//  *             type: string
+//  *           siren:
+//  *             type: string
+//  *           phoneNumber:
+//  *             type: string
+//  *           email:
+//  *             type: string
+//  *           longitude:
+//  *             type: number
+//  *           latitude:
+//  *             type: number
+//  *           categories:
+//  *             type: array
+//  *             items:
+//  *                type: number
+//  *     responses:
+//  *       201:
+//  *         description: Return saved shop
+//  *       400:
+//  *         description: Internal error
+//  *     security:
+//  *       - JWT: []
+//  */
 
 /**
  * @swagger

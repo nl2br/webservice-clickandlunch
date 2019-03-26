@@ -3,8 +3,7 @@
  */
 
 const Models = require('../models/');
-const asyncMiddleware = require('../middleware/async');
-const Joi = require('joi');
+const {uploadFile, requestFile} = require('../config/as3');
 
 class Shops {
   // TODO: Listing all shop for a given City id / @function get/:id/shops 
@@ -50,6 +49,7 @@ class Shops {
           let pages = Math.ceil(data.count / limit);
           offset = limit * (page - 1);
           return Models.Shop.findAll({
+            include: { model: Models.ShopPhoto },
             where: {deleted: 0},
             limit: limit,
             offset: offset
@@ -60,6 +60,7 @@ class Shops {
                 err.status = 404;
                 return next(err);
               }
+              console.log('SHOP+PHOTO',JSON.stringify(result.ShopPhotos));
               res.status(200).json({'result': result, 'count': data.count, 'pages': pages});
             })
         })
@@ -79,6 +80,25 @@ class Shops {
     let name = searchTerm.slice(1,-1);
 
     return new Promise((resolve, reject) => {
+      // FIXME: faire fonctionner la même requête sur postgres et mysql 
+      // Models.Shop.findAll({
+      //   where: {
+      //     $and: [
+      //       Models.sequelize.where(
+      //         Models.sequelize.fn(
+      //           'lower', Models.sequelize.col('name')
+      //         ),
+      //         { like: '%' + name.trim() + '%' } 
+      //       ),
+      //     ]
+      //   }
+      // },{raw: true})
+      //   .then(result => {
+      //     if (Array.isArray(result) && !result.length) {
+      //       reject({message: 'No shops Found for the given name'});
+      //     }
+      //     resolve(result);
+      //   })
 
       if(process.env.NODE_ENV === 'testpostgres' || process.env.NODE_ENV === 'herokuprod'){
         Models.Shop.findAll({
@@ -86,7 +106,8 @@ class Shops {
             $or: [
               { 'name': { ilike: '%' + name.trim() + '%' } }
             ]
-          }
+          },
+          include: [{ model: Models.ShopPhoto }, {model: Models.ShopCategory}]
         },{raw: true})
           .then(result => {
             if (Array.isArray(result) && !result.length) {
@@ -100,7 +121,8 @@ class Shops {
             $or: [
               { 'name': { like: '%' + name.trim() + '%' } }
             ]
-          }
+          },
+          include: [{ model: Models.ShopPhoto }, {model: Models.ShopCategory}]
         },{raw: true})
           .then(result => {
             if (Array.isArray(result) && !result.length) {
@@ -119,9 +141,6 @@ class Shops {
     let offset = 0;
 
     Models.Shop.findAndCountAll({
-      include: [{
-        model: Models.ShopCategory
-      }],
       where: {deleted: 0}
     },{raw: true})
       .then((data) => {
@@ -135,7 +154,7 @@ class Shops {
             required: true,
             where: {shopCategoryId: req.params.idCategory},
             attributes: ['shopCategoryId', 'name']
-          }],
+          },{ model: Models.ShopPhoto }],
           where: {deleted: 0},
           limit: limit,
           offset: offset
@@ -192,7 +211,6 @@ class Shops {
             resolve(result);
           })
       }
-
     });
   }
 
@@ -205,7 +223,9 @@ class Shops {
    */
   static getShop(req, res, next) {
 
-    Models.Shop.findByPk(req.params.id)
+    Models.Shop.findByPk(req.params.id,{
+      include: [{ model: Models.ShopPhoto }, {model: Models.ShopCategory}]
+    })
       .then(result => {
         if (!result) {
           const err = new Error('No Shop Found for the given id');
@@ -268,9 +288,9 @@ class Shops {
    * @param {*} req 
    * @param {*} res 
    */
-  static postShop(req, res, next) {
-    // TODO: JOI sur longitude latitude 
-    return Models.Shop.create({
+  static async postShop(req, res, next) {
+
+    let shop = await Models.Shop.create({
       name: req.body.name,
       siret: req.body.siret,
       siren: req.body.siren,
@@ -278,29 +298,53 @@ class Shops {
       email: req.body.email,
       location: {
         type: 'Point',
-        coordinates: [req.body.longitude,req.body.latitude],
+        coordinates: [req.body.longitude, req.body.latitude],
         crs: {type: 'name', properties: { name: 'EPSG:4326'}}
       }
     })
-      .then(result => {
-        // le shop a des categories associées
-        if(req.body.hasOwnProperty('categories') && req.body.categories.length){
-          // on ajoute les categories au shop
-          return result.addShopCategories(req.body.categories)
-            .then( () => {
-            // pour renvoyé le shop et c categories, on recherche le shop et sa categorie
-              return Models.Shop.findByPk(result.get('shopId'), {
-                include: [ { model: Models.ShopCategory, through: 'ShopsCategory' } ]
-              });
-            });
-        }else{
-          return result;
-        }
-      })
-      .then(result => {
-        res.status(201).json(result);
-      })
+
+    // for the final response
+    let include = [];
+
+    // if photo was posted
+    if(req.file){
+      // upload the photo to S3
+      const data = await uploadFile(req.file, 'shop' + shop.get('shopId'));
+      // add the url from S3 to DB
+      await Models.ShopPhoto.create({
+        url: data.Location,
+        shopId: shop.get('shopId')
+      });
+      // for sending the photo's url
+      include.push({model: Models.ShopPhoto})
+    }
+
+    // shop has associated categorie(s)
+    if('categories' in req.body && req.body.categories.length){
+      let categoriesArray = req.body.categories.split ? req.body.categories.split(',').map(x => Number(x.replace(/["']+/g, ''))) : req.body.categories;
+      // on ajoute les categories au shop
+      for(const category of categoriesArray){
+        let cat = await Models.ShopCategory.findByPk(category);
+        await shop.addShopCategory(cat);
+      }
+
+      // for sending the categories of the shop
+      include.push({ model: Models.ShopCategory, through: 'ShopsCategory'})
+    }
+
+    // get all shop information for response to the client
+    shop = await Models.Shop.findByPk(shop.get('shopId'), {
+      include: include
+    });
+    if(!shop){
+      const err = new Error('error on finding the shop');
+      err.status = 404;
+      return next(err);
+    }
+
+    res.status(201).json(shop);
   }
+  
 
   /**
    * @function putShop
@@ -309,6 +353,7 @@ class Shops {
    * @param {int} req.params.id id du shop
    * @param {*} res 
    */
+  // TODO: add photo to the modification
   static async putShop(req, res, next) {
     let shop = await Models.Shop.findByPk(req.params.id)
     if(!shop) {
@@ -351,6 +396,7 @@ class Shops {
    * @param {int} req.params.id id du shop
    * @param {*} res 
    */
+  // TODO: add photo to the delete
   static deleteShop(req, res, next) {
     Models.Shop.findById(req.params.id)
       .then(shop => {

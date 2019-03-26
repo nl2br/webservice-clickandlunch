@@ -248,7 +248,7 @@ describe('/api/v1/shops', () => {
           siret: '12345678912345',
           siren: '123456789',
           phoneNumber: '0678895645',
-          email: 'ttest23@test.com',
+          email: 'poiuyt@test.com',
           longitude: 11,
           latitude: 9
         });
@@ -258,6 +258,75 @@ describe('/api/v1/shops', () => {
       expect(res.status).toBe(201);
       expect(shop).not.toBeNull();
       expect(res.body.name).toEqual(shop.dataValues.name);
+    });
+
+    it('Save a shop with categories', async () => {
+      
+      // create the categories
+      let category = await Models.ShopCategory.create({name: 'asiatique'});
+
+      // save a new shop
+      const res = await request(server)
+        .post('/api/v1/shops')
+        .set('x-auth-token', token)
+        .send({
+          name: 'My test Shop',
+          siret: '12345678912345',
+          siren: '123456789',
+          phoneNumber: '0678895645',
+          email: 'ttest23@test.com',
+          longitude: 11,
+          latitude: 9,
+          // categories: ["1","2","3"]
+          categories: [category.get('shopCategoryId')]
+        });
+
+      // find it
+      const shop = await Models.Shop.findByPk(res.body.shopId, {
+        include: [ { model: Models.ShopCategory, through: 'ShopsCategory' } ]
+      });
+
+      // find associated categories
+      shop.getShopCategories()
+        .then( categories => {
+          categories.forEach(categorie => {
+            expect(categorie.dataValues.name).toBe('asiatique');
+          });
+        })
+        .catch(error => {
+          console.log('error:' ,error);
+        });
+
+      expect(res.status).toBe(201);
+      expect(shop).not.toBeNull();
+      expect(res.body.name).toEqual(shop.dataValues.name);
+    });
+
+    it('Save a shop with photo', async () => {
+
+      // upload the file
+      const filePath = `${__dirname}/../test_files/resto-700x525.jpg`;
+
+      // save a new shop
+      const res = await request(server)
+        .post('/api/v1/shops')
+        .set('x-auth-token', token)
+        .attach('file', filePath)
+        .field('name','My test Shop')
+        .field('siret','12345678912345')
+        .field('siren','123456789')
+        .field('phoneNumber','0678895645')
+        .field('email','pertyu@test.com')
+        .field('longitude',11)
+        .field('latitude',9)
+      
+      // search it
+      const shop = await Models.Shop.findById(res.body.shopId);
+      // find photo
+      let photo = await shop.getShopPhotos();
+
+      expect(res.status).toBe(201);
+      expect(photo).toBeTruthy();
     });
 
     it('Should return 401 cause user is not logged', async () => {
@@ -454,9 +523,6 @@ describe('/api/v1/shops', () => {
       const category = await Models.ShopCategory.create({
         name: 'Japonais'
       });
-      const category2 = await Models.ShopCategory.create({
-        name: 'Portuguesh'
-      });
 
       const shop1 = await Models.Shop.create({
         name: 'JapShop',
@@ -471,12 +537,11 @@ describe('/api/v1/shops', () => {
         }
       });
 
-      await shop1.setShopCategories([category.get('shopCategoryId'), category2.get('shopCategoryId')]);
+      await shop1.addShopCategory([category.get('shopCategoryId')]);
 
       const res = await request(server).get('/api/v1/shops/p/1/category/' + category.get('shopCategoryId'));
-      // console.log(res.body.result[0]);
-      // console.log(res.body.result[0].ShopCategories);
-      expect(res.body.count).toBe(2);
+
+      expect(res.body.count).toBe(1);
 
     });
 

@@ -35,5 +35,9 @@
     "use_env_variable": "DATABASE_URL",
     "dialect": "postgres"
   },
-  "jwtPrivateKey": "mysecretkey"
+  "jwtPrivateKey": "mysecretkey",
+  "S3": {
+    "accessKeyId": "AKIAJJXQF7GUVM7SBIRA",
+    "secretAccessKey": "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"
+  }
 }

@@ -50,17 +50,7 @@ if(config.use_env_variable){
 }
 
 console.log(`ENV to "${process.env.NODE_ENV}"`);
-  
 
-// convert camelCase fields to underscored
-// sequelize.addHook('beforeDefine', (attributes) => {
-//   Object.keys(attributes).forEach((key) => {
-//     // typeof check provided by @devalnor 
-//     if (typeof attributes[key] !== "function" ) {
-//        attributes[key].field = decamelize(key);
-//     }
-//   });
-// });
 
 fs
   .readdirSync(__dirname)
