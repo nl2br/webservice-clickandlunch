@@ -30,6 +30,7 @@
   "jwtPrivateKey": "",
   "S3": {
     "accessKeyId": "",
-    "secretAccessKey": ""
+    "secretAccessKey": "",
+    "bucket": ""
   }
 }
