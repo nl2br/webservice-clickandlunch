@@ -46,14 +46,11 @@ module.exports = (sequelize, DataTypes) => {
       values: ['STARTER', 'DISH', 'DESSERT','DRINK','OTHER','MENU'],
       field: 'product_type',
     },
+    shopId: {
+      type: DataTypes.INTEGER,
+      field: 'shop_id'
+    },
     // TODO: créer le modèle PHOTO puis ajouter les relations
-    // shopId: {
-    //   type: DataTypes.INTEGER,
-    //   // references: {
-    //   //   model: 'Shop',
-    //   //   key: 'shop_id'
-    //   // }
-    // },
     deleted: {
       type: DataTypes.INTEGER,
       defaultValue: 0
@@ -65,14 +62,11 @@ module.exports = (sequelize, DataTypes) => {
   // Class Method
   Product.associate = function (models) {
 
-    /**
-     * Ajout d'une contrainte a produit :
-     * Lorsqu'on delete un shop, ses produits associées sont supprimés
-     */
     Product.belongsTo(models.Shop, { // add shop_id to product
-      foreignKey: 'shopId',
+      foreignKey: 'shop_id',
       onDelete: 'CASCADE' // when deleting a shop, delete all his product
     });
+    
   };
 
   return Product;

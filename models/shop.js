@@ -3,7 +3,8 @@
  * @module Models/Shop
  */
 const ValidationRegexp = require('../utils/validationRegex');
-
+// TODO: créer le modèle CONFIGURATION
+// TODO: créer le modèle BANKACCOUNT
 module.exports = (sequelize, DataTypes) => {
 
   let Shop = sequelize.define('Shop', {
@@ -72,16 +73,13 @@ module.exports = (sequelize, DataTypes) => {
         max: 180
       }
     },
-    // TODO: créer le modèle PHOTO puis ajouter les relations
-    // TODO: créer le modèle CONFIGURATION
-    // TODO: créer le modèle BANKACCOUNT
     deleted: {
       type: DataTypes.INTEGER,
       defaultValue: 0
     }
   },{
     tableName: 'shop',
-    // FIXME: using mysql 'like' with postgres
+    // FIXME: using mysql 'like' with postgres to avoid multiple query for different type of bdd
     // indexes: [{
     //   name: 'name_search',
     //   unique: true,
@@ -90,13 +88,15 @@ module.exports = (sequelize, DataTypes) => {
     // }]
   });
 
-
   // Class Method
   Shop.associate = function (models) {
     Shop.hasMany(models.Product, { // add foreign key to Product
       foreignKey: 'shop_id'
     });
-    Shop.belongsToMany(models.ShopCategory, { // add foreign key to Product
+    Shop.hasMany(models.ShopPhoto, { // add foreign key to ShopPhoto
+      foreignKey: 'shop_id'
+    });
+    Shop.belongsToMany(models.ShopCategory, { 
       through: 'shopscategory',
       foreignKey: 'shop_id'
     });

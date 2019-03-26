@@ -10,29 +10,22 @@ AWS.config.update({
   secretAccessKey: config.S3.secretAccessKey
 });
 
-var s3 = new AWS.S3();
+const s3 = new AWS.S3();
 
-const uploadFile = (fileName) => {
-  fs.readFile(fileName, (err, data) => {
-     if (err) throw err;
-     const params = {
-        Bucket: config.S3.bucket, // pass your bucket name
-        Key: 'folder/' + fileName, // file will be saved as testBucket/contacts.csv
-        Body: fs.createReadStream(fileName),
-        // ACL: 'public-read'
-     };
-     s3.upload(params, function(s3Err, data) {
-         if (s3Err) throw s3Err
-         winston.info(`File uploaded successfully at ${data.Location}`)
-     });
-  });
+const uploadFile = (file, folder='folder') => {
+  const params = {
+    Bucket: config.S3.bucket, // pass your bucket name
+    Key: folder + '/' + file.originalname, // file will be saved as testBucket/contacts.csv
+    Body: file.buffer
+  };
+  return s3.upload(params).promise();
 };
-
-const requestFile = (fileName) => {
+    
+const requestFile = (file) => {
   //construct getParam
   let getParams = {
     Bucket: config.S3.bucket,
-    Key: 'folder/'+fileName 
+    Key: 'folder/'+file 
   };
 
   //Fetch or read data from aws s3
