@@ -1,8 +1,8 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('shop_photo', {
-      shop_photo_id: {
+    return queryInterface.createTable('photo', {
+      photo_id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
@@ -10,6 +10,14 @@ module.exports = {
       },
       url: {
         type: Sequelize.STRING
+      },
+      shop_id: {
+        type: DataTypes.INTEGER,
+        allowNull: true
+      },
+      product_id: {
+        type: DataTypes.INTEGER,
+        allowNull: true
       },
       deleted: {
         type: Sequelize.INTEGER,
@@ -26,6 +34,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('shop_photo');
+    return queryInterface.dropTable('photo');
   }
 };

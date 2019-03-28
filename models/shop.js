@@ -93,7 +93,7 @@ module.exports = (sequelize, DataTypes) => {
     Shop.hasMany(models.Product, { // add foreign key to Product
       foreignKey: 'shop_id'
     });
-    Shop.hasMany(models.ShopPhoto, { // add foreign key to ShopPhoto
+    Shop.hasMany(models.Photo, { // add foreign key to Photo
       foreignKey: 'shop_id'
     });
     Shop.belongsToMany(models.ShopCategory, { 

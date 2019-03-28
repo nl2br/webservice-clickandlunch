@@ -13,9 +13,10 @@ AWS.config.update({
 const s3 = new AWS.S3();
 
 const uploadFile = (file, folder='folder') => {
+  const extension = path.extname(file.originalname); // .jpg
   const params = {
     Bucket: config.S3.bucket, // pass your bucket name
-    Key: folder + '/' + file.originalname, // file will be saved as testBucket/contacts.csv
+    Key: folder + '/' + 'cover' + extension, 
     Body: file.buffer
   };
   return s3.upload(params).promise();

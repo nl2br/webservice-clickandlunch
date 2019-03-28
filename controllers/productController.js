@@ -63,7 +63,7 @@ class Products {
       (select product.name from product where product.product_id = menu.product_id) name,
       (select product.description from product where product.product_id = menu.product_id) description,
       (select product.price from product where product.product_id = menu.product_id) price, 
-      (select product.productType from product where product.product_id = menu.product_id) productType
+      (select product.product_type from product where product.product_id = menu.product_id) product_type
       from product
       inner join menu on menu.menu_id = product.product_id
       where product.product_id = ?`, { 

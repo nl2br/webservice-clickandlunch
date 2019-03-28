@@ -49,7 +49,7 @@ class Shops {
           let pages = Math.ceil(data.count / limit);
           offset = limit * (page - 1);
           return Models.Shop.findAll({
-            include: { model: Models.ShopPhoto },
+            include: { model: Models.Photo },
             where: {deleted: 0},
             limit: limit,
             offset: offset
@@ -60,7 +60,7 @@ class Shops {
                 err.status = 404;
                 return next(err);
               }
-              console.log('SHOP+PHOTO',JSON.stringify(result.ShopPhotos));
+              console.log('SHOP+PHOTO',JSON.stringify(result.Photos));
               res.status(200).json({'result': result, 'count': data.count, 'pages': pages});
             })
         })
@@ -107,7 +107,7 @@ class Shops {
               { 'name': { ilike: '%' + name.trim() + '%' } }
             ]
           },
-          include: [{ model: Models.ShopPhoto }, {model: Models.ShopCategory}]
+          include: [{ model: Models.Photo }, {model: Models.ShopCategory}]
         },{raw: true})
           .then(result => {
             if (Array.isArray(result) && !result.length) {
@@ -122,7 +122,7 @@ class Shops {
               { 'name': { like: '%' + name.trim() + '%' } }
             ]
           },
-          include: [{ model: Models.ShopPhoto }, {model: Models.ShopCategory}]
+          include: [{ model: Models.Photo }, {model: Models.ShopCategory}]
         },{raw: true})
           .then(result => {
             if (Array.isArray(result) && !result.length) {
@@ -154,7 +154,7 @@ class Shops {
             required: true,
             where: {shopCategoryId: req.params.idCategory},
             attributes: ['shopCategoryId', 'name']
-          },{ model: Models.ShopPhoto }],
+          },{ model: Models.Photo }],
           where: {deleted: 0},
           limit: limit,
           offset: offset
@@ -224,7 +224,7 @@ class Shops {
   static getShop(req, res, next) {
 
     Models.Shop.findByPk(req.params.id,{
-      include: [{ model: Models.ShopPhoto }, {model: Models.ShopCategory}]
+      include: [{ model: Models.Photo }, {model: Models.ShopCategory}]
     })
       .then(result => {
         if (!result) {
@@ -311,12 +311,12 @@ class Shops {
       // upload the photo to S3
       const data = await uploadFile(req.file, 'shop' + shop.get('shopId'));
       // add the url from S3 to DB
-      await Models.ShopPhoto.create({
+      await Models.Photo.create({
         url: data.Location,
         shopId: shop.get('shopId')
       });
       // for sending the photo's url
-      include.push({model: Models.ShopPhoto})
+      include.push({model: Models.Photo})
     }
 
     // shop has associated categorie(s)

@@ -1,41 +1,53 @@
 
 /**
- * @module Models/ShopPhoto
+ * @module Models/Photo
  */
 
 module.exports = (sequelize, DataTypes) => {
 
-  let ShopPhoto = sequelize.define('ShopPhoto', {
-    shopPhotoId: {
+  let Photo = sequelize.define('Photo', {
+    photoId: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
       allowNull: false,
-      field: 'shop_photo_id'
+      field: 'photo_id'
     },
     url: {
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
+      allowNull: false,
+      isUrl: true
     },
     shopId: {
       type: DataTypes.INTEGER,
+      allowNull: true,
       field: 'shop_id'
+    },
+    productId: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      field: 'product_id'
     },
     deleted: {
       type: DataTypes.INTEGER,
       defaultValue: 0
     }
   }, {
-    tableName: 'shop_photo',
+    tableName: 'photo',
   });
 
-  ShopPhoto.associate = function(models) {
-    ShopPhoto.belongsTo(models.Shop, { // add shop_id to ShopPhoto
+  Photo.associate = function(models) {
+    Photo.belongsTo(models.Shop, { // add shop_id to Photo
       foreignKey: 'shop_id',
+      onDelete: 'CASCADE' // when deleting a shop, delete all his photo
+    });
+    Photo.belongsTo(models.Product, { // add shop_id to Photo
+      foreignKey: 'product_id',
       onDelete: 'CASCADE' // when deleting a shop, delete all his photo
     });
   };
 
-  return ShopPhoto;
+  return Photo;
 
 };
 
@@ -43,7 +55,7 @@ module.exports = (sequelize, DataTypes) => {
 /**
  * @swagger
  * definition:
- *  ShopPhoto:
+ *  Photo:
  *    properties:
  *      shopId:
  *        type: number

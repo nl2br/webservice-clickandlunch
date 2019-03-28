@@ -5,15 +5,8 @@ const Db = require('./models');
 // Launch Express
 const app = express();
 
-
 require('./startup/logging')(app);
 require('./startup/routes')(app);
-
-// // test upload and request file
-// // dont forget to create the test.txt file on the root for testing
-// const {uploadFile, requestFile} = require('./config/as3');
-// uploadFile('test.txt');
-// requestFile('test.txt');
 
 // Create the server
 const server = http.createServer(app);
