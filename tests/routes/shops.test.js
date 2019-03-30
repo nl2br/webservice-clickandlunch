@@ -320,8 +320,6 @@ describe('/api/v1/shops', () => {
         .field('longitude',11)
         .field('latitude',9)
       
-        console.log('res.statut',res.status);
-        console.log('res.body',res.body);
       // search it
       const shop = await Models.Shop.findById(res.body.shopId);
       // find photo

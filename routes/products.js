@@ -6,25 +6,33 @@
 const express = require('express');
 const router = express.Router();
 const Products = require('../controllers/productController');
+const auth = require('../middleware/auth');
+const role = require('../middleware/role');
+const asyncMiddleware = require('../middleware/async');
+const inputValidation = require('../middleware/inputValidation');
+const multer  = require('multer');
+
+const multipleUpload = multer().array('file');
+const singleUpload = multer().single('file');
 
 /**
  * Get details for a given id product (all user)
  * @method get/products/:id
  */
-router.get('/:id', Products.getProduct);
+router.get('/:id', asyncMiddleware(Products.getProduct));
 
 /**
  * Create a new product (admin, pro user)
  * @method post/products
  */
-router.post('/', Products.postProduct);
+router.post('/', [auth, role('VENDOR', 'ADMIN')], asyncMiddleware(Products.postProduct));
 
 
 /**
  * Create a new product (admin, pro user)
  * @method post/products/menus
  */
-router.post('/menus', Products.postProductMenu);
+router.post('/menus', [auth, role('VENDOR', 'ADMIN')], asyncMiddleware(Products.postProductMenu));
 
 module.exports = router;
 
@@ -80,6 +88,8 @@ module.exports = router;
  *           $ref: '#/definitions/Product'
  *       400:
  *         description: Internal error
+ *     security:
+ *       - JWT: []
  */
 
 /**
@@ -105,4 +115,6 @@ module.exports = router;
  *           $ref: '#/definitions/Menu'
  *       400:
  *         description: Internal error
+ *     security:
+ *       - JWT: []
  */

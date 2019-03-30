@@ -3,6 +3,8 @@ const Models = require('../../models/');
 const truncate = require('../truncate');
 
 let server;
+let token; // declare the token variable in a scope accessible by the entire test suite
+let shopGlobal;
 
 // beforeAll( async () =>{
 //   await truncate();
@@ -120,15 +122,9 @@ describe('/api/v1/products', () => {
   });
 
   describe('POST products/', () => {
-    beforeAll( async () =>{
+    beforeAll( async () => {
       await truncate();
-
-    });
-    afterAll( async () =>{
-      await truncate();
-    });
-    it('Save a product with valid data', async () => {
-      const shop = await Models.Shop.create({
+      shopGlobal = await Models.Shop.create({
         name: 'Restaurant test',
         siret: '12345678912345',
         siren: '123456789',
@@ -140,14 +136,30 @@ describe('/api/v1/products', () => {
           crs: {type: 'name', properties: { name: 'EPSG:4326'}}
         }
       });
+    });
+
+    beforeEach( async () => {
+      let user = new Models.User();
+      user.role = 'VENDOR';
+      token = user.generateAuthToken();
+    });
+
+    afterAll( async () => {
+      await truncate();
+    });
+
+    it('Save a product with valid data', async () => {
+
+      
       const res = await request(server)
         .post('/api/v1/products/')
+        .set('x-auth-token', token)
         .send({
           name: 'product test 2',
           description: 'description product test',
           price: '9.90',
           productType: 'DISH',
-          shopId: shop.get('shopId')
+          shopId: shopGlobal.get('shopId')
         });
       // on le recupère depuis la BDD
       const product = await Models.Product.findById(res.body.productId);
@@ -158,48 +170,38 @@ describe('/api/v1/products', () => {
     });
 
     it('Save a product menu type', async () => {
-      const shop = await Models.Shop.create({
-        name: 'Restaurant test',
-        siret: '12345678912345',
-        siren: '123456789',
-        phoneNumber: '0678895645',
-        email: 'atestazerty@test.com',
-        location: {
-          type: 'Point',
-          coordinates: [11,9],
-          crs: {type: 'name', properties: { name: 'EPSG:4326'}}
-        }
-      });
+
       const p1 = await Models.Product.create({
         name: 'salade',
         description: 'description',
         price: '4.90',
         productType: 'DISH',
-        shopId: shop.get('shopId')
+        shopId: shopGlobal.get('shopId')
       });
       const p2 = await Models.Product.create({
         name: 'poulet',
         description: 'description',
         price: '4.90',
         productType: 'DISH',
-        shopId: shop.get('shopId')
+        shopId: shopGlobal.get('shopId')
       });
       const p3 = await Models.Product.create({
         name: 'frite',
         description: 'description',
         price: '4.90',
         productType: 'DISH',
-        shopId: shop.get('shopId')
+        shopId: shopGlobal.get('shopId')
       });
 
       const res = await request(server)
         .post('/api/v1/products/menus')
+        .set('x-auth-token', token)
         .send({
           name: 'menu salade poulet frite',
           description: 'description product test',
           price: '9.90',
           productType: 'MENU',
-          shopId: shop.get('shopId'),
+          shopId: shopGlobal.get('shopId'),
           listProducts: [p1.get('productId'), p2.get('productId'), p3.get('productId')]
         });
       // on le recupère depuis la BDD

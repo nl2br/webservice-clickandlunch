@@ -14,6 +14,7 @@ const s3 = new AWS.S3();
 
 const uploadFile = (file, folder='folder') => {
   const extension = path.extname(file.originalname); // .jpg
+  const fileName = 'cover' + extension;
   const params = {
     Bucket: config.S3.bucket, // pass your bucket name
     Key: folder + '/' + 'cover' + extension, 

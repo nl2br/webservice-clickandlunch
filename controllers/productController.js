@@ -2,6 +2,7 @@
  * @module controller/Product
  */
 const Models = require('../models/');
+const {uploadFile} = require('../config/as3');
 
 class Products {
 
@@ -12,7 +13,7 @@ class Products {
    * @param {int} req.params.id id du product
    * @param {*} res 
    */
-  static getProduct(req, res) {
+  static getProduct(req, res, next) {
     // rechercher si le produit demandé est de type MENU
     Models.Menu.findAll({where:{menuId: req.params.id}})
       .then(result => {
@@ -35,10 +36,6 @@ class Products {
               res.status(400).send(error);
             });
         }
-      })
-      .catch(error => {
-        console.log('error getProduct : ', error.message);
-        res.status(400).send(error);
       });
   }
 
@@ -50,10 +47,6 @@ class Products {
             reject({message: 'No product Found for the given id'});
           }
           resolve(result);
-        })
-        .catch(error => {
-          console.log('error getNormalProduct : ', error.message);
-          reject({message: error});
         });
     });
   }
@@ -80,10 +73,6 @@ class Products {
           listProducts: result[1]
         });
         return res;
-      })
-      .catch(error => {
-        console.log('error promise all : ', error.message);
-        return error.message;
       });
   }
 
@@ -93,21 +82,51 @@ class Products {
    * @param {*} req 
    * @param {*} res 
    */
-  static postProduct(req, res) {
-    Models.Product.create({
+  static async postProduct(req, res, next) {
+    let product = await Models.Product.create({
       name: req.body.name,
       description: req.body.description,
       price: req.body.price.replace(',' , '.'),
       productType: req.body.productType,
       shopId: req.body.shopId
-    })
-      .then(result => {
-        res.status(201).json(result);
-      })
-      .catch(error => {
-        console.log('error postProduct : ', error.message);
-        res.status(400).send(error);
+    });
+    
+    // for the final response
+    let include = [];
+
+    // if photo was posted
+    if(req.files){
+      console.log('req.files', req.files);
+      for(const file of req.files){
+        // upload the photo to S3
+        const data = await uploadFile( file, 'shop' + req.body.shopId);
+        // add the url from S3 to DB
+        await Models.Photo.create({
+          url: data.Location,
+          productId: product.get('productId')
+        });
+      }
+      // for sending the photo's url
+      include.push({model: Models.Photo});
+    }
+    console.log('id product',product.get('productId'));
+    // get all product information for response to the client
+    if(include.length){
+      product = await Models.Product.findByPk(product.get('productId'), {
+        include: include
       });
+    }else{
+      product = await Models.Product.findByPk(product.get('productId'));
+    }
+
+    if(!product){
+      const err = new Error('error on finding the product');
+      err.status = 404;
+      return next(err);
+    }
+
+    res.status(201).json(product);
+
   }
 
   /**
@@ -116,7 +135,7 @@ class Products {
    * @param {*} req 
    * @param {*} res 
    */
-  static postProductMenu(req, res) {
+  static postProductMenu(req, res, next) {
     Models.Product.create({
       name: req.body.name,
       description: req.body.description,
@@ -129,17 +148,9 @@ class Products {
           await Models.Menu.create({
             menuId:result.productId,
             productId: item
-          })
-            .catch(error => {
-              console.log('error menu creation : ', error.message);
-              res.status(400).send(error);
-            });
+          });
         });
         res.status(201).json(result);
-      })
-      .catch(error => {
-        console.log('error postProduct : ', error.message);
-        res.status(400).send(error);
       });
   }
 
