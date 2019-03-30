@@ -13,7 +13,6 @@ const inputValidation = require('../middleware/inputValidation');
 const multer  = require('multer');
 
 const multipleUpload = multer().array('file');
-const singleUpload = multer().single('file');
 
 /**
  * Get details for a given id product (all user)
@@ -25,7 +24,7 @@ router.get('/:id', asyncMiddleware(Products.getProduct));
  * Create a new product (admin, pro user)
  * @method post/products
  */
-router.post('/', [auth, role('VENDOR', 'ADMIN')], asyncMiddleware(Products.postProduct));
+router.post('/', [auth, role('VENDOR', 'ADMIN'), multipleUpload], asyncMiddleware(Products.postProduct));
 
 
 /**

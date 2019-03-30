@@ -66,6 +66,9 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'shop_id',
       onDelete: 'CASCADE' // when deleting a shop, delete all his product
     });
+    Product.hasMany(models.Photo, { // add foreign key to Photo
+      foreignKey: 'product_id'
+    });
     
   };
 

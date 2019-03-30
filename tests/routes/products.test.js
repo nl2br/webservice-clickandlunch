@@ -145,11 +145,10 @@ describe('/api/v1/products', () => {
     });
 
     afterAll( async () => {
-      await truncate();
+      // await truncate();
     });
 
     it('Save a product with valid data', async () => {
-
       
       const res = await request(server)
         .post('/api/v1/products/')
@@ -161,6 +160,33 @@ describe('/api/v1/products', () => {
           productType: 'DISH',
           shopId: shopGlobal.get('shopId')
         });
+      // on le recupère depuis la BDD
+      const product = await Models.Product.findById(res.body.productId);
+
+      expect(res.status).toBe(201);
+      expect(product).not.toBeNull();
+      expect(res.body.name).toEqual(product.dataValues.name);
+    });
+
+    it('Save a product with photos', async () => {
+
+      // upload the file
+      const img1 = `${__dirname}/../test_files/plathiver.jpg`;
+      const img2 = `${__dirname}/../test_files/plats1.jpg`;
+      const img3 = `${__dirname}/../test_files/poulet-roti-pommes.jpg`;
+
+      const res = await request(server)
+        .post('/api/v1/products/')
+        .set('x-auth-token', token)
+        .attach('file', img1)
+        .attach('file', img2)
+        .attach('file', img3)
+        .field('name','product test 2')
+        .field('description','description product test')
+        .field('price','9.90')
+        .field('productType','DISH')
+        .field('shopId',shopGlobal.get('shopId'));
+
       // on le recupère depuis la BDD
       const product = await Models.Product.findById(res.body.productId);
 

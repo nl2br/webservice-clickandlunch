@@ -97,15 +97,16 @@ class Products {
     // if photo was posted
     if(req.files){
       console.log('req.files', req.files);
-      for(const file of req.files){
+      for(let i = 0; i<req.files.length;i++){
         // upload the photo to S3
-        const data = await uploadFile( file, 'shop' + req.body.shopId);
+        const data = await uploadFile(req.files[i], 'shop' + req.body.shopId, 'product'+(i+1));
         // add the url from S3 to DB
         await Models.Photo.create({
           url: data.Location,
           productId: product.get('productId')
         });
       }
+
       // for sending the photo's url
       include.push({model: Models.Photo});
     }

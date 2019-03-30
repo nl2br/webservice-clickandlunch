@@ -12,12 +12,12 @@ AWS.config.update({
 
 const s3 = new AWS.S3();
 
-const uploadFile = (file, folder='folder') => {
+const uploadFile = (file, folder='folder', fileName='cover') => {
   const extension = path.extname(file.originalname); // .jpg
-  const fileName = 'cover' + extension;
+  const name = fileName + extension;
   const params = {
     Bucket: config.S3.bucket, // pass your bucket name
-    Key: folder + '/' + 'cover' + extension, 
+    Key: folder + '/' + name, 
     Body: file.buffer
   };
   return s3.upload(params).promise();

@@ -12,7 +12,6 @@ const asyncMiddleware = require('../middleware/async');
 const inputValidation = require('../middleware/inputValidation');
 const multer  = require('multer');
 
-const multipleUpload = multer().array('file');
 const singleUpload = multer().single('file');
 
 /**
