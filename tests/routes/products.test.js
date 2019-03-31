@@ -151,14 +151,13 @@ describe('/api/v1/products', () => {
     it('Save a product with valid data', async () => {
       
       const res = await request(server)
-        .post('/api/v1/products/')
+        .post('/api/v1/products/shops/' + shopGlobal.get('shopId'))
         .set('x-auth-token', token)
         .send({
           name: 'product test 2',
           description: 'description product test',
           price: '9.90',
-          productType: 'DISH',
-          shopId: shopGlobal.get('shopId')
+          productType: 'DISH'
         });
       // on le recupère depuis la BDD
       const product = await Models.Product.findById(res.body.productId);
@@ -168,7 +167,7 @@ describe('/api/v1/products', () => {
       expect(res.body.name).toEqual(product.dataValues.name);
     });
 
-    it('Save a product with photos', async () => {
+    it('Save a product with multiple photos', async () => {
 
       // upload the file
       const img1 = `${__dirname}/../test_files/plathiver.jpg`;
@@ -176,7 +175,7 @@ describe('/api/v1/products', () => {
       const img3 = `${__dirname}/../test_files/poulet-roti-pommes.jpg`;
 
       const res = await request(server)
-        .post('/api/v1/products/')
+        .post('/api/v1/products/shops/' + shopGlobal.get('shopId'))
         .set('x-auth-token', token)
         .attach('file', img1)
         .attach('file', img2)
@@ -184,8 +183,7 @@ describe('/api/v1/products', () => {
         .field('name','product test 2')
         .field('description','description product test')
         .field('price','9.90')
-        .field('productType','DISH')
-        .field('shopId',shopGlobal.get('shopId'));
+        .field('productType','DISH');
 
       // on le recupère depuis la BDD
       const product = await Models.Product.findById(res.body.productId);
@@ -220,14 +218,13 @@ describe('/api/v1/products', () => {
       });
 
       const res = await request(server)
-        .post('/api/v1/products/menus')
+        .post('/api/v1/products/menus/shops/' + shopGlobal.get('shopId'))
         .set('x-auth-token', token)
         .send({
           name: 'menu salade poulet frite',
           description: 'description product test',
           price: '9.90',
           productType: 'MENU',
-          shopId: shopGlobal.get('shopId'),
           listProducts: [p1.get('productId'), p2.get('productId'), p3.get('productId')]
         });
       // on le recupère depuis la BDD

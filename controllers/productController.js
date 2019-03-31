@@ -88,7 +88,7 @@ class Products {
       description: req.body.description,
       price: req.body.price.replace(',' , '.'),
       productType: req.body.productType,
-      shopId: req.body.shopId
+      shopId: req.params.id
     });
     
     // for the final response
@@ -99,7 +99,7 @@ class Products {
       console.log('req.files', req.files);
       for(let i = 0; i<req.files.length;i++){
         // upload the photo to S3
-        const data = await uploadFile(req.files[i], 'shop' + req.body.shopId, 'product'+(i+1));
+        const data = await uploadFile(req.files[i], 'shop' + req.params.id, 'product'+(i+1));
         // add the url from S3 to DB
         await Models.Photo.create({
           url: data.Location,
@@ -136,23 +136,40 @@ class Products {
    * @param {*} req 
    * @param {*} res 
    */
-  static postProductMenu(req, res, next) {
-    Models.Product.create({
+  static async postProductMenu(req, res, next) {
+    let menu = await Models.Product.create({
       name: req.body.name,
       description: req.body.description,
       price: req.body.price.replace(',' , '.'),
       productType: req.body.productType,
-      shopId: req.body.shopId
-    })
-      .then(result => {
-        req.body.listProducts.forEach(async item => {
-          await Models.Menu.create({
-            menuId:result.productId,
-            productId: item
-          });
-        });
-        res.status(201).json(result);
+      shopId: req.params.id
+    });
+
+    // adding products of the menu
+    for(let item of req.body.listProducts){
+      await Models.Menu.create({
+        menuId:menu.get('productId'),
+        productId: item
       });
+    }
+
+    let include = [];
+    // get all product information for response to the client
+    if(include.length){
+      menu = await Models.Product.findByPk(menu.get('productId'), {
+        include: include
+      });
+    }else{
+      menu = await Models.Product.findByPk(menu.get('productId'));
+    }
+
+    if(!menu){
+      const err = new Error('error on finding the product');
+      err.status = 404;
+      return next(err);
+    }
+
+    res.status(201).json(menu);
   }
 
 }

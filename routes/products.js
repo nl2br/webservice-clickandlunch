@@ -22,16 +22,16 @@ router.get('/:id', asyncMiddleware(Products.getProduct));
 
 /**
  * Create a new product (admin, pro user)
- * @method post/products
+ * @method post/products/shops/:id
  */
-router.post('/', [auth, role('VENDOR', 'ADMIN'), multipleUpload], asyncMiddleware(Products.postProduct));
+router.post('/shops/:id', [auth, role('VENDOR', 'ADMIN'), multipleUpload], asyncMiddleware(Products.postProduct));
 
 
 /**
  * Create a new product (admin, pro user)
- * @method post/products/menus
+ * @method post/products/menus/shops/:id
  */
-router.post('/menus', [auth, role('VENDOR', 'ADMIN')], asyncMiddleware(Products.postProductMenu));
+router.post('/menus/shops/:id', [auth, role('VENDOR', 'ADMIN')], asyncMiddleware(Products.postProductMenu));
 
 module.exports = router;
 
@@ -66,20 +66,46 @@ module.exports = router;
 
 /**
  * @swagger
- * /api/v1/products:
+ * /api/v1/products/shops/{id}:
  *   post:
  *     tags:
  *       - Product
  *     description: Create a new product
  *     produces:
  *       - application/json
+ *     consumes:
+ *       - multipart/form-data
  *     parameters:
- *       - name: product
- *         description: product object
- *         in: body
+ *       - name: id
+ *         description: id of the shop to which the product belongs
+ *         in: path
  *         required: true
- *         schema:
- *           $ref: '#/definitions/Product'
+ *       - name: name
+ *         in: formData
+ *         required: true
+ *         type: string
+ *         description: name of the product
+ *       - name: description
+ *         in: formData
+ *         required: true
+ *         type: string
+ *         description: description of the product
+ *       - name: price
+ *         in: formData
+ *         required: true
+ *         type: number
+ *         description: price of the product
+ *       - name: productType
+ *         in: formData
+ *         required: true
+ *         type: string
+ *         enum: ['STARTER', 'DISH', 'DESSERT','DRINK','OTHER','MENU']
+ *         description: type of the product
+ *       - name: file
+ *         in: formData
+ *         description: The uploaded file data
+ *         required: false
+ *         type: file
  *     responses:
  *       201:
  *         description: Return saved product
@@ -93,7 +119,7 @@ module.exports = router;
 
 /**
  * @swagger
- * /api/v1/products/menus:
+ * /api/v1/products/menus/shops/{id}:
  *   post:
  *     tags:
  *       - Product
@@ -101,6 +127,10 @@ module.exports = router;
  *     produces:
  *       - application/json
  *     parameters:
+ *       - name: id
+ *         description: id of the shop to which the menu belongs
+ *         in: path
+ *         required: true
  *       - name: product
  *         description: product object
  *         in: body
