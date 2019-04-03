@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       allowNull: false,
       field: 'menu_id',
+
     },
     productId: {
       type: DataTypes.INTEGER,
@@ -23,16 +24,6 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   Menu.removeAttribute('id');
-
-  // Class Method
-  Menu.associate = function (models) {
-
-    Menu.belongsTo(models.Product, { // add product_id to menu
-      foreignKey: 'productId',
-      onDelete: 'CASCADE' // when deleting a product, delete all menu
-    });
-
-  };
 
   return Menu;
 };

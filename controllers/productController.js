@@ -96,7 +96,6 @@ class Products {
 
     // if photo was posted
     if(req.files){
-      console.log('req.files', req.files);
       for(let i = 0; i<req.files.length;i++){
         // upload the photo to S3
         const data = await uploadFile(req.files[i], 'shop' + req.params.id, 'product'+(i+1));
@@ -106,11 +105,10 @@ class Products {
           productId: product.get('productId')
         });
       }
-
       // for sending the photo's url
       include.push({model: Models.Photo});
     }
-    console.log('id product',product.get('productId'));
+
     // get all product information for response to the client
     if(include.length){
       product = await Models.Product.findByPk(product.get('productId'), {
@@ -137,23 +135,44 @@ class Products {
    * @param {*} res 
    */
   static async postProductMenu(req, res, next) {
+
     let menu = await Models.Product.create({
       name: req.body.name,
       description: req.body.description,
       price: req.body.price.replace(',' , '.'),
-      productType: req.body.productType,
+      productType: 'MENU',
       shopId: req.params.id
     });
 
+    let include = [];
+
     // adding products of the menu
-    for(let item of req.body.listProducts){
-      await Models.Menu.create({
-        menuId:menu.get('productId'),
-        productId: item
-      });
+    if(req.body.listProducts){
+      let listProductsArray = req.body.listProducts.split ? req.body.listProducts.split(',').map(x => Number(x.replace(/["']+/g, ''))) : req.body.listProducts;
+      for(let item of listProductsArray){
+        await Models.Menu.create({
+          menuId:menu.get('productId'),
+          productId: item
+        });
+      }
+      include.push({model: Models.Product, through: 'Menu', as: 'products'});
     }
 
-    let include = [];
+    //adding the photo of the menu
+    if(req.files){
+      for(let i = 0; i<req.files.length;i++){
+        // upload the photo to S3
+        const data = await uploadFile(req.files[i], 'shop' + req.params.id + '/menu' + menu.get('productId'), 'product'+(i+1));
+        // add the url from S3 to DB
+        await Models.Photo.create({
+          url: data.Location,
+          productId: menu.get('productId')
+        });
+      }
+      // for sending the photo's url
+      include.push({model: Models.Photo});
+    }
+
     // get all product information for response to the client
     if(include.length){
       menu = await Models.Product.findByPk(menu.get('productId'), {
@@ -162,7 +181,6 @@ class Products {
     }else{
       menu = await Models.Product.findByPk(menu.get('productId'));
     }
-
     if(!menu){
       const err = new Error('error on finding the product');
       err.status = 404;

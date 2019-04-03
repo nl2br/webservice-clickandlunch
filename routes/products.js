@@ -31,7 +31,7 @@ router.post('/shops/:id', [auth, role('VENDOR', 'ADMIN'), multipleUpload], async
  * Create a new product (admin, pro user)
  * @method post/products/menus/shops/:id
  */
-router.post('/menus/shops/:id', [auth, role('VENDOR', 'ADMIN')], asyncMiddleware(Products.postProductMenu));
+router.post('/menus/shops/:id', [auth, role('VENDOR', 'ADMIN'), multipleUpload], asyncMiddleware(Products.postProductMenu));
 
 module.exports = router;
 
@@ -126,17 +126,40 @@ module.exports = router;
  *     description: Create a new product
  *     produces:
  *       - application/json
+ *     consumes:
+ *       - multipart/form-data
  *     parameters:
  *       - name: id
- *         description: id of the shop to which the menu belongs
+ *         description: id of the shop to which the product belongs
  *         in: path
  *         required: true
- *       - name: product
- *         description: product object
- *         in: body
+ *       - name: name
+ *         in: formData
  *         required: true
- *         schema:
- *           $ref: '#/definitions/Menu'
+ *         type: string
+ *         description: name of the product
+ *       - name: description
+ *         in: formData
+ *         required: true
+ *         type: string
+ *         description: description of the product
+ *       - name: price
+ *         in: formData
+ *         required: true
+ *         type: number
+ *         description: price of the product
+ *       - name: listProducts
+ *         in: formData
+ *         required: true
+ *         type: array
+ *         items:
+ *          type: integer
+ *         description: id of the products you want to add to the menu
+ *       - name: file
+ *         in: formData
+ *         description: The uploaded file data
+ *         required: false
+ *         type: file
  *     responses:
  *       201:
  *         description: Return saved product
