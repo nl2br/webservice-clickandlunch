@@ -12,8 +12,18 @@ AWS.config.update({
 
 const s3 = new AWS.S3();
 
+const extensionsAuthorized = ['.jpg','.jpeg','.png'];
+
 const uploadFile = (file, folder='folder', fileName='cover') => {
   const extension = path.extname(file.originalname); // .jpg
+
+  // verify the file format
+  if(!extensionsAuthorized.includes(extension)){
+    const err = new Error('error on file format, photo is not a jpg, jpeg or png');
+    err.status = 400;
+    return err;
+  }
+
   const name = fileName + extension;
   const params = {
     Bucket: config.S3.bucket, // pass your bucket name

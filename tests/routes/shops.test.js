@@ -329,7 +329,7 @@ describe('/api/v1/shops', () => {
       expect(photo).toBeTruthy();
     });
 
-    it('Should return 400 error when Save a shop with photo of type bmp', async () => {
+    it.skip('Should return 400 error when Save a shop with photo of type bmp', async () => {
 
       // upload the file
       const filePath = `${__dirname}/../test_files/tiger.bmp`;
@@ -347,7 +347,6 @@ describe('/api/v1/shops', () => {
         .field('longitude',11)
         .field('latitude',9);
 
-      console.log(res.body);
       expect(res.status).toBe(400);
     });
 

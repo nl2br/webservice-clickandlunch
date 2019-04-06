@@ -4,7 +4,6 @@
 
 const Models = require('../models/');
 const {uploadFile} = require('../config/as3');
-const path = require('path');
 
 class Shops {
   // TODO: Listing all shop for a given City id / @function get/:id/shops 
@@ -309,16 +308,11 @@ class Shops {
 
     // if photo was posted
     if(req.file){
-      const extensionsAuthorized = ['.jpg','.jpeg','.png'];
-      // verify the photo format
-      const extension = path.extname(req.file.originalname); // .jpg
-      if(!extensionsAuthorized.includes(extension)){
-        const err = new Error('error on file format, photo is not a jpg, jpeg or png');
-        err.status = 400;
-        return next(err);
-      }
       // upload the photo to S3
       const data = await uploadFile(req.file, 'shop' + shop.get('shopId'));
+      if(data instanceof Error){
+        return next(data);
+      }
       // add the url from S3 to DB
       await Models.Photo.create({
         url: data.Location,
