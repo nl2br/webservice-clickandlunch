@@ -248,7 +248,11 @@ class Shops {
       where: {
         shopId: req.params.id,
         deleted: 0
-      }
+      },
+      include:[
+        {model: Models.Photo},
+        {model: Models.Product, through: 'Menu', as: 'products'}
+      ]
     })
       .then(result => {
         if(Array.isArray(result) && !result.length) {

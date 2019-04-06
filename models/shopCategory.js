@@ -32,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
 
   // Class Method
   ShopCategory.associate = function (models) {
-    ShopCategory.belongsToMany(models.Shop, { // add foreign key to Product
+    ShopCategory.belongsToMany(models.Shop, {
       through: 'shopscategory',
       foreignKey: 'shop_category_id'
     });
