@@ -3,6 +3,7 @@
  */
 const Models = require('../models/');
 const {uploadFile} = require('../config/as3');
+const path = require('path');
 
 class Products {
 
@@ -96,7 +97,16 @@ class Products {
 
     // if photo was posted
     if(req.files){
+      const extensionsAuthorized = ['.jpg','.jpeg','.png'];
+
       for(let i = 0; i<req.files.length;i++){
+        // verify the photo format
+        const extension = path.extname(req.files[i].originalname); // .jpg
+        if(!extensionsAuthorized.includes(extension)){
+          const err = new Error('error on file format, photo is not a jpg, jpeg or png');
+          err.status = 400;
+          return next(err);
+        }
         // upload the photo to S3
         const data = await uploadFile(req.files[i], 'shop' + req.params.id, 'product'+(i+1));
         // add the url from S3 to DB
