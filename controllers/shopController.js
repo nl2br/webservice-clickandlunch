@@ -3,7 +3,7 @@
  */
 
 const Models = require('../models/');
-const {uploadFile, requestFile} = require('../config/as3');
+const {uploadFile} = require('../config/as3');
 
 class Shops {
   // TODO: Listing all shop for a given City id / @function get/:id/shops 
@@ -24,7 +24,7 @@ class Shops {
         })
         .catch(err => {
           res.status(400).json({message: err.message});
-        })
+        });
     }
     
     // getShopsByName
@@ -35,7 +35,7 @@ class Shops {
         })
         .catch(err => {
           res.status(400).json({message: err.message});
-        })
+        });
     }
 
     // getShops with pagination
@@ -49,7 +49,7 @@ class Shops {
           let pages = Math.ceil(data.count / limit);
           offset = limit * (page - 1);
           return Models.Shop.findAll({
-            include: { model: Models.ShopPhoto },
+            include: { model: Models.Photo },
             where: {deleted: 0},
             limit: limit,
             offset: offset
@@ -60,18 +60,18 @@ class Shops {
                 err.status = 404;
                 return next(err);
               }
-              console.log('SHOP+PHOTO',JSON.stringify(result.ShopPhotos));
+              console.log('SHOP+PHOTO',JSON.stringify(result.Photos));
               res.status(200).json({'result': result, 'count': data.count, 'pages': pages});
-            })
-        })
+            });
+        });
     }
 
     // aucun paramètre n'est demandé -> error 400
     if(Object.getOwnPropertyNames(req.params).length < 1 
       && Object.getOwnPropertyNames(req.query).length < 1){
-        const err = new Error('Please use a valid Shop route');
-        err.status = 400;
-        return next(err);
+      const err = new Error('Please use a valid Shop route');
+      err.status = 400;
+      return next(err);
     }
   }
 
@@ -107,14 +107,14 @@ class Shops {
               { 'name': { ilike: '%' + name.trim() + '%' } }
             ]
           },
-          include: [{ model: Models.ShopPhoto }, {model: Models.ShopCategory}]
+          include: [{ model: Models.Photo }, {model: Models.ShopCategory}]
         },{raw: true})
           .then(result => {
             if (Array.isArray(result) && !result.length) {
               reject({message: 'No shops Found for the given name'});
             }
             resolve(result);
-          })
+          });
       }else{
         Models.Shop.findAll({
           where: {
@@ -122,14 +122,14 @@ class Shops {
               { 'name': { like: '%' + name.trim() + '%' } }
             ]
           },
-          include: [{ model: Models.ShopPhoto }, {model: Models.ShopCategory}]
+          include: [{ model: Models.Photo }, {model: Models.ShopCategory}]
         },{raw: true})
           .then(result => {
             if (Array.isArray(result) && !result.length) {
               reject({message: 'No shops Found for the given name'});
             }
             resolve(result);
-          })
+          });
       }
       
     });
@@ -154,7 +154,7 @@ class Shops {
             required: true,
             where: {shopCategoryId: req.params.idCategory},
             attributes: ['shopCategoryId', 'name']
-          },{ model: Models.ShopPhoto }],
+          },{ model: Models.Photo }],
           where: {deleted: 0},
           limit: limit,
           offset: offset
@@ -166,8 +166,8 @@ class Shops {
               return next(err);
             }
             res.status(200).json({'result': result, 'count': data.count, 'pages': pages});
-          })
-      })
+          });
+      });
   }
 
   /**
@@ -193,7 +193,7 @@ class Shops {
               reject({message: 'No shops Found arround the coordinates'});
             }
             resolve(result);
-          })
+          });
       }else{
         Models.sequelize.query(`SELECT shop_id, name, phone_number, email,
           ROUND(ST_Distance(POINT(?,?), location), 6) * 106000 AS distance
@@ -209,7 +209,7 @@ class Shops {
               reject({message: 'No shops Found arround the coordinates'});
             }
             resolve(result);
-          })
+          });
       }
     });
   }
@@ -224,7 +224,7 @@ class Shops {
   static getShop(req, res, next) {
 
     Models.Shop.findByPk(req.params.id,{
-      include: [{ model: Models.ShopPhoto }, {model: Models.ShopCategory}]
+      include: [{ model: Models.Photo }, {model: Models.ShopCategory}]
     })
       .then(result => {
         if (!result) {
@@ -233,7 +233,7 @@ class Shops {
           return next(err);
         }
         res.status(200).json(result);
-      })
+      });
   }
 
   /**
@@ -257,7 +257,7 @@ class Shops {
           return next(err);
         }
         res.status(200).json(result);
-      })
+      });
   }
 
   /**
@@ -279,7 +279,7 @@ class Shops {
           return next(err);
         }
         res.status(200).json(result);
-      })
+      });
   }
 
   /**
@@ -301,7 +301,7 @@ class Shops {
         coordinates: [req.body.longitude, req.body.latitude],
         crs: {type: 'name', properties: { name: 'EPSG:4326'}}
       }
-    })
+    });
 
     // for the final response
     let include = [];
@@ -310,13 +310,17 @@ class Shops {
     if(req.file){
       // upload the photo to S3
       const data = await uploadFile(req.file, 'shop' + shop.get('shopId'));
+      console.log('resulttttt',data);
+      if(data instanceof Error){
+        return next(data);
+      }
       // add the url from S3 to DB
-      await Models.ShopPhoto.create({
+      await Models.Photo.create({
         url: data.Location,
         shopId: shop.get('shopId')
       });
       // for sending the photo's url
-      include.push({model: Models.ShopPhoto})
+      include.push({model: Models.Photo});
     }
 
     // shop has associated categorie(s)
@@ -329,13 +333,18 @@ class Shops {
       }
 
       // for sending the categories of the shop
-      include.push({ model: Models.ShopCategory, through: 'ShopsCategory'})
+      include.push({ model: Models.ShopCategory, through: 'ShopsCategory'});
     }
 
     // get all shop information for response to the client
-    shop = await Models.Shop.findByPk(shop.get('shopId'), {
-      include: include
-    });
+    if(include.length){
+      shop = await Models.Shop.findByPk(shop.get('shopId'), {
+        include: include
+      });
+    }else{
+      shop = await Models.Shop.findByPk(shop.get('shopId'));
+    }
+
     if(!shop){
       const err = new Error('error on finding the shop');
       err.status = 404;
@@ -355,7 +364,7 @@ class Shops {
    */
   // TODO: add photo to the modification
   static async putShop(req, res, next) {
-    let shop = await Models.Shop.findByPk(req.params.id)
+    let shop = await Models.Shop.findByPk(req.params.id);
     if(!shop) {
       const err = new Error('this shop don\'t exist');
       err.status = 404;
@@ -368,13 +377,13 @@ class Shops {
         type: 'Point',
         coordinates: [req.body.longitude,req.body.latitude],
         crs: {type: 'name', properties: { name: 'EPSG:4326'}}
-      }
+      };
     }else{
       location = {
         type: 'Point',
         coordinates: [shop.location.coordinates[0], shop.location.coordinates[1]],
         crs: {type: 'name', properties: { name: 'EPSG:4326'}}
-      }
+      };
     }
     
     await shop.update({
@@ -384,7 +393,7 @@ class Shops {
       phoneNumber: req.body.phoneNumber || shop.phoneNumber,
       email: req.body.email || shop.email,
       location: location
-    })  
+    });  
 
     res.status(200).send(shop);
   }
@@ -411,7 +420,7 @@ class Shops {
           .then(() => {
             res.status(200).send(shop);
           });
-      })
+      });
   }
 
 }

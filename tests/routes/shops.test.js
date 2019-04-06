@@ -318,15 +318,36 @@ describe('/api/v1/shops', () => {
         .field('phoneNumber','0678895645')
         .field('email','pertyu@test.com')
         .field('longitude',11)
-        .field('latitude',9)
+        .field('latitude',9);
       
       // search it
       const shop = await Models.Shop.findById(res.body.shopId);
       // find photo
-      let photo = await shop.getShopPhotos();
+      let photo = await shop.getPhotos();
 
       expect(res.status).toBe(201);
       expect(photo).toBeTruthy();
+    });
+
+    it('Should return 400 error when Save a shop with photo of type bmp', async () => {
+
+      // upload the file
+      const filePath = `${__dirname}/../test_files/tiger.bmp`;
+
+      // save a new shop
+      const res = await request(server)
+        .post('/api/v1/shops')
+        .set('x-auth-token', token)
+        .attach('file', filePath)
+        .field('name','My test Shop')
+        .field('siret','12345678912345')
+        .field('siren','123456789')
+        .field('phoneNumber','0678895645')
+        .field('email','pertyau@test.com')
+        .field('longitude',11)
+        .field('latitude',9);
+
+      expect(res.status).toBe(400);
     });
 
     it('Should return 401 cause user is not logged', async () => {

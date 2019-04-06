@@ -50,7 +50,6 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       field: 'shop_id'
     },
-    // TODO: créer le modèle PHOTO puis ajouter les relations
     deleted: {
       type: DataTypes.INTEGER,
       defaultValue: 0
@@ -66,7 +65,42 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'shop_id',
       onDelete: 'CASCADE' // when deleting a shop, delete all his product
     });
-    
+
+    Product.hasMany(models.Photo, { // add foreign key to Photo
+      foreignKey: 'product_id'
+    });
+
+    Product.belongsToMany(models.Product,{
+      as: 'menus', 
+      foreignKey: 'product_id', 
+      through: 'Menu', 
+      otherKey: 'menu_id'
+    });
+
+    Product.belongsToMany(models.Product,{
+      as: 'products', 
+      foreignKey: 'menu_id', 
+      through: 'Menu', // {model: models.Menu ,unique:false, primaryKey:true}
+      otherKey: 'product_id'
+    });
+
+    // addMenu
+    // addMenus
+    // countMenus
+    // createMenu
+    // getMenus
+    // getProducts
+    // hasMenu
+    // hasMenus
+    // hasProduct
+    // hasProducts
+    // removeMenu
+    // removeMenus
+    // removeProduct
+    // removeProducts
+    // setMenus
+
+
   };
 
   return Product;

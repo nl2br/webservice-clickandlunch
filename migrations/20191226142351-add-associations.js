@@ -19,13 +19,29 @@ module.exports = {
       .then(() => {
         // Customer belongsto User
         return queryInterface.addColumn(
-          'shop_photo', // name of Source model
+          'photo', // name of Source model
           'shop_id', // name of the key we're adding 
           {
             type: Sequelize.INTEGER,
             references: {
               model: 'Shop', // name of Target model
               key: 'shopId', // key in Target model that we're referencing
+            },
+            onUpdate: 'CASCADE',
+            onDelete: 'CASCADE',
+          }
+        );
+      })
+      .then(() => {
+        // Customer belongsto User
+        return queryInterface.addColumn(
+          'photo', // name of Source model
+          'product_id', // name of the key we're adding 
+          {
+            type: Sequelize.INTEGER,
+            references: {
+              model: 'Product', // name of Target model
+              key: 'productId', // key in Target model that we're referencing
             },
             onUpdate: 'CASCADE',
             onDelete: 'CASCADE',
@@ -88,6 +104,20 @@ module.exports = {
       'Product', // name of the Target model
       'shopId' // key we want to remove
     )
+      .then(() => {
+        // Remove Customer belongsto User
+        return queryInterface.removeColumn(
+          'Photo', // name of the Target model
+          'shop_id' // key we want to remove
+        );
+      })
+      .then(() => {
+        // Remove Customer belongsto User
+        return queryInterface.removeColumn(
+          'Photo', // name of the Target model
+          'product_id' // key we want to remove
+        );
+      })
       .then(() => {
         // Remove Customer belongsto User
         return queryInterface.removeColumn(

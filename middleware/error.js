@@ -1,5 +1,5 @@
 const winston = require('../config/winston');
-const Db = require('../models/index')
+const Db = require('../models/index');
 
 module.exports = function(err, req, res, next){
 
@@ -31,14 +31,14 @@ module.exports = function(err, req, res, next){
       message: err.message
     });
   }
-    console.log('EXPRESS HANDLER ERROR : ', err);
+  console.log('EXPRESS HANDLER ERROR : ', err);
     
-    // set locals, only providing error in development
-    res.locals.message = err.message;
-    res.locals.error = req.app.get('env') !== 'production' ? err : {};
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') !== 'production' ? err : {};
 
-    // add this line to include winston logging
-    winston.error(`${logTime} - ${err.status || 500} - ${err.message} - ${req.originalUrl} - ${req.method} `);
-    res.status(err.status).json({message: err.message});
+  // add this line to include winston logging
+  winston.error(`${logTime} - ${err.status || 500} - ${err.message} - ${req.originalUrl} - ${req.method} `);
+  res.status(err.status).json({message: err.message});
 
-}
+};

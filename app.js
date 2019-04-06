@@ -15,9 +15,9 @@ const server = http.createServer(app);
 const port = process.env.PORT || 3000;
 // For Jest test, don't launch server, only Db connection https://blog.campvanilla.com/jest-expressjs-and-the-eaddrinuse-error-bac39356c33a
 if (process.env.NODE_ENV === 'test' || process.env.NODE_ENV === 'testpostgres') {
-    Db.sequelize.sync().then( () => {});
+  Db.sequelize.sync().then( () => {});
 }else{
-  Db.sequelize.sync().then( () => {
+  Db.sequelize.sync({force:true}).then( () => {
     server.listen(port, () => {
       console.log(`Listening on port ${port}...`);
     });

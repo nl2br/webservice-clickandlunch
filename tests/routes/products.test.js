@@ -3,6 +3,8 @@ const Models = require('../../models/');
 const truncate = require('../truncate');
 
 let server;
+let token; // declare the token variable in a scope accessible by the entire test suite
+let shopGlobal;
 
 // beforeAll( async () =>{
 //   await truncate();
@@ -31,7 +33,7 @@ describe('/api/v1/products', () => {
 
     afterAll( async () =>{
       await Models.Shop.destroy({where: {name: 'Restaurant test'}});
-      await truncate();
+      // await truncate();
     });
 
     it('get specific product of type DISH', async () => {
@@ -120,35 +122,69 @@ describe('/api/v1/products', () => {
   });
 
   describe('POST products/', () => {
-    beforeAll( async () =>{
+    beforeAll( async () => {
       await truncate();
-
-    });
-    afterAll( async () =>{
-      await truncate();
-    });
-    it('Save a product with valid data', async () => {
-      const shop = await Models.Shop.create({
+      shopGlobal = await Models.Shop.create({
         name: 'Restaurant test',
         siret: '12345678912345',
         siren: '123456789',
         phoneNumber: '0678895645',
-        email: 'testazerty@test.com',
+        email: 'yuyu@test.com',
         location: {
           type: 'Point',
           coordinates: [11,9],
           crs: {type: 'name', properties: { name: 'EPSG:4326'}}
         }
       });
+    });
+
+    beforeEach( async () => {
+      let user = new Models.User();
+      user.role = 'VENDOR';
+      token = user.generateAuthToken();
+    });
+
+    afterAll( async () => {
+      // await truncate();
+    });
+
+    it('Save a product with valid data', async () => {
+      
       const res = await request(server)
-        .post('/api/v1/products/')
+        .post('/api/v1/products/shops/' + shopGlobal.get('shopId'))
+        .set('x-auth-token', token)
         .send({
           name: 'product test 2',
           description: 'description product test',
           price: '9.90',
-          productType: 'DISH',
-          shopId: shop.get('shopId')
+          productType: 'DISH'
         });
+      // on le recupère depuis la BDD
+      const product = await Models.Product.findById(res.body.productId);
+
+      expect(res.status).toBe(201);
+      expect(product).not.toBeNull();
+      expect(res.body.name).toEqual(product.dataValues.name);
+    });
+
+    it.skip('Save a product with multiple photos', async () => {
+      jest.setTimeout(30000);
+      // upload the file
+      const img1 = `${__dirname}/../test_files/plathiver.jpg`;
+      const img2 = `${__dirname}/../test_files/salade.png`;
+      const img3 = `${__dirname}/../test_files/poulet-roti-pommes.jpg`;
+
+      const res = await request(server)
+        .post('/api/v1/products/shops/' + shopGlobal.get('shopId'))
+        .set('x-auth-token', token)
+        .attach('file', img1)
+        .attach('file', img2)
+        .attach('file', img3)
+        .field('name','product test 2')
+        .field('description','description product test')
+        .field('price','9.90')
+        .field('productType','DISH');
+
       // on le recupère depuis la BDD
       const product = await Models.Product.findById(res.body.productId);
 
@@ -158,58 +194,114 @@ describe('/api/v1/products', () => {
     });
 
     it('Save a product menu type', async () => {
-      const shop = await Models.Shop.create({
-        name: 'Restaurant test',
-        siret: '12345678912345',
-        siren: '123456789',
-        phoneNumber: '0678895645',
-        email: 'atestazerty@test.com',
-        location: {
-          type: 'Point',
-          coordinates: [11,9],
-          crs: {type: 'name', properties: { name: 'EPSG:4326'}}
-        }
-      });
+
       const p1 = await Models.Product.create({
         name: 'salade',
         description: 'description',
         price: '4.90',
         productType: 'DISH',
-        shopId: shop.get('shopId')
+        shopId: shopGlobal.get('shopId')
       });
       const p2 = await Models.Product.create({
         name: 'poulet',
         description: 'description',
         price: '4.90',
         productType: 'DISH',
-        shopId: shop.get('shopId')
+        shopId: shopGlobal.get('shopId')
       });
       const p3 = await Models.Product.create({
         name: 'frite',
         description: 'description',
         price: '4.90',
         productType: 'DISH',
-        shopId: shop.get('shopId')
+        shopId: shopGlobal.get('shopId')
       });
 
       const res = await request(server)
-        .post('/api/v1/products/menus')
+        .post('/api/v1/products/menus/shops/' + shopGlobal.get('shopId'))
+        .set('x-auth-token', token)
         .send({
           name: 'menu salade poulet frite',
           description: 'description product test',
           price: '9.90',
-          productType: 'MENU',
-          shopId: shop.get('shopId'),
           listProducts: [p1.get('productId'), p2.get('productId'), p3.get('productId')]
         });
       // on le recupère depuis la BDD
-      const product = await Models.Product.findById(res.body.productId);
+      const menu = await Models.Product.findByPk( res.body.productId,
+        {include:{ model: Models.Product, through: 'Menu', as: 'products'}}
+      );
+
+      
+      // console.log('menuuuuuuu', menu);
+      // menu.dataValues.products.forEach(product => {
+      //   console.log('product', product);
+      // });
+      
+      // console.log('menuuuuuuu JSON', menu.toJSON());
+
+      // let products = await menu.getProducts();
+      // console.log('productsssss', products);
+
+      // const menu2 = await Models.Product.findByPk( p3.get('productId'),
+      //   {include:{ model: Models.Product, through: 'Menu', as: 'products'}}
+      // );
+      // let countMenus = await menu2.countMenus();
+      // console.log('countMenus', countMenus);
+
+      // let menuss = await menu2.getMenus();
+      // console.log('menusssssss', menuss);
 
       expect(res.status).toBe(201);
-      expect(product).not.toBeNull();
-      expect(res.body.name).toEqual(product.dataValues.name);
+      expect(menu).not.toBeNull();
+      expect(res.body.name).toEqual(menu.dataValues.name);
+    });
+
+
+    it.skip('Save a product menu type with photo', async () => {
+      jest.setTimeout(30000);
+      // upload the file
+      const img1 = `${__dirname}/../test_files/plathiver.jpg`;
+      const img2 = `${__dirname}/../test_files/plats1.jpg`;
+      const img3 = `${__dirname}/../test_files/poulet-roti-pommes.jpg`;
+
+      const p1 = await Models.Product.create({
+        name: 'salade',
+        description: 'description',
+        price: '4.90',
+        productType: 'DISH',
+        shopId: shopGlobal.get('shopId')
+      });
+      
+      const p2 = await Models.Product.create({
+        name: 'poulet',
+        description: 'description',
+        price: '4.90',
+        productType: 'DISH',
+        shopId: shopGlobal.get('shopId')
+      });
+
+      const res = await request(server)
+        .post('/api/v1/products/menus/shops/' + shopGlobal.get('shopId'))
+        .set('x-auth-token', token)
+        .attach('file', img1)
+        .attach('file', img2)
+        .attach('file', img3)
+        .field('name','menu salade poulet frite')
+        .field('description','description product test')
+        .field('price','9.90')
+        .field('listProducts',[p1.get('productId'), p2.get('productId')]);
+
+      // on le recupère depuis la BDD
+      const menu = await Models.Product.findByPk( res.body.productId,
+        {include:{ model: Models.Product, through: 'Menu', as: 'products'}}
+      );
+
+      expect(res.status).toBe(201);
+      expect(menu).not.toBeNull();
+      expect(res.body.name).toEqual(menu.dataValues.name);
     });
   });
 
 
 });
+
