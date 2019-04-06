@@ -302,7 +302,7 @@ describe('/api/v1/shops', () => {
       expect(res.body.name).toEqual(shop.dataValues.name);
     });
 
-    it.skip('Save a shop with photo', async () => {
+    it('Save a shop with photo', async () => {
 
       // upload the file
       const filePath = `${__dirname}/../test_files/resto-700x525.jpg`;

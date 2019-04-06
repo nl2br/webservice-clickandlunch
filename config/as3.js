@@ -14,7 +14,10 @@ AWS.config.update({
 
 const s3 = new AWS.S3();
 
+// limitations
 const extensionsAuthorized = ['.jpg','.jpeg','.png'];
+const maxUpload = 2000000;
+const maxWidth = 1024;
 
 const uploadFile = async (file, folder='folder', fileName='cover') => {
 
@@ -28,7 +31,7 @@ const uploadFile = async (file, folder='folder', fileName='cover') => {
   }
 
   // verify the file size, 2mo max
-  if(file.size > 2000000){
+  if(file.size > maxUpload){
     err = new Error('error on file size exceced the 1.5 mo authorized');
     err.status = 400;
     return err;
@@ -39,7 +42,7 @@ const uploadFile = async (file, folder='folder', fileName='cover') => {
     // transform file
     let fileToUpload = await Jimp.read(file.buffer);
     let fileFormated = await fileToUpload
-      .resize(1024,Jimp.AUTO) // resize
+      .resize(maxWidth, Jimp.AUTO) // resize
       .quality(60) // set quality
       .getBufferAsync(file.mimetype);
 
