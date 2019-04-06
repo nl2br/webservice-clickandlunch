@@ -12,7 +12,7 @@ class Customers {
    * @param {*} req 
    * @param {*} res 
    */
-  static async getCustomer(req, res) {
+  static async getCustomer(req, res, next) {
     Models.Customer.findOne({where:{customerId: req.params.id}})
       .then(async customer => {
         if(!customer) return res.status(400).send({message: 'No customer for the given id'});
@@ -37,7 +37,7 @@ class Customers {
    * @param {*} req 
    * @param {*} res 
    */
-  static async putCustomer(req, res) {
+  static async putCustomer(req, res, next) {
     
     // verify if user exist
     let customer = await Models.Customer.findOne({where:{customerId: req.params.id}});
