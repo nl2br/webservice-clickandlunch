@@ -47,7 +47,7 @@ const uploadFile = async (file, folder='folder', fileName='cover') => {
       .getBufferAsync(file.mimetype);
 
     // prepare the file for s3
-    const name = fileName + extension;
+    const name = fileName + new Date().getTime() + extension;
     const params = {
       Bucket: config.S3.bucket, // pass your bucket name
       Key: folder + '/' + name, 
