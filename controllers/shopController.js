@@ -310,6 +310,7 @@ class Shops {
     if(req.file){
       // upload the photo to S3
       const data = await uploadFile(req.file, 'shop' + shop.get('shopId'));
+      console.log('resulttttt',data);
       if(data instanceof Error){
         return next(data);
       }

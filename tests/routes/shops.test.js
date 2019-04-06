@@ -329,7 +329,7 @@ describe('/api/v1/shops', () => {
       expect(photo).toBeTruthy();
     });
 
-    it.skip('Should return 400 error when Save a shop with photo of type bmp', async () => {
+    it('Should return 400 error when Save a shop with photo of type bmp', async () => {
 
       // upload the file
       const filePath = `${__dirname}/../test_files/tiger.bmp`;

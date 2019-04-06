@@ -3,7 +3,9 @@ const fs = require('fs');
 const path = require('path');
 const config = require(__dirname + '/../config/config.json');
 const winston = require('./winston');
+const Jimp = require('jimp');
 
+let err;
 //configuring the AWS environment
 AWS.config.update({
   accessKeyId: config.S3.accessKeyId,
@@ -14,23 +16,46 @@ const s3 = new AWS.S3();
 
 const extensionsAuthorized = ['.jpg','.jpeg','.png'];
 
-const uploadFile = (file, folder='folder', fileName='cover') => {
+const uploadFile = async (file, folder='folder', fileName='cover') => {
+
   const extension = path.extname(file.originalname); // .jpg
 
   // verify the file format
   if(!extensionsAuthorized.includes(extension)){
-    const err = new Error('error on file format, photo is not a jpg, jpeg or png');
+    err = new Error('error on file format, photo is not a jpg, jpeg or png');
     err.status = 400;
     return err;
   }
 
-  const name = fileName + extension;
-  const params = {
-    Bucket: config.S3.bucket, // pass your bucket name
-    Key: folder + '/' + name, 
-    Body: file.buffer
-  };
-  return s3.upload(params).promise();
+  // verify the file size, 2mo max
+  if(file.size > 2000000){
+    err = new Error('error on file size exceced the 1.5 mo authorized');
+    err.status = 400;
+    return err;
+  }
+
+  // modify photo before upload
+  try {
+    // transform file
+    let fileToUpload = await Jimp.read(file.buffer);
+    let fileFormated = await fileToUpload
+      .resize(1024,Jimp.AUTO) // resize
+      .quality(60) // set quality
+      .getBufferAsync(file.mimetype);
+
+    // prepare the file for s3
+    const name = fileName + extension;
+    const params = {
+      Bucket: config.S3.bucket, // pass your bucket name
+      Key: folder + '/' + name, 
+      Body: fileFormated
+    };
+    // upload to s3
+    return s3.upload(params).promise();
+  } catch (error) {
+    return error;
+  }
+
 };
     
 const requestFile = (file) => {
