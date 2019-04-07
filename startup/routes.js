@@ -9,6 +9,7 @@ const shopsRouter = require('../routes/shops');
 const customersRouter = require('../routes/customers');
 const vendorsRouter = require('../routes/vendors');
 const usersRouter = require('../routes/users');
+const ordersRouter = require('../routes/orders');
 const authRouter = require('../routes/auth');
 const swaggerSpec = require('../swagger.js');
 
@@ -26,6 +27,7 @@ module.exports = function (app) {
   app.use('/api/v1/customers', customersRouter);
   app.use('/api/v1/vendors', vendorsRouter);
   app.use('/api/v1/users', usersRouter);
+  app.use('/api/v1/orders', ordersRouter);
   app.use('/api/v1/auth', authRouter);
   
   // route for swagger.json
@@ -40,9 +42,9 @@ module.exports = function (app) {
   // default route if invalid URL input
   app.use((req, res) => {
     res.status('404').send({message: 'Wrong URL'});
-  })
+  });
 
   // handling express error
   app.use(error);
   
-}
+};

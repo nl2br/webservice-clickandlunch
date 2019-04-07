@@ -302,7 +302,7 @@ describe('/api/v1/shops', () => {
       expect(res.body.name).toEqual(shop.dataValues.name);
     });
 
-    it('Save a shop with photo', async () => {
+    it.skip('Save a shop with photo', async () => {
 
       // upload the file
       const filePath = `${__dirname}/../test_files/resto-700x525.jpg`;
@@ -329,7 +329,7 @@ describe('/api/v1/shops', () => {
       expect(photo).toBeTruthy();
     });
 
-    it('Should return 400 error when Save a shop with photo of type bmp', async () => {
+    it.skip('Should return 400 error when Save a shop with photo of type bmp', async () => {
 
       // upload the file
       const filePath = `${__dirname}/../test_files/tiger.bmp`;

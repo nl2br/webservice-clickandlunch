@@ -3,6 +3,12 @@ const Models = require('../../models/');
 const truncate = require('../truncate');
 
 let server;
+let shop;
+let customer;
+let product1;
+let product2;
+let tokenCustomer;
+let tokenVendor;
 
 beforeAll( async () =>{
   await truncate();
@@ -23,15 +29,11 @@ describe('/api/v1/orders', () => {
   },1000);
 
   describe('GET /:id', () => {
+
     beforeAll( async () =>{
       await truncate();
-    });
-    afterAll( async () =>{
-      await truncate();
-    });
-    it('Return all orders for a valid shop ID', async () => {
-      // création du shop et de 2 produits
-      let shop = await Models.Shop.create({
+      // create the shop
+      shop = await Models.Shop.create({
         name: 'Fruity Land',    
         siret: '12345678912345',
         siren: '123456789',
@@ -43,25 +45,44 @@ describe('/api/v1/orders', () => {
           crs: {type: 'name', properties: { name: 'EPSG:4326'}}
         }
       });
+    
+      // create the products
       const shopId = shop.get('shopId');
-      const product1 = await Models.Product.create({name: 'Milk shake Framboise', price: '9.90', shopId: shopId });
-      const product2 = await Models.Product.create({name: 'Cake Miel Harissa', price: '9.90', shopId: shopId });
-      const product3 = await Models.Product.create({name: 'ananas', price: '9.90',shopId: shopId });
-      const product4 = await Models.Product.create({name: 'piepie', price: '9.90',shopId: shopId });
-      // création du customer
-      let customer = await Models.User.create({
-        firstname: 'looping', 
-        lastname: 'barakouda',
-        phoneNumber: '0636697845',
-        email: 'j@j.com',
-        password: 'password',
+      product1 = await Models.Product.create({name: 'Milk shake Framboise', price: '9.90', shopId: shopId });
+      product2 = await Models.Product.create({name: 'Cake Miel Harissa', price: '9.90', shopId: shopId });
+          
+      // create the customer
+      customer = await Models.User.create({
+        firstname: 'nathan',
+        lastname: 'lebreton',
+        phoneNumber: '06639874521',
+        email: 'a@a.com',
+        password: 'mysecretpassword',
         role: 'CUSTOMER'
       });
+      tokenCustomer = customer.generateAuthToken();
+          
+      // create the vendor
+      customer = await Models.User.create({
+        firstname: 'nathan',
+        lastname: 'lebreton',
+        phoneNumber: '06639874521',
+        email: 'b@b.com',
+        password: 'mysecretpassword',
+        role: 'VENDOR'
+      });
+      tokenVendor = customer.generateAuthToken();
+
+      // create the order
+      let order = await Models.Order.create({date: Date.now(), customerId: customer.get('userId'), shopId: shop.get('shopId')});
+      await Models.OrderDetail.create({orderId: order.get('orderId'), productId: product1.get('productId'), quantity: 1});
+      await Models.OrderDetail.create({orderId: order.get('orderId'), productId: product2.get('productId'), quantity: 1});
+    });
+
+    it.skip('Return all orders for a valid shop ID', async () => {
       // création de la commande
-      let order = await Models.Order.create({date: Date.now(), customerId: customer.get('customerId'), shopId: shopId});
       // ajout des produits dans la commande
-      let orderDetail1 = await Models.OrderDetail.create({orderId: order.get('orderId'), productId: product1.get('productId'), quantity: 1});
-      let orderDetail2 = await Models.OrderDetail.create({orderId: order.get('orderId'), productId: product2.get('productId'), quantity: 1});
+
       // shop.setProducts([product1,product3]);
       // order.setOrderDetails([orderDetail1, orderDetail2]);
       // order.setCustomer(customer.get('customer_id'));
@@ -76,7 +97,7 @@ describe('/api/v1/orders', () => {
           }] 
         }],
         // include: [{ all: true, nested: true }],
-        where: {shopId: shopId, deleted: 0}
+        where: {shopId: shop.get('shopId'), deleted: 0}
       })
         .then( orders => {
           console.log('array order', JSON.stringify(orders));
@@ -92,6 +113,83 @@ describe('/api/v1/orders', () => {
       //   // return res.status(400).send(error);
       // });
     });
+
+    it('Return all orders for a valid customer ID', async () => {
+      const res = await request(server).get('/api/v1/orders/customers/' + customer.get('userId')).set('x-auth-token', tokenCustomer);
+      expect(res.status).toBe(200);
+    });
+
+    it('Return all orders for a valid shop ID', async () => {
+      const res = await request(server).get('/api/v1/orders/shops/' + shop.get('shopId')).set('x-auth-token', tokenVendor);
+      expect(res.status).toBe(200);
+    });
+
+  });
+
+  describe('POST orders/shops/:idShop/customers/:idCustomer', () => {
+
+    beforeAll( async () =>{
+      await truncate();
+      // create the shop
+      shop = await Models.Shop.create({
+        name: 'Fruity Land',    
+        siret: '12345678912345',
+        siren: '123456789',
+        phoneNumber: '0678895645',
+        email: 'test@test9.com',
+        location: {
+          type: 'Point',
+          coordinates: [11,9],
+          crs: {type: 'name', properties: { name: 'EPSG:4326'}}
+        }
+      });
+    
+      // create the products
+      const shopId = shop.get('shopId');
+      product1 = await Models.Product.create({name: 'Milk shake Framboise', price: '9.90', shopId: shopId });
+      product2 = await Models.Product.create({name: 'Cake Miel Harissa', price: '9.90', shopId: shopId });
+          
+      // create the customer
+      customer = await Models.User.create({
+        firstname: 'nathan',
+        lastname: 'lebreton',
+        phoneNumber: '06639874521',
+        email: 'a@a.com',
+        password: 'mysecretpassword',
+        role: 'CUSTOMER'
+      });
+      tokenCustomer = customer.generateAuthToken();
+    
+    });
+
+    beforeEach(async () => { 
+      server = require('../../app'); 
+    });
+    afterEach(async () => { 
+      await server.close();     
+    });
+    afterAll(async (done) => {
+      await server.close();
+      server.on('disconnected', done);
+    },1000);
+
+    it('Create an order for a given shop and a given customer', async () => {
+      const res = await request(server)
+        .post('/api/v1/orders/shops/' + shop.get('shopId') + '/customers/' + customer.get('userId'))
+        .set('x-auth-token', tokenCustomer)
+        .send({
+          products: [{
+            id: product1.get('productId'),
+            quantity: 1
+          },{
+            id: product2.get('productId'),
+            quantity: 1
+          }]
+        });
+
+      expect(res.status).toBe(201);
+    });
+      
   });
 
 });
