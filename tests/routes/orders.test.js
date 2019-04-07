@@ -174,7 +174,6 @@ describe('/api/v1/orders', () => {
     },1000);
 
     it('Create an order for a given shop and a given customer', async () => {
-      console.log('customer',customer);
       const res = await request(server)
         .post('/api/v1/orders/shops/' + shop.get('shopId') + '/customers/' + customer.get('userId'))
         .set('x-auth-token', tokenCustomer)
@@ -187,7 +186,7 @@ describe('/api/v1/orders', () => {
             quantity: 1
           }]
         });
-      console.log(res.body);
+
       expect(res.status).toBe(201);
     });
       
