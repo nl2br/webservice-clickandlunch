@@ -36,13 +36,14 @@ describe('/api/v1/customers', () => {
       });
 
       let userId = user.get('userId');
+      let token = user.generateAuthToken();
 
       // assocaite the user to the customer table
       await Models.Customer.create({
         customerId: userId
       });
 
-      const res = await request(server).get('/api/v1/customers/' + userId);
+      const res = await request(server).get('/api/v1/customers/' + userId).set('x-auth-token', token);
 
       expect(res.status).toBe(200);
       expect(res.body.lastname).toEqual(user.get('lastname'));

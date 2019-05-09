@@ -9,14 +9,29 @@ const Customers = require('../controllers/customerController');
 const Users = require('../controllers/userController');
 const auth = require('../middleware/auth');
 const role = require('../middleware/role');
-
+const asyncMiddleware = require('../middleware/async');
+const inputValidation = require('../middleware/inputValidation');
 
 /**
  * Get user details for a given customer 
  * @method get/customers/:id
  * @param {number} id id du customer
  */
-router.get('/:id', Customers.getCustomer);
+router.get('/:id', [auth, role('CUSTOMER', 'VENDOR', 'ADMIN'), inputValidation('get', 'customers')], asyncMiddleware(Customers.getCustomer));
+
+/**
+ * Create a new customer 
+ * @method post/customers
+ */
+router.post('/', [auth, role('CUSTOMER', 'VENDOR', 'ADMIN'), inputValidation('post', 'customers')], asyncMiddleware(Users.postUser));
+
+/**
+ * Modify details for a given customer
+ * @method put/customers/:id
+ * @param {number} customerid id du customer
+ */
+router.put('/:id', [auth, role('CUSTOMER', 'ADMIN')], Customers.putCustomer);
+
 
 // Listing all orders for a given Customer 
 // GET /customers/:id/orders (all)
@@ -25,19 +40,6 @@ router.get('/:id', Customers.getCustomer);
 // Listing specific order for a given Customer
 // GET /customers/:customerid/orders/:orderid (all)
 // router.get('/:customerid/orders/:orderid', customerController.getCustomerSpecificOrder);
-
-/**
- * Create a new customer 
- * @method post/customers
- */
-router.post('/', Users.postUser);
-
-/**
- * Modify details for a given customer
- * @method put/customers/:id
- * @param {number} customerid id du customer
- */
-router.put('/:id', [auth, role('CUSTOMER', 'ADMIN')], Customers.putCustomer);
 
 // Delete a customer
 // DELETE /customers/:id (admin, pro user)
@@ -100,6 +102,8 @@ module.exports = router;
  *                    - VENDOR
  *       400:
  *         description: Internal error
+ *     security:
+ *       - JWT: []
  */
 
 /**
@@ -142,6 +146,8 @@ module.exports = router;
  *         description: Internal Error
  *       404:
  *         description: Id not found
+ *     security:
+ *       - JWT: []
  */
 
  
