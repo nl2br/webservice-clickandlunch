@@ -47,6 +47,9 @@ const postProductSchema = Joi.object({
 
 const postShopSchema = Joi.object({
   name: Joi.required(),
+  address: Joi.required(),
+  city: Joi.required(),
+  postalCode: Joi.required(),
   siret: Joi.required(),
   siren: Joi.required(),
   phoneNumber: Joi.required(),

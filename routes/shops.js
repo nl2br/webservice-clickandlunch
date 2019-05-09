@@ -149,6 +149,12 @@ module.exports = router;
  *                         type: number
  *                       name:
  *                         type: string
+ *                       address:
+ *                         type: string
+ *                       city:
+ *                         type: string
+ *                       postalCode:
+ *                         type: number
  *                       siret:
  *                         type: string
  *                       siren:
@@ -205,6 +211,12 @@ module.exports = router;
  *             type: number
  *           name:
  *             type: string
+ *           address:
+ *             type: string
+ *           city:
+ *             type: string
+ *           postalCode:
+ *             type: number
  *           siret:
  *             type: string
  *           siren:
@@ -330,6 +342,12 @@ module.exports = router;
  *                     type: number
  *                   name:
  *                     type: string
+ *                   address:
+ *                     type: string
+ *                   city:
+ *                     type: string
+ *                   postalCode:
+ *                     type: number
  *                   description:
  *                     type: text
  *                   price:
@@ -362,6 +380,21 @@ module.exports = router;
  *         description: name of the shop
  *         required: true
  *         type: string
+ *       - name: address
+ *         in: formData
+ *         description: address of the shop
+ *         required: true
+ *         type: string
+ *       - name: city
+ *         in: formData
+ *         description: city of the shop
+ *         required: true
+ *         type: string
+ *       - name: postalCode
+ *         in: formData
+ *         description: postal code of the shop
+ *         required: true
+ *         type: number
  *       - name: siret
  *         in: formData
  *         description: siret of the shop
@@ -476,6 +509,12 @@ module.exports = router;
  *         properties:
  *           name:
  *             type: string
+ *           address:
+ *             type: string
+ *           city:
+ *             type: string
+ *           postalCode:
+ *             type: number
  *           siret:
  *             type: string
  *           siren:

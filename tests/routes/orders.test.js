@@ -34,7 +34,10 @@ describe('/api/v1/orders', () => {
       await truncate();
       // create the shop
       shop = await Models.Shop.create({
-        name: 'Fruity Land',    
+        name: 'Fruity Land',  
+        address: '12 allée des palmiers',
+        city: 'Rennes',
+        postalCode: '35000',   
         siret: '12345678912345',
         siren: '123456789',
         phoneNumber: '0678895645',
@@ -132,7 +135,10 @@ describe('/api/v1/orders', () => {
       await truncate();
       // create the shop
       shop = await Models.Shop.create({
-        name: 'Fruity Land',    
+        name: 'Fruity Land',   
+        address: '12 allée des palmiers',
+        city: 'Rennes',
+        postalCode: '35000',  
         siret: '12345678912345',
         siren: '123456789',
         phoneNumber: '0678895645',

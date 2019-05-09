@@ -60,7 +60,6 @@ class Shops {
                 err.status = 404;
                 return next(err);
               }
-              console.log('SHOP+PHOTO',JSON.stringify(result.Photos));
               res.status(200).json({'result': result, 'count': data.count, 'pages': pages});
             });
         });
@@ -296,6 +295,9 @@ class Shops {
 
     let shop = await Models.Shop.create({
       name: req.body.name,
+      address: req.body.address,
+      city: req.body.city,
+      postalCode: req.body.postalCode,
       siret: req.body.siret,
       siren: req.body.siren,
       phoneNumber: req.body.phoneNumber,
@@ -314,7 +316,6 @@ class Shops {
     if(req.file){
       // upload the photo to S3
       const data = await uploadFile(req.file, 'shop' + shop.get('shopId'));
-      console.log('resulttttt',data);
       if(data instanceof Error){
         return next(data);
       }
@@ -392,6 +393,9 @@ class Shops {
     
     await shop.update({
       name: req.body.name || shop.name,
+      address: req.body.address || shop.address,
+      city: req.body.city || shop.city,
+      postalCode: req.body.postalCode || shop.postalCode,
       siret: req.body.siret || shop.siret,
       siren: req.body.siren || shop.siren,
       phoneNumber: req.body.phoneNumber || shop.phoneNumber,

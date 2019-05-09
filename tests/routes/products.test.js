@@ -39,6 +39,9 @@ describe('/api/v1/products', () => {
     it('get specific product of type DISH', async () => {
       const shop = await Models.Shop.create({
         name: 'Restaurant test',
+        address: '12 allée des palmiers',
+        city: 'Rennes',
+        postalCode: '35000', 
         siret: '12345678912345',
         siren: '123456789',
         phoneNumber: '0678895645',
@@ -77,6 +80,9 @@ describe('/api/v1/products', () => {
     it('get specific product of type MENU', async () => {
       const shop = await Models.Shop.create({
         name: 'Restaurant test',
+        address: '12 allée des palmiers',
+        city: 'Rennes',
+        postalCode: '35000', 
         siret: '12345678912345',
         siren: '123456789',
         phoneNumber: '0678895645',
@@ -126,6 +132,9 @@ describe('/api/v1/products', () => {
       await truncate();
       shopGlobal = await Models.Shop.create({
         name: 'Restaurant test',
+        address: '12 allée des palmiers',
+        city: 'Rennes',
+        postalCode: '35000', 
         siret: '12345678912345',
         siren: '123456789',
         phoneNumber: '0678895645',

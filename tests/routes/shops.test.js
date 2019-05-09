@@ -27,7 +27,10 @@ describe('/api/v1/shops', () => {
   describe('api get/shops', () => {
     beforeAll( async () =>{
       await Models.Shop.create({ // 189m
-        name: 'Les grands gamins',    
+        name: 'Les grands gamins',
+        address: '12 allée des palmiers',
+        city: 'Rennes',
+        postalCode: '35000',    
         siret: '12345678912345',
         siren: '123456789',
         phoneNumber: '0678895645',
@@ -40,6 +43,9 @@ describe('/api/v1/shops', () => {
       });
       await Models.Shop.create({ // 102m
         name: 'oh ma biche',    
+        address: '12 allée des palmiers',
+        city: 'Rennes',
+        postalCode: '35000', 
         siret: '12345678912345',
         siren: '123456789',
         phoneNumber: '0678895645',
@@ -52,6 +58,9 @@ describe('/api/v1/shops', () => {
       });
       await Models.Shop.create({ // 3.19km
         name: 'del arte',
+        address: '12 allée des palmiers',
+        city: 'Rennes',
+        postalCode: '35000', 
         siret: '12345678912345',
         siren: '123456789',
         phoneNumber: '0678895645',
@@ -64,6 +73,9 @@ describe('/api/v1/shops', () => {
       });
       await Models.Shop.create({ // 4.56km
         name: 'les gauthetik',
+        address: '12 allée des palmiers',
+        city: 'Rennes',
+        postalCode: '35000', 
         siret: '12345678912345',
         siren: '123456789',
         phoneNumber: '0678895645',
@@ -129,6 +141,9 @@ describe('/api/v1/shops', () => {
     it('Get shop details for a given shop', async () => {
       const shop = await Models.Shop.create({
         name: 'Asia Shop',
+        address: '12 allée des palmiers',
+        city: 'Rennes',
+        postalCode: '35000', 
         siret: '12345678912345',
         siren: '123456789',
         phoneNumber: '0678895645',
@@ -157,6 +172,9 @@ describe('/api/v1/shops', () => {
     it('Listing all product items for a given shop', async () => {
       const shop = await Models.Shop.create({
         name: 'Restaurant test',
+        address: '12 allée des palmiers',
+        city: 'Rennes',
+        postalCode: '35000', 
         siret: '12345678912345',
         siren: '123456789',
         phoneNumber: '0678895645',
@@ -196,6 +214,9 @@ describe('/api/v1/shops', () => {
     it('Get specific product for a given shop', async () => {
       const shop = await Models.Shop.create({
         name: 'Restaurant test',
+        address: '12 allée des palmiers',
+        city: 'Rennes',
+        postalCode: '35000', 
         siret: '12345678912345',
         siren: '123456789',
         phoneNumber: '0678895645',
@@ -245,6 +266,9 @@ describe('/api/v1/shops', () => {
         .set('x-auth-token', token)
         .send({
           name: 'My test Shop',
+          address: '12 allée des palmiers',
+          city: 'Rennes',
+          postalCode: '35000', 
           siret: '12345678912345',
           siren: '123456789',
           phoneNumber: '0678895645',
@@ -271,6 +295,9 @@ describe('/api/v1/shops', () => {
         .set('x-auth-token', token)
         .send({
           name: 'My test Shop',
+          address: '12 allée des palmiers',
+          city: 'Rennes',
+          postalCode: '35000', 
           siret: '12345678912345',
           siren: '123456789',
           phoneNumber: '0678895645',
@@ -313,6 +340,9 @@ describe('/api/v1/shops', () => {
         .set('x-auth-token', token)
         .attach('file', filePath)
         .field('name','My test Shop')
+        .field('address','12 allée des myrtilles')
+        .field('city','Rennes')
+        .field('postalCode','35000')
         .field('siret','12345678912345')
         .field('siren','123456789')
         .field('phoneNumber','0678895645')
@@ -340,6 +370,9 @@ describe('/api/v1/shops', () => {
         .set('x-auth-token', token)
         .attach('file', filePath)
         .field('name','My test Shop')
+        .field('address','12 allée des myrtilles')
+        .field('city','Rennes')
+        .field('postalCode','35000')
         .field('siret','12345678912345')
         .field('siren','123456789')
         .field('phoneNumber','0678895645')
@@ -356,6 +389,9 @@ describe('/api/v1/shops', () => {
         .post('/api/v1/shops')
         .send({
           name: 'My test Shop',
+          address: '12 allée des palmiers',
+          city: 'Rennes',
+          postalCode: '35000', 
           siret: '12345678912345',
           siren: '123456789',
           phoneNumber: '0678895645',
@@ -374,6 +410,9 @@ describe('/api/v1/shops', () => {
         .set('x-auth-token', token)
         .send({
           name: 'My test Shop',
+          address: '12 allée des palmiers',
+          city: 'Rennes',
+          postalCode: '35000', 
           siret: '12345678912345',
           siren: '123456789',
           phoneNumber: '0678895645',
@@ -391,6 +430,9 @@ describe('/api/v1/shops', () => {
         .set('x-auth-token', token)
         .send({
           name: 'My test Shop',
+          address: '12 allée des palmiers',
+          city: 'Rennes',
+          postalCode: '35000', 
           siret: '123456A8912345',
           siren: '123456789',
           phoneNumber: '0678895645',
@@ -414,6 +456,9 @@ describe('/api/v1/shops', () => {
     it('Modify shop with valid data', async () => {
       const shop = await Models.Shop.create({
         name: 'My Shop',
+        address: '12 allée des palmiers',
+        city: 'Rennes',
+        postalCode: '35000', 
         siret: '12345678912345',
         siren: '123456789',
         phoneNumber: '0678895645',
@@ -436,6 +481,9 @@ describe('/api/v1/shops', () => {
     it('Modify shop with valid data AND lon and lat', async () => {
       const shop = await Models.Shop.create({
         name: 'My Shop',
+        address: '12 allée des palmiers',
+        city: 'Rennes',
+        postalCode: '35000', 
         siret: '12345678912345',
         siren: '123456789',
         phoneNumber: '0678895645',
@@ -462,6 +510,9 @@ describe('/api/v1/shops', () => {
     it('Should report error : Modify shop with invalid data', async () => {
       const shop = await Models.Shop.create({
         name: 'valid Shop',
+        address: '12 allée des palmiers',
+        city: 'Rennes',
+        postalCode: '35000', 
         siret: '12345678912345',
         siren: '123456789',
         phoneNumber: '0678895645',
@@ -477,6 +528,9 @@ describe('/api/v1/shops', () => {
         .put('/api/v1/shops/' + shop.get('shopId'))
         .send({
           name: 'unvalid \'Shop',
+          address: '12 allée des palmiers',
+          city: 'Rennes',
+          postalCode: '35000', 
           siret: '1234567891234A',
           siren: '1234567898',
           phoneNumber: '9678895645',
@@ -508,6 +562,9 @@ describe('/api/v1/shops', () => {
     it('Delete shop with a given id', async () => {
       const shop = await Models.Shop.create({
         name: 'My Shoppp',
+        address: '12 allée des palmiers',
+        city: 'Rennes',
+        postalCode: '35000', 
         siret: '12345678912345',
         siren: '123456789',
         phoneNumber: '0678895645',
@@ -547,6 +604,9 @@ describe('/api/v1/shops', () => {
 
       const shop1 = await Models.Shop.create({
         name: 'JapShop',
+        address: '12 allée des palmiers',
+        city: 'Rennes',
+        postalCode: '35000', 
         siret: '12345678912345',
         siren: '123456789',
         phoneNumber: '0678895645',

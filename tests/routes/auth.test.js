@@ -1,5 +1,4 @@
 const request = require('supertest');
-const Models = require('../../models/');
 const truncate = require('../truncate');
 
 let server;
