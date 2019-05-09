@@ -59,7 +59,8 @@ router.get('/:shopid/products/:productid', inputValidation('get', 'shops'), asyn
  * Create a new shop (admin, pro user)
  * @method post/shops
  */
-router.post('/', [auth, role('VENDOR', 'ADMIN'), inputValidation('post', 'shops'), singleUpload], asyncMiddleware(Shops.postShop));
+// FIXME: input validation 
+router.post('/', [auth, role('VENDOR', 'ADMIN'), singleUpload], asyncMiddleware(Shops.postShop));
 
 /**
  * Modify details for a given shop (admin, pro user)
