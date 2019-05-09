@@ -18,7 +18,7 @@ const multipleUpload = multer().array('file');
  * Get details for a given id product (all user)
  * @method get/products/:id
  */
-router.get('/:id', asyncMiddleware(Products.getProduct));
+router.get('/:id', [inputValidation('get', 'products')], asyncMiddleware(Products.getProduct));
 
 /**
  * Create a new product (admin, pro user)

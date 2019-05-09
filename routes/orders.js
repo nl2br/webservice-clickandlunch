@@ -15,7 +15,7 @@ const inputValidation = require('../middleware/inputValidation');
  * Get all orders for a given id customer 
  * @method get/orders/customers/:id
  */
-router.get('/customers/:id', [auth, role('CUSTOMER', 'VENDOR', 'ADMIN')], asyncMiddleware(Orders.getOrdersCustomer));
+router.get('/customers/:id', [auth, role('CUSTOMER', 'VENDOR', 'ADMIN'), inputValidation('get', 'orders')], asyncMiddleware(Orders.getOrdersCustomer));
 
 /**
  * Get all orders for a given id shop 
@@ -27,7 +27,7 @@ router.get('/shops/:id', [auth, role('VENDOR', 'CUSTOMER', 'ADMIN')], asyncMiddl
  * Create a new order 
  * @method post/orders/shops/:idShop/customers/:idCustomer
  */
-router.post('/shops/:idShop/customers/:idCustomer', [auth, role('CUSTOMER', 'ADMIN')], asyncMiddleware(Orders.postOrder));
+router.post('/shops/:idShop/customers/:idCustomer', [auth, role('CUSTOMER', 'VENDOR', 'ADMIN'), inputValidation('post', 'orders')], asyncMiddleware(Orders.postOrder));
 
 module.exports = router;
 
