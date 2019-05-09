@@ -13,6 +13,13 @@ const Auth = require('../controllers/authController');
  */
 router.post('/login', Auth.authenticateUser);
 
+/**
+ * Verifying user token route 
+ * @method auth/me
+ */
+// router.get('/me', [auth, role('VENDOR', 'ADMIN')], Auth.authenticateMe);
+router.get('/me', Auth.authenticateMe);
+
 // Logout on the client, simply delete the token
 
 module.exports = router;

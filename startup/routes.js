@@ -27,10 +27,6 @@ module.exports = function (app) {
     res.header('Access-Control-Max-Age', '3600');
     res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE');
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Content-Length, x-access-token');
-    if (req.method === 'OPTIONS') {
-      console.log('TCL: req.method === OPTIONS', req);
-      return res.sendStatus(200);
-    }
     next();
   });
 
