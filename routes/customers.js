@@ -23,7 +23,7 @@ router.get('/:id', [auth, role('CUSTOMER', 'VENDOR', 'ADMIN'), inputValidation('
  * Create a new customer 
  * @method post/customers
  */
-router.post('/', [auth, role('CUSTOMER', 'VENDOR', 'ADMIN'), inputValidation('post', 'customers')], asyncMiddleware(Users.postUser));
+router.post('/', [inputValidation('post', 'customers')], asyncMiddleware(Users.postUser));
 
 /**
  * Modify details for a given customer
@@ -102,8 +102,6 @@ module.exports = router;
  *                    - VENDOR
  *       400:
  *         description: Internal error
- *     security:
- *       - JWT: []
  */
 
 /**
