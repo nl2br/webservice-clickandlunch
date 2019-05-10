@@ -102,8 +102,6 @@ module.exports = router;
  *                    - VENDOR
  *       400:
  *         description: Internal error
- *     security:
- *       - JWT: []
  */
 
 /**
