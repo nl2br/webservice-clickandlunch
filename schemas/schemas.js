@@ -1,6 +1,6 @@
 /* schemas.js */
 
-const Joi = require("joi");
+const Joi = require('joi');
 
 const idSchema = Joi.object({
   id: Joi.number().integer().required()
@@ -28,20 +28,62 @@ const getShopProductsSchema = Joi.object({
   productid: Joi.number().integer().required()
 });
 
+
+const productOrder = Joi.object().keys({
+  id: Joi.number().integer().required(),
+  quantity: Joi.number().integer().required(),
+});
+
+const postOrdersSchema = Joi.object({
+  products: Joi.array().items(productOrder)
+});
+
+const postProductSchema = Joi.object({
+  name: Joi.required(),
+  description: Joi.required(),
+  price: Joi.number().required(),
+  productType: Joi.string().valid(['STARTER','DISH','DESSERT','DRINK','OTHER','MENU']).required()
+}).options({ allowUnknown: true }); // permet de ne pas prendre en compte tous les éléments
+
 const postShopSchema = Joi.object({
+  name: Joi.required(),
+  address: Joi.required(),
+  city: Joi.required(),
+  postalCode: Joi.required(),
+  siret: Joi.required(),
+  siren: Joi.required(),
+  phoneNumber: Joi.required(),
+  email: Joi.required(),
+  longitude: Joi.required(),
+  latitude: Joi.required(),
   categories: Joi.array().items(Joi.number())
+}).options({ allowUnknown: true }); // permet de ne pas prendre en compte tous les éléments
+
+const postCustomerSchema = Joi.object({
+  firstname: Joi.required(),
+  lastname: Joi.required(),
+  phoneNumber: Joi.required(),
+  email: Joi.required(),
+  password: Joi.required(),
+  role: Joi.string().valid('CUSTOMER').required()
 }).options({ allowUnknown: true }); // permet de ne pas prendre en compte tous les éléments
 
 // export the schemas
 module.exports = {
-  "get/shops/:id": idSchema,
-  "delete/shops/:id": idSchema,
-  "get/shops/": getShopsSchema,
-  "post/shops/": postShopSchema,
-  "get/shops/p/:page": pageSchema,
-  "get/shops/p/:page/category/:idCategory": getShopsByCategorySchema,
-  "get/shops/:id/products": idSchema,
-  "get/shops/:shopid/products/:productid": getShopProductsSchema,
+  'get/products/:id': idSchema,
+  'post/products/shops/:id': postProductSchema,
+  'get/customers/:id': idSchema,
+  'post/customers/': postCustomerSchema,
+  'get/shops/:id': idSchema,
+  'delete/shops/:id': idSchema,
+  'get/shops/': getShopsSchema,
+  'post/shops/': postShopSchema,
+  'get/shops/p/:page': pageSchema,
+  'get/shops/p/:page/category/:idCategory': getShopsByCategorySchema,
+  'get/shops/:id/products': idSchema,
+  'get/shops/:shopid/products/:productid': getShopProductsSchema,
+  'get/orders/customers/:id': idSchema,
+  'post/orders/shops/:idShop/customers/:idCustomer': postOrdersSchema,
 };
 
 // name: Joi.string().required(),

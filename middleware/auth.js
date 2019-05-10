@@ -1,9 +1,13 @@
+/**
+ * Authorization middleware
+ */
 const jwt = require('jsonwebtoken');
 const config = require('../config/config.json');
 
 module.exports = function (req, res, next) {
 
   const token = req.header('x-auth-token') || req.header('x-access-token') || req.header('authorization');
+
   if(!token) return res.status(401).send('Access denied. No token provided');
 
   try {

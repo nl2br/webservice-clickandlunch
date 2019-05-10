@@ -24,6 +24,31 @@ module.exports = (sequelize, DataTypes) => {
         len: [3,25] // only allow values with length between x and y
       }
     },
+    address: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        is: ValidationRegexp.name(),
+        notEmpty: true // don't allow empty strings
+      }
+    },
+    city: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        is: ValidationRegexp.name(),
+        notEmpty: true // don't allow empty strings
+      }
+    },
+    postalCode: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        len: [5,5],
+        isNumeric: true
+      },
+      field: 'postal_code',
+    },
     siret: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -105,7 +130,7 @@ module.exports = (sequelize, DataTypes) => {
   return Shop;
 };
 
-// SHOP Sequelize functions
+// SHOP Sequelize functions :
 // addProduct
 // addProducts
 // addShopCategories
@@ -135,6 +160,12 @@ module.exports = (sequelize, DataTypes) => {
  *        type: number
  *      name:
  *        type: string
+ *      address:
+ *        type: string
+ *      city:
+ *        type: string
+ *      postalCode:
+ *        type: number
  *      siret:
  *        type: string
  *      siren:

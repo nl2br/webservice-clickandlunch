@@ -28,13 +28,16 @@ describe('/api/v1/orders', () => {
     server.on('disconnected', done);
   },1000);
 
-  describe('GET /:id', () => {
+  describe('GET orders/:id', () => {
 
     beforeAll( async () =>{
       await truncate();
       // create the shop
       shop = await Models.Shop.create({
-        name: 'Fruity Land',    
+        name: 'Fruity Land',  
+        address: '12 allée des palmiers',
+        city: 'Rennes',
+        postalCode: '35000',   
         siret: '12345678912345',
         siren: '123456789',
         phoneNumber: '0678895645',
@@ -74,7 +77,7 @@ describe('/api/v1/orders', () => {
       tokenVendor = customer.generateAuthToken();
 
       // create the order
-      let order = await Models.Order.create({date: Date.now(), customerId: customer.get('userId'), shopId: shop.get('shopId')});
+      let order = await Models.Order.create({date: Date.now(), orderNumber: '000001-0519', state: Models.Order.getOrderStates().DEFAULT, customerId: customer.get('userId'), shopId: shop.get('shopId')});
       await Models.OrderDetail.create({orderId: order.get('orderId'), productId: product1.get('productId'), quantity: 1});
       await Models.OrderDetail.create({orderId: order.get('orderId'), productId: product2.get('productId'), quantity: 1});
     });
@@ -132,7 +135,10 @@ describe('/api/v1/orders', () => {
       await truncate();
       // create the shop
       shop = await Models.Shop.create({
-        name: 'Fruity Land',    
+        name: 'Fruity Land',   
+        address: '12 allée des palmiers',
+        city: 'Rennes',
+        postalCode: '35000',  
         siret: '12345678912345',
         siren: '123456789',
         phoneNumber: '0678895645',

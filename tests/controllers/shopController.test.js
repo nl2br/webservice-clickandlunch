@@ -23,6 +23,9 @@ describe('shopController', () => {
   test('shop : return 2 products', async () => {
     let shop = await Models.Shop.create({
       name: 'Armenian Shop',
+      address: '12 allée des palmiers',
+      city: 'Rennes',
+      postalCode: '35000', 
       siret: '12345678912345',
       siren: '123456789',
       phoneNumber: '0678895645',
@@ -49,6 +52,9 @@ describe('shopController', () => {
   test('shop : return error', async () => {
     let shop = await Models.Shop.build({
       name: 'toy',
+      address: '12 allée des palmiers',
+      city: 'Rennes',
+      postalCode: '35000', 
       siret: '12345678912345',
       siren: '123456789',
       phoneNumber: 'rere',
@@ -68,10 +74,13 @@ describe('shopController', () => {
 
   describe('Shop and ShopCategory', () => {
 
-    it('Had a category to a shop', async () => {
+    it('Add a category to a shop', async () => {
 
       const shop1 = await Models.Shop.create({
         name: 'Asia Shop',
+        address: '12 allée des palmiers',
+        city: 'Rennes',
+        postalCode: '35000', 
         siret: '12345678912345',
         siren: '123456789',
         phoneNumber: '0678895645',

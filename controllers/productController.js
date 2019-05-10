@@ -53,7 +53,7 @@ class Products {
 
   static getMenuProducts(menuId) {
     const listProducts = Models.sequelize.query(`select menu.product_id, 
-      (select product.name from product where product.product_id = menu.product_id) name,
+      (select product.name from product where product.product_id = menu.product_id) product_name,
       (select product.description from product where product.product_id = menu.product_id) description,
       (select product.price from product where product.product_id = menu.product_id) price, 
       (select product.product_type from product where product.product_id = menu.product_id) product_type
@@ -76,6 +76,22 @@ class Products {
       });
   }
 
+  static validation(forMethod, req){
+    switch (forMethod) {
+    case 'postProduct':
+      if(!Number(req.params.id || Object.keys(req.params).length === 0)){
+        const err = new Error('shop id is needed and must be a number');
+        err.status = 400;
+        return err;
+      }
+      break;
+    
+    default:
+      break;
+    }
+
+  }
+
   /**
    * @function postProduct
    * Create a new Product
@@ -83,6 +99,13 @@ class Products {
    * @param {*} res 
    */
   static async postProduct(req, res, next) {
+
+    let error = Products.validation('postProduct',req);
+    if(error instanceof Error){
+      return next(error);
+    }
+
+
     let product = await Models.Product.create({
       name: req.body.name,
       description: req.body.description,

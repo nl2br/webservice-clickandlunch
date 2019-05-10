@@ -43,12 +43,27 @@ class Orders{
   }
 
   static async postOrder(req, res, next){
+    if(!Number(req.params.idCustomer)){
+      const err = new Error('idCustomer is needed and must be a number');
+      err.status = 400;
+      return next(err);
+    }
+
+    if(!Number(req.params.idShop)){
+      const err = new Error('idShop is needed and must be a number');
+      err.status = 400;
+      return next(err);
+    }
+    
+    // TODO: generate the order number
 
     // create the order
     let order = await Models.Order.create({
+      date: Date.now(),
+      orderNumber: '000000-0000',
+      state: Models.Order.getOrderStates().DEFAULT,
       customerId: req.params.idCustomer, 
       shopId: req.params.idShop,
-      date: Date.now(),
     });
 
     // create the associated product

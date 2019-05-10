@@ -31,6 +31,13 @@ module.exports = function(err, req, res, next){
       message: err.message
     });
   }
+
+  if (err.name === 'SequelizeForeignKeyConstraintError') {
+    winston.error(`${logTime} - SequelizeForeignKeyConstraintError - ${err.status || 500} - ${err.message} - ${req.originalUrl} - ${req.method} `);
+    return res.status(400).json({
+      message: 'Cannot add or update a child row: a foreign key constraint fails'
+    });
+  }
   console.log('EXPRESS HANDLER ERROR : ', err);
     
   // set locals, only providing error in development
