@@ -1,4 +1,20 @@
+/**
+ * Order model Sequelize definition
+ * @module Order
+ * @param sequelize
+ * @param DataTypes
+ * @return {Object} Order
+ */
+
 module.exports = (sequelize, DataTypes) => {
+
+  const States = Object.freeze({
+    DEFAULT: 'default',
+    ACCEPTED: 'accepted',
+    CANCELED: 'cancecled',
+    FINISHED: 'finished',
+    PAID: 'paid'
+  });
 
   let Order = sequelize.define('Order', {
     orderId: {
@@ -8,9 +24,23 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       field: 'order_id',
     },
+    orderNumber: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: true, 
+        len: [11,11] 
+      },
+      field: 'order_number',
+    },
     date: {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW,
+    },
+    state: { // access Model.rawAttributes.states.values
+      type: DataTypes.ENUM, 
+      values: Object.keys(States),
+      allowNull: false
     },
     customerId: {
       type: DataTypes.INTEGER,
@@ -18,10 +48,6 @@ module.exports = (sequelize, DataTypes) => {
         args: false,
         msg: 'Please enter a customer id'
       },
-      // references: {
-      //   model: 'Customer',
-      //   key: 'customer_id'
-      // },
       field: 'customer_id',
     },
     shopId: {
@@ -30,10 +56,6 @@ module.exports = (sequelize, DataTypes) => {
         args: false,
         msg: 'Please enter a shop id'
       },
-      // references: {
-      //   model: 'Shop',
-      //   key: 'shop_id'
-      // },
       field: 'shop_id',
     },
     deleted: {
@@ -56,6 +78,10 @@ module.exports = (sequelize, DataTypes) => {
     });
   };
 
+  Order.getOrderStates = function() {
+    return States;
+  };
+
   return Order;
 };
 
@@ -66,8 +92,18 @@ module.exports = (sequelize, DataTypes) => {
  *     properties:
  *       orderId:
  *         type: integer
+ *       orderNumber:
+ *         type: string
  *       date:
  *         type: date
+ *       state:
+ *         type: string
+ *         enum:
+ *           - DEFAULT
+ *           - ACCEPTED
+ *           - CANCELED
+ *           - FINISHED
+ *           - PAID
  *       customerId:
  *         type: integer
  *       shopId:

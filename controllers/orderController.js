@@ -55,11 +55,15 @@ class Orders{
       return next(err);
     }
     
+    // TODO: generate the order number
+
     // create the order
     let order = await Models.Order.create({
+      date: Date.now(),
+      orderNumber: '000000-0000',
+      state: Models.Order.getOrderStates().DEFAULT,
       customerId: req.params.idCustomer, 
       shopId: req.params.idShop,
-      date: Date.now(),
     });
 
     // create the associated product
