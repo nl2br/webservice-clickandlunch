@@ -20,6 +20,7 @@ class Auth {
     // verify if user exist
     try{
       user = await Models.User.findOne({where:{email: req.body.email}});
+      console.log('TCL: Auth -> staticauthenticateUser -> user', user);
       if(!user) return res.status(401).json({type: 'error', message: 'invalid login or password'});
     }catch(ex){
       res.status(500).send('Internal error');
@@ -39,7 +40,7 @@ class Auth {
     res.json({
       success: true,
       message: 'Authentication successful!',
-      user: {id: user.id, email: user.email},
+      user: {id: user.userId, email: user.email, firstname: user.firstname, lastname: user.lastname},
       token: token
     });
   }
