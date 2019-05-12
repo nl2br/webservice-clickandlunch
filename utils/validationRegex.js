@@ -20,6 +20,13 @@ class ValidationRegex {
   static phone() {
     return /(0|\\+33|0033)[1-9][0-9]{8}/;
   }
+
+  static postalCode() {
+    return /[0-9]{5}/;
+  }
+  static orderNumber() {
+    return /[0-9]{6}[-][0-9]{4}/;
+  }
   
 }
 

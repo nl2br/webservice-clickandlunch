@@ -44,6 +44,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
+        is: ValidationRegexp.postalCode(),
         len: [5,5],
         isNumeric: true
       },
