@@ -5,6 +5,7 @@
  * @param DataTypes
  * @return {Object} Order
  */
+const ValidationRegexp = require('../utils/validationRegex');
 
 module.exports = (sequelize, DataTypes) => {
 
@@ -28,8 +29,9 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
+        is: ValidationRegexp.orderNumber(),
         notEmpty: true, 
-        len: [11,11] 
+        len: [11,11],
       },
       field: 'order_number',
     },

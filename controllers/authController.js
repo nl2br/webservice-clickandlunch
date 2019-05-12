@@ -20,7 +20,8 @@ class Auth {
     // verify if user exist
     try{
       user = await Models.User.findOne({where:{email: req.body.email}});
-      if(!user) return res.status(400).json({type: 'error', message: 'invalid login or password'});
+      console.log('TCL: Auth -> staticauthenticateUser -> user', user);
+      if(!user) return res.status(401).json({type: 'error', message: 'invalid login or password'});
     }catch(ex){
       res.status(500).send('Internal error');
     }
@@ -28,7 +29,7 @@ class Auth {
     // compare both password
     try{
       const valid = await bcrypt.compare(req.body.password,user.password);
-      if(!valid) return res.status(400).send({type: 'error', message: 'invalid login or password'});
+      if(!valid) return res.status(401).send({type: 'error', message: 'invalid login or password'});
     }catch(ex){
       res.status(500).send('Internal error');
     }
@@ -39,7 +40,7 @@ class Auth {
     res.json({
       success: true,
       message: 'Authentication successful!',
-      user: {id: user.id, email: user.email},
+      user: {id: user.userId, email: user.email, firstname: user.firstname, lastname: user.lastname},
       token: token
     });
   }
@@ -51,9 +52,9 @@ class Auth {
    * @param {*} res 
    */
   static async authenticateMe(req, res) {
-    const token = req.headers['x-access-token'];
+    const token = req.headers['x-auth-token'] ;
     console.log('TCL: Auth -> staticauthenticateMe -> token', token);
-    if (!token) return res.status(403).json({type: 'error', message: 'x-access-token header not found.'});
+    if (!token) return res.status(403).json({type: 'error', message: 'x-auth-token header not found.'});
     
     jwt.verify(token, config.jwtPrivateKey, (error, result) => {
       if (error) return res.status(403).json({type: 'error', message: 'Provided token is invalid.', error});
