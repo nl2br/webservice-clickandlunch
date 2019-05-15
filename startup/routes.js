@@ -11,7 +11,7 @@ const vendorsRouter = require('../routes/vendors');
 const usersRouter = require('../routes/users');
 const ordersRouter = require('../routes/orders');
 const authRouter = require('../routes/auth');
-const swaggerSpec = require('../swagger.js');
+const swaggerSpec = require('../config/swagger');
 
 // handling errors
 const error = require('../middleware/error');
