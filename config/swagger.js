@@ -2,11 +2,11 @@
 const swaggerJSDoc = require('swagger-jsdoc');
 
 const env = process.env.NODE_ENV || 'development';
-const config = require('./config/config.json')[env];
+const config = require('../config/config.json')[env];
 
 let host;
 if(config.use_env_variable){
-  host = 'clickandlunch.herokuapp.com'
+  host = 'clickandlunch.herokuapp.com';
 }else{
   const port = process.env.PORT || 3000;
   host = 'localhost:' + port;

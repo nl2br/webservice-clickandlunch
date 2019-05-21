@@ -2,7 +2,7 @@
 node_modules
 
 # vscode config files
-.vscode
+#.vscode
 
 # jest
 coverage

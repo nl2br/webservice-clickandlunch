@@ -71,7 +71,10 @@ module.exports = (sequelize, DataTypes) => {
     tableName: 'user'
   });
 
-  // Adding an instance level method
+  /**
+   * @method generateAuthToken
+   * @return {Object} the token and some user informations
+   */
   User.prototype.generateAuthToken = function() {
 
     const payload = {

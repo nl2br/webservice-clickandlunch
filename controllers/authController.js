@@ -12,8 +12,9 @@ class Auth {
   /**
    * @function authenticateUser
    * Log the user by generating his token
-   * @param {*} req 
-   * @param {*} res 
+   * @param {Object} req 
+   * @param {Object} res
+   * @return {String} token + user informations
    */
   static async authenticateUser(req, res) { // login
     let user;
