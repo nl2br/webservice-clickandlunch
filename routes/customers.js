@@ -28,7 +28,7 @@ router.post('/', [auth, role('CUSTOMER', 'VENDOR', 'ADMIN'), inputValidation('po
 /**
  * Modify details for a given customer
  * @method put/customers/:id
- * @param {number} customerid id du customer
+ * @param {number} id id du customer
  */
 router.put('/:id', [auth, role('CUSTOMER', 'ADMIN')], Customers.putCustomer);
 

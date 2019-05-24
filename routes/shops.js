@@ -339,7 +339,7 @@ module.exports = router;
  *              items:
  *                type: object
  *                properties:
- *                   productId:
+ *                   id:
  *                     type: number
  *                   name:
  *                     type: string
@@ -356,7 +356,7 @@ module.exports = router;
  *                   productType:
  *                     type: string
  *                     enum: ['STARTER', 'DISH', 'DESSERT','DRINK','OTHER','MENU']
- *                   id:
+ *                   shopId:
  *                     type: integer
  *       400:
  *         description: Internal error

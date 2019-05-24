@@ -41,7 +41,7 @@ module.exports = (sequelize, DataTypes) => {
  * definition:
  *   Customer:
  *     properties:
- *       customerId:
+ *       id:
  *         type: integer
  *       firstname:
  *         type: string

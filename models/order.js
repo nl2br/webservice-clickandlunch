@@ -92,7 +92,7 @@ module.exports = (sequelize, DataTypes) => {
  * definition:
  *   Order:
  *     properties:
- *       orderId:
+ *       id:
  *         type: integer
  *       orderNumber:
  *         type: string

@@ -112,7 +112,7 @@ module.exports = (sequelize, DataTypes) => {
  * definition:
  *   Product:
  *     properties:
- *       productId:
+ *       id:
  *         type: number
  *       name:
  *         type: string
@@ -123,7 +123,7 @@ module.exports = (sequelize, DataTypes) => {
  *       productType:
  *         type: string
  *         enum: ['STARTER', 'DISH', 'DESSERT','DRINK','OTHER','MENU']
- *       id:
+ *       shopId:
  *         type: integer
  */
 
@@ -132,6 +132,8 @@ module.exports = (sequelize, DataTypes) => {
  * definition:
  *   Menu:
  *     properties:
+ *       id:
+ *         type: number
  *       name:
  *         type: string
  *       description:
@@ -141,7 +143,7 @@ module.exports = (sequelize, DataTypes) => {
  *       productType:
  *         type: string
  *         enum: ['STARTER', 'DISH', 'DESSERT','DRINK','OTHER','MENU']
- *       shop_id:
+ *       shopId:
  *         type: integer
  *       listProducts:
  *         type: array

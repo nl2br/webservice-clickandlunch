@@ -40,7 +40,7 @@ module.exports = (sequelize, DataTypes) => {
  * definition:
  *   Vendor:
  *     properties:
- *       vendorId:
+ *       id:
  *         type: integer
  *       firstname:
  *         type: string
