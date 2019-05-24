@@ -52,7 +52,7 @@ class Products {
   }
 
   static getMenuProducts(menuId) {
-    const listProducts = Models.sequelize.query(`select menu.product_id, 
+    const listProducts = Models.sequelize.query(`select menu.product_id as id, 
       (select product.name from product where product.id = menu.product_id) product_name,
       (select product.description from product where product.id = menu.product_id) description,
       (select product.price from product where product.id = menu.product_id) price, 
@@ -111,7 +111,7 @@ class Products {
       description: req.body.description,
       price: req.body.price.replace(',' , '.'),
       productType: req.body.productType,
-      id: req.params.id
+      shopId: req.params.id
     });
     
     // for the final response

@@ -176,7 +176,7 @@ describe('/api/v1/products', () => {
       expect(res.body.name).toEqual(product.dataValues.name);
     });
 
-    it.skip('Save a product with multiple photos', async () => {
+    it('Save a product with multiple photos', async () => {
       jest.setTimeout(30000);
       // upload the file
       const img1 = `${__dirname}/../test_files/plathiver.jpg`;
@@ -193,10 +193,13 @@ describe('/api/v1/products', () => {
         .field('description','description product test')
         .field('price','9.90')
         .field('productType','DISH');
+        
+      console.log('TCL: res.body', res.body);
 
       // on le recupère depuis la BDD
       const product = await Models.Product.findById(res.body.id);
 
+      console.log('TCL: product', product);
       expect(res.status).toBe(201);
       expect(product).not.toBeNull();
       expect(res.body.name).toEqual(product.dataValues.name);
@@ -267,7 +270,7 @@ describe('/api/v1/products', () => {
     });
 
 
-    it.skip('Save a product menu type with photo', async () => {
+    it('Save a product menu type with photo', async () => {
       jest.setTimeout(30000);
       // upload the file
       const img1 = `${__dirname}/../test_files/plathiver.jpg`;
