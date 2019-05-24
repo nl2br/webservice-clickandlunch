@@ -69,14 +69,14 @@ class Orders{
     // create the associated product
     for(let product of req.body.products){
       await Models.OrderDetail.create({
-        orderId: order.get('orderId'), 
+        orderId: order.get('id'), 
         productId: product.id,
         quantity: product.quantity
       });
     }
 
     // retrieve the order and their associated products for sending
-    order = await Models.Order.findByPk(order.get('orderId'),{
+    order = await Models.Order.findByPk(order.get('id'),{
       include: {model: Models.OrderDetail}
     });
 

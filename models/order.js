@@ -18,12 +18,12 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   let Order = sequelize.define('Order', {
-    orderId: {
+    id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
       allowNull: false,
-      field: 'order_id',
+      field: 'id',
     },
     orderNumber: {
       type: DataTypes.STRING,

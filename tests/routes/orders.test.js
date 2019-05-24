@@ -78,8 +78,8 @@ describe('/api/v1/orders', () => {
 
       // create the order
       let order = await Models.Order.create({date: Date.now(), orderNumber: '000001-0519', state: Models.Order.getOrderStates().DEFAULT, customerId: customer.get('userId'), shopId: shop.get('id')});
-      await Models.OrderDetail.create({orderId: order.get('orderId'), productId: product1.get('id'), quantity: 1});
-      await Models.OrderDetail.create({orderId: order.get('orderId'), productId: product2.get('id'), quantity: 1});
+      await Models.OrderDetail.create({orderId: order.get('id'), productId: product1.get('id'), quantity: 1});
+      await Models.OrderDetail.create({orderId: order.get('id'), productId: product2.get('id'), quantity: 1});
     });
 
     it.skip('Return all orders for a valid shop ID', async () => {
