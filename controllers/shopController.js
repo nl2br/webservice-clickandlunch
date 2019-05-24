@@ -184,7 +184,7 @@ class Shops {
       // Note x is longitude and y is latitude
       // rend en mètre
       if(process.env.NODE_ENV === 'testpostgres' || process.env.NODE_ENV === 'herokuprod'){
-        Models.sequelize.query(`SELECT shop_id, name, phone_number, email, ST_Distance('SRID=4326;POINT(${query.lon} ${query.lat})'::geometry, location::geometry) * 106000 AS distance FROM shop WHERE ST_Distance('SRID=4326;POINT(${query.lon} ${query.lat})'::geometry, location::geometry) * 106000 < ${range} AND deleted = 0 ORDER BY distance ASC`, { 
+        Models.sequelize.query(`SELECT id, name, phone_number, email, ST_Distance('SRID=4326;POINT(${query.lon} ${query.lat})'::geometry, location::geometry) * 106000 AS distance FROM shop WHERE ST_Distance('SRID=4326;POINT(${query.lon} ${query.lat})'::geometry, location::geometry) * 106000 < ${range} AND deleted = 0 ORDER BY distance ASC`, { 
           type: Models.sequelize.QueryTypes.SELECT,
         })
           .then(result => {
@@ -194,7 +194,7 @@ class Shops {
             resolve(result);
           });
       }else{
-        Models.sequelize.query(`SELECT shop_id, name, phone_number, email,
+        Models.sequelize.query(`SELECT id, name, phone_number, email,
           ROUND(ST_Distance(POINT(?,?), location), 6) * 106000 AS distance
           FROM shop
           WHERE ST_Distance(POINT(?,?), location) * 106000 < ?
@@ -268,12 +268,12 @@ class Shops {
    * Listing specific Product for a given shop
    * @param {object} req 
    * @param {int} req.params.productid id du produit à trouver
-   * @param {int} req.params.shopid id du shop à trouver
+   * @param {int} req.params.id id du shop à trouver
    * @param {*} res 
    */
   static getShopProduct(req, res, next) {
     Models.Product.findOne({
-      where: { productId: req.params.productid, shopId: req.params.shopid },
+      where: { productId: req.params.productid, shopId: req.params.id },
     })
       .then(result => {
         if (!result) {
@@ -315,14 +315,14 @@ class Shops {
     // if photo was posted
     if(req.file){
       // upload the photo to S3
-      const data = await uploadFile(req.file, 'shop' + shop.get('shopId'));
+      const data = await uploadFile(req.file, 'shop' + shop.get('id'));
       if(data instanceof Error){
         return next(data);
       }
       // add the url from S3 to DB
       await Models.Photo.create({
         url: data.Location,
-        shopId: shop.get('shopId')
+        id: shop.get('id')
       });
       // for sending the photo's url
       include.push({model: Models.Photo});
@@ -343,11 +343,11 @@ class Shops {
 
     // get all shop information for response to the client
     if(include.length){
-      shop = await Models.Shop.findByPk(shop.get('shopId'), {
+      shop = await Models.Shop.findByPk(shop.get('id'), {
         include: include
       });
     }else{
-      shop = await Models.Shop.findByPk(shop.get('shopId'));
+      shop = await Models.Shop.findByPk(shop.get('id'));
     }
 
     if(!shop){

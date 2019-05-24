@@ -108,7 +108,7 @@ module.exports = (sequelize, DataTypes) => {
  *           - PAID
  *       customerId:
  *         type: integer
- *       shopId:
+ *       id:
  *         type: integer
  *       deleted:
  *        type: boolean

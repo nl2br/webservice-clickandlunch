@@ -111,7 +111,7 @@ class Products {
       description: req.body.description,
       price: req.body.price.replace(',' , '.'),
       productType: req.body.productType,
-      shopId: req.params.id
+      id: req.params.id
     });
     
     // for the final response
@@ -168,7 +168,7 @@ class Products {
       description: req.body.description,
       price: req.body.price.replace(',' , '.'),
       productType: 'MENU',
-      shopId: req.params.id
+      id: req.params.id
     });
 
     let include = [];

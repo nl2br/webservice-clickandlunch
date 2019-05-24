@@ -123,7 +123,7 @@ module.exports = (sequelize, DataTypes) => {
  *       productType:
  *         type: string
  *         enum: ['STARTER', 'DISH', 'DESSERT','DRINK','OTHER','MENU']
- *       shopId:
+ *       id:
  *         type: integer
  */
 

@@ -57,7 +57,7 @@ describe('/api/v1/products', () => {
         description: 'description',
         price: '4.90',
         productType: 'DISH',
-        shopId: shop.get('shopId')
+        id: shop.get('id')
       });
 
       const res = await request(server).get('/api/v1/products/' + p.get('productId'));
@@ -98,21 +98,21 @@ describe('/api/v1/products', () => {
         description: 'description',
         price: '4.90',
         productType: 'DISH',
-        shopId: shop.get('shopId')
+        id: shop.get('id')
       });
       const p2 = await Models.Product.create({
         name: 'poulet roti',
         description: 'description',
         price: '4.90',
         productType: 'DISH',
-        shopId: shop.get('shopId')
+        id: shop.get('id')
       });
       const menu = await Models.Product.create({
         name: 'menu salade chevre poulet roti',
         description: 'description',
         price: '4.90',
         productType: 'MENU',
-        shopId: shop.get('shopId')
+        id: shop.get('id')
       });
       await Models.Menu.create({
         menuId: menu.get('productId'),
@@ -160,7 +160,7 @@ describe('/api/v1/products', () => {
     it('Save a product with valid data', async () => {
       
       const res = await request(server)
-        .post('/api/v1/products/shops/' + shopGlobal.get('shopId'))
+        .post('/api/v1/products/shops/' + shopGlobal.get('id'))
         .set('x-auth-token', token)
         .send({
           name: 'product test 2',
@@ -184,7 +184,7 @@ describe('/api/v1/products', () => {
       const img3 = `${__dirname}/../test_files/poulet-roti-pommes.jpg`;
 
       const res = await request(server)
-        .post('/api/v1/products/shops/' + shopGlobal.get('shopId'))
+        .post('/api/v1/products/shops/' + shopGlobal.get('id'))
         .set('x-auth-token', token)
         .attach('file', img1)
         .attach('file', img2)
@@ -209,25 +209,25 @@ describe('/api/v1/products', () => {
         description: 'description',
         price: '4.90',
         productType: 'DISH',
-        shopId: shopGlobal.get('shopId')
+        id: shopGlobal.get('id')
       });
       const p2 = await Models.Product.create({
         name: 'poulet',
         description: 'description',
         price: '4.90',
         productType: 'DISH',
-        shopId: shopGlobal.get('shopId')
+        id: shopGlobal.get('id')
       });
       const p3 = await Models.Product.create({
         name: 'frite',
         description: 'description',
         price: '4.90',
         productType: 'DISH',
-        shopId: shopGlobal.get('shopId')
+        id: shopGlobal.get('id')
       });
 
       const res = await request(server)
-        .post('/api/v1/products/menus/shops/' + shopGlobal.get('shopId'))
+        .post('/api/v1/products/menus/shops/' + shopGlobal.get('id'))
         .set('x-auth-token', token)
         .send({
           name: 'menu salade poulet frite',
@@ -278,7 +278,7 @@ describe('/api/v1/products', () => {
         description: 'description',
         price: '4.90',
         productType: 'DISH',
-        shopId: shopGlobal.get('shopId')
+        id: shopGlobal.get('id')
       });
       
       const p2 = await Models.Product.create({
@@ -286,11 +286,11 @@ describe('/api/v1/products', () => {
         description: 'description',
         price: '4.90',
         productType: 'DISH',
-        shopId: shopGlobal.get('shopId')
+        id: shopGlobal.get('id')
       });
 
       const res = await request(server)
-        .post('/api/v1/products/menus/shops/' + shopGlobal.get('shopId'))
+        .post('/api/v1/products/menus/shops/' + shopGlobal.get('id'))
         .set('x-auth-token', token)
         .attach('file', img1)
         .attach('file', img2)

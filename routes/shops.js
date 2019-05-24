@@ -49,11 +49,11 @@ router.get('/:id/products', inputValidation('get', 'shops'), asyncMiddleware(Sho
 
 /**
  * Get specific product for a given shop  (all user)
- * @method get/shops/:shopid/products/:productid
- * @param {number} shopid id du shop
+ * @method get/shops/:id/products/:productid
+ * @param {number} id id du shop
  * @param {number} productid id du produit
  */
-router.get('/:shopid/products/:productid', inputValidation('get', 'shops'), asyncMiddleware(Shops.getShopProduct));
+router.get('/:id/products/:productid', inputValidation('get', 'shops'), asyncMiddleware(Shops.getShopProduct));
 
 /**
  * Create a new shop (admin, pro user)
@@ -65,7 +65,7 @@ router.post('/', [auth, role('VENDOR', 'ADMIN'), singleUpload], asyncMiddleware(
 /**
  * Modify details for a given shop (admin, pro user)
  * @method put/shops/:id
- * @param {number} shopid id du shop
+ * @param {number} id id du shop
  */
 // TODO: validation input
 router.put('/:id', asyncMiddleware(Shops.putShop));
@@ -73,7 +73,7 @@ router.put('/:id', asyncMiddleware(Shops.putShop));
 /**
  * Delete a shop (admin, pro user)
  * @method delete/shops/:id
- * @param {number} shopid id du shop
+ * @param {number} id id du shop
  */
 router.delete('/:id', inputValidation('delete', 'shops'), asyncMiddleware(Shops.deleteShop));
 
@@ -146,7 +146,7 @@ module.exports = router;
  *                  items:
  *                    type: object
  *                    properties:
- *                       shopId:
+ *                       id:
  *                         type: number
  *                       name:
  *                         type: string
@@ -208,7 +208,7 @@ module.exports = router;
  *       200:
  *         description: Return all shops nearby the user longitude and latitude and the range
  *         properties:
- *           shopId:
+ *           id:
  *             type: number
  *           name:
  *             type: string
@@ -288,13 +288,13 @@ module.exports = router;
 
 /**
  * @swagger
- * /api/v1/shops/{shopid}/products/{productid}:
+ * /api/v1/shops/{id}/products/{productid}:
  *   get:
  *     tags:
  *       - Shop
  *     description: Return a list of shop corresponding to the searched term
  *     parameters:
- *       - name: shopid
+ *       - name: id
  *         in: path
  *         required: true
  *         description: id du shop recherché
@@ -356,7 +356,7 @@ module.exports = router;
  *                   productType:
  *                     type: string
  *                     enum: ['STARTER', 'DISH', 'DESSERT','DRINK','OTHER','MENU']
- *                   shopId:
+ *                   id:
  *                     type: integer
  *       400:
  *         description: Internal error

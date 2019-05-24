@@ -37,8 +37,8 @@ describe('shopController', () => {
       }
     });
       
-    const product1 = await Models.Product.create({name: 'kumkuat', price: '9.90', shop_id: shop.get('shop_id') });
-    const product2 = await Models.Product.create({name: 'kumkuat 2', price: '9.90', shop_id: shop.get('shop_id') });
+    const product1 = await Models.Product.create({name: 'kumkuat', price: '9.90', shopId: shop.get('id') });
+    const product2 = await Models.Product.create({name: 'kumkuat 2', price: '9.90', shopId: shop.get('id') });
     shop.setProducts([product1,product2]);
     shop.getProducts();
     // expect(shop.length).toBe(2);

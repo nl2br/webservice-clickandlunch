@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
     });
 
     Vendor.belongsTo(models.Shop, { // add shop_id to vendor
-      foreignKey: 'shopId'
+      foreignKey: 'id'
     });
 
   };

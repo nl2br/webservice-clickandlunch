@@ -28,11 +28,6 @@ module.exports = function (app) {
     res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Content-Length, x-access-token, x-auth-token, Authorization');
     res.header('Access-Control-Expose-Headers', 'Access-Token, Uid, x-auth-token');
-    //intercepts OPTIONS method
-    if ('OPTIONS' === req.method) {
-      //respond with 200
-      res.send(200);
-    }
 
     next();
   });

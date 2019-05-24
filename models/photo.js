@@ -57,7 +57,7 @@ module.exports = (sequelize, DataTypes) => {
  * definition:
  *  Photo:
  *    properties:
- *      shopId:
+ *      id:
  *        type: number
  *      url:
  *        type: string

@@ -50,9 +50,9 @@ describe('/api/v1/orders', () => {
       });
     
       // create the products
-      const shopId = shop.get('shopId');
-      product1 = await Models.Product.create({name: 'Milk shake Framboise', price: '9.90', shopId: shopId });
-      product2 = await Models.Product.create({name: 'Cake Miel Harissa', price: '9.90', shopId: shopId });
+      const id = shop.get('id');
+      product1 = await Models.Product.create({name: 'Milk shake Framboise', price: '9.90', id: id });
+      product2 = await Models.Product.create({name: 'Cake Miel Harissa', price: '9.90', id: id });
           
       // create the customer
       customer = await Models.User.create({
@@ -77,7 +77,7 @@ describe('/api/v1/orders', () => {
       tokenVendor = customer.generateAuthToken();
 
       // create the order
-      let order = await Models.Order.create({date: Date.now(), orderNumber: '000001-0519', state: Models.Order.getOrderStates().DEFAULT, customerId: customer.get('userId'), shopId: shop.get('shopId')});
+      let order = await Models.Order.create({date: Date.now(), orderNumber: '000001-0519', state: Models.Order.getOrderStates().DEFAULT, customerId: customer.get('userId'), shopId: shop.get('id')});
       await Models.OrderDetail.create({orderId: order.get('orderId'), productId: product1.get('productId'), quantity: 1});
       await Models.OrderDetail.create({orderId: order.get('orderId'), productId: product2.get('productId'), quantity: 1});
     });
@@ -89,7 +89,7 @@ describe('/api/v1/orders', () => {
       // shop.setProducts([product1,product3]);
       // order.setOrderDetails([orderDetail1, orderDetail2]);
       // order.setCustomer(customer.get('customer_id'));
-      // order.setShop(shopId);
+      // order.setShop(id);
       Models.Order.findAll({ // Nested Eager Loading
         include: [{
           model: Models.OrderDetail,
@@ -100,7 +100,7 @@ describe('/api/v1/orders', () => {
           }] 
         }],
         // include: [{ all: true, nested: true }],
-        where: {shopId: shop.get('shopId'), deleted: 0}
+        where: {id: shop.get('id'), deleted: 0}
       })
         .then( orders => {
           console.log('array order', JSON.stringify(orders));
@@ -123,7 +123,7 @@ describe('/api/v1/orders', () => {
     });
 
     it('Return all orders for a valid shop ID', async () => {
-      const res = await request(server).get('/api/v1/orders/shops/' + shop.get('shopId')).set('x-auth-token', tokenVendor);
+      const res = await request(server).get('/api/v1/orders/shops/' + shop.get('id')).set('x-auth-token', tokenVendor);
       expect(res.status).toBe(200);
     });
 
@@ -151,9 +151,9 @@ describe('/api/v1/orders', () => {
       });
     
       // create the products
-      const shopId = shop.get('shopId');
-      product1 = await Models.Product.create({name: 'Milk shake Framboise', price: '9.90', shopId: shopId });
-      product2 = await Models.Product.create({name: 'Cake Miel Harissa', price: '9.90', shopId: shopId });
+      const id = shop.get('id');
+      product1 = await Models.Product.create({name: 'Milk shake Framboise', price: '9.90', id: id });
+      product2 = await Models.Product.create({name: 'Cake Miel Harissa', price: '9.90', id: id });
           
       // create the customer
       customer = await Models.User.create({
@@ -181,7 +181,7 @@ describe('/api/v1/orders', () => {
 
     it('Create an order for a given shop and a given customer', async () => {
       const res = await request(server)
-        .post('/api/v1/orders/shops/' + shop.get('shopId') + '/customers/' + customer.get('userId'))
+        .post('/api/v1/orders/shops/' + shop.get('id') + '/customers/' + customer.get('userId'))
         .set('x-auth-token', tokenCustomer)
         .send({
           products: [{
