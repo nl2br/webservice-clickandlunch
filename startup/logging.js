@@ -30,7 +30,7 @@ module.exports = function(app) {
   // unhandledRejection error handling pass to uncaughtException error handling
   process.on('unhandledRejection', (ex) => {
     console.log('logging js uncaughtException ERROR', ex);
-    throw ex
+    throw ex;
   });
 
   // morgan
@@ -38,4 +38,4 @@ module.exports = function(app) {
     app.use(morgan('dev'));
     console.log('Morgan enabled ...');
   }
-}
+};

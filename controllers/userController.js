@@ -10,8 +10,9 @@ class Users {
   /**
    * @function postUser
    * Create a new User and send the Token for authentication
-   * @param {*} req 
-   * @param {*} res 
+   * @param {Object} req 
+   * @param {Object} res
+   * @return {String} the response without password + token in the hearder x-auth-token
    */
   static async postUser(req, res) {
     
@@ -33,10 +34,7 @@ class Users {
         email: req.body.email,
         password: hashPassword,
         role: req.body.role
-      })
-        .catch(err => {
-          throw err;
-        });
+      });
 
       // generate the token
       let token = user.generateAuthToken();
@@ -77,8 +75,6 @@ class Users {
       return res.status(400).send({message : ex.message});
     }
   }
- 
-
 
 }
 
