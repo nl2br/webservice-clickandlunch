@@ -307,7 +307,7 @@ describe('/api/v1/shops', () => {
           longitude: 11,
           latitude: 9,
           // categories: ["1","2","3"]
-          categories: [category.get('shopCategoryId')]
+          categories: [category.get('id')]
         });
 
       // find it
@@ -620,9 +620,9 @@ describe('/api/v1/shops', () => {
         }
       });
 
-      await shop1.addShopCategory([category.get('shopCategoryId')]);
+      await shop1.addShopCategory([category.get('id')]);
 
-      const res = await request(server).get('/api/v1/shops/p/1/category/' + category.get('shopCategoryId'));
+      const res = await request(server).get('/api/v1/shops/p/1/category/' + category.get('id'));
 
       expect(res.body.count).toBe(1);
 

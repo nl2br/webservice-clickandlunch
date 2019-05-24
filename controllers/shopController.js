@@ -151,8 +151,8 @@ class Shops {
           include: [{
             model: Models.ShopCategory,
             required: true,
-            where: {shopCategoryId: req.params.idCategory},
-            attributes: ['shopCategoryId', 'name']
+            where: {id: req.params.idCategory},
+            attributes: ['id', 'name']
           },{ model: Models.Photo }],
           where: {deleted: 0},
           limit: limit,

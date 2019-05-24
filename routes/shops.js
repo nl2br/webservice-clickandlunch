@@ -169,7 +169,7 @@ module.exports = router;
  *                         items:
  *                            type: object
  *                            properties:
- *                              shopCategoryId:
+ *                              id:
  *                                type: number
  *                              name:
  *                                 type: string  
