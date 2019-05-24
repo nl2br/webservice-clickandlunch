@@ -13,12 +13,12 @@ class Customers {
    * @param {*} res 
    */
   static async getCustomer(req, res, next) {
-    Models.Customer.findOne({where:{customerId: req.params.id}})
+    Models.Customer.findOne({where:{id: req.params.id}})
       .then(async customer => {
         if(!customer) return res.status(400).send({message: 'No customer for the given id'});
         let user = await customer.getUser();
         res.status(200).json({
-          userId: user.dataValues.userId,
+          id: user.dataValues.id,
           firstname: user.dataValues.firstname,
           lastname: user.dataValues.lastname,
           phoneNumber: user.dataValues.phoneNumber,
@@ -40,7 +40,7 @@ class Customers {
   static async putCustomer(req, res, next) {
     
     // verify if user exist
-    let customer = await Models.Customer.findOne({where:{customerId: req.params.id}});
+    let customer = await Models.Customer.findOne({where:{id: req.params.id}});
     if(!customer) return res.status(400).send({message: 'User doesn\'t exist'});
 
     let user = await customer.getUser();
@@ -59,7 +59,7 @@ class Customers {
       return res
         .status(200)
         .json({
-          userId: user.userId,
+          id: user.id,
           firstname: user.firstname,
           lastname: user.lastname,
           phoneNumber: user.phoneNumber,

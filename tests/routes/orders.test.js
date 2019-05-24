@@ -77,7 +77,7 @@ describe('/api/v1/orders', () => {
       tokenVendor = customer.generateAuthToken();
 
       // create the order
-      let order = await Models.Order.create({date: Date.now(), orderNumber: '000001-0519', state: Models.Order.getOrderStates().DEFAULT, customerId: customer.get('userId'), shopId: shop.get('id')});
+      let order = await Models.Order.create({date: Date.now(), orderNumber: '000001-0519', state: Models.Order.getOrderStates().DEFAULT, customerId: customer.get('id'), shopId: shop.get('id')});
       await Models.OrderDetail.create({orderId: order.get('id'), productId: product1.get('id'), quantity: 1});
       await Models.OrderDetail.create({orderId: order.get('id'), productId: product2.get('id'), quantity: 1});
     });
@@ -118,7 +118,7 @@ describe('/api/v1/orders', () => {
     });
 
     it('Return all orders for a valid customer ID', async () => {
-      const res = await request(server).get('/api/v1/orders/customers/' + customer.get('userId')).set('x-auth-token', tokenCustomer);
+      const res = await request(server).get('/api/v1/orders/customers/' + customer.get('id')).set('x-auth-token', tokenCustomer);
       expect(res.status).toBe(200);
     });
 
@@ -181,7 +181,7 @@ describe('/api/v1/orders', () => {
 
     it('Create an order for a given shop and a given customer', async () => {
       const res = await request(server)
-        .post('/api/v1/orders/shops/' + shop.get('id') + '/customers/' + customer.get('userId'))
+        .post('/api/v1/orders/shops/' + shop.get('id') + '/customers/' + customer.get('id'))
         .set('x-auth-token', tokenCustomer)
         .send({
           products: [{

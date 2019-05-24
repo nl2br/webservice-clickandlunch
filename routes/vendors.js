@@ -82,7 +82,7 @@ module.exports = router;
  *         description: Return saved User of type vendor
  *         schema:
  *            properties:
- *               userId:
+ *               id:
  *                 type: number
  *               firstname:
  *                 type: string
@@ -121,7 +121,7 @@ module.exports = router;
  *         description: Return vendor detail
  *         schema:
  *            properties:
- *               userId:
+ *               id:
  *                 type: number
  *               firstname:
  *                 type: string

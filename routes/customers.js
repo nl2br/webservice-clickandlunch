@@ -84,7 +84,7 @@ module.exports = router;
  *         description: Return saved User of type customer
  *         schema:
  *            properties:
- *               userId:
+ *               id:
  *                 type: number
  *               firstname:
  *                 type: string
@@ -123,7 +123,7 @@ module.exports = router;
  *         description: Return customer detail
  *         schema:
  *            properties:
- *               userId:
+ *               id:
  *                 type: number
  *               firstname:
  *                 type: string
