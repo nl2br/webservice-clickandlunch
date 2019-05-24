@@ -60,10 +60,10 @@ describe('/api/v1/products', () => {
         id: shop.get('id')
       });
 
-      const res = await request(server).get('/api/v1/products/' + p.get('productId'));
+      const res = await request(server).get('/api/v1/products/' + p.get('id'));
 
       // on le recupère depuis la BDD
-      const newProduct = await Models.Product.findById(p.get('productId'));
+      const newProduct = await Models.Product.findById(p.get('id'));
 
       expect(res.status).toBe(200);
       expect(newProduct).not.toBeNull();
@@ -98,31 +98,31 @@ describe('/api/v1/products', () => {
         description: 'description',
         price: '4.90',
         productType: 'DISH',
-        id: shop.get('id')
+        shopId: shop.get('id')
       });
       const p2 = await Models.Product.create({
         name: 'poulet roti',
         description: 'description',
         price: '4.90',
         productType: 'DISH',
-        id: shop.get('id')
+        shopId: shop.get('id')
       });
       const menu = await Models.Product.create({
         name: 'menu salade chevre poulet roti',
         description: 'description',
         price: '4.90',
         productType: 'MENU',
-        id: shop.get('id')
+        shopId: shop.get('id')
       });
       await Models.Menu.create({
-        menuId: menu.get('productId'),
-        productId: p1.get('productId')
+        menuId: menu.get('id'),
+        productId: p1.get('id')
       });
       await Models.Menu.create({
-        menuId: menu.get('productId'),
-        productId: p2.get('productId')
+        menuId: menu.get('id'),
+        productId: p2.get('id')
       });
-      const res = await request(server).get('/api/v1/products/' +  menu.get('productId') );
+      const res = await request(server).get('/api/v1/products/' +  menu.get('id') );
       expect(res.status).toBe(200);
     });
   });
@@ -169,7 +169,7 @@ describe('/api/v1/products', () => {
           productType: 'DISH'
         });
       // on le recupère depuis la BDD
-      const product = await Models.Product.findById(res.body.productId);
+      const product = await Models.Product.findById(res.body.id);
 
       expect(res.status).toBe(201);
       expect(product).not.toBeNull();
@@ -195,7 +195,7 @@ describe('/api/v1/products', () => {
         .field('productType','DISH');
 
       // on le recupère depuis la BDD
-      const product = await Models.Product.findById(res.body.productId);
+      const product = await Models.Product.findById(res.body.id);
 
       expect(res.status).toBe(201);
       expect(product).not.toBeNull();
@@ -209,21 +209,21 @@ describe('/api/v1/products', () => {
         description: 'description',
         price: '4.90',
         productType: 'DISH',
-        id: shopGlobal.get('id')
+        shopId: shopGlobal.get('id')
       });
       const p2 = await Models.Product.create({
         name: 'poulet',
         description: 'description',
         price: '4.90',
         productType: 'DISH',
-        id: shopGlobal.get('id')
+        shopId: shopGlobal.get('id')
       });
       const p3 = await Models.Product.create({
         name: 'frite',
         description: 'description',
         price: '4.90',
         productType: 'DISH',
-        id: shopGlobal.get('id')
+        shopId: shopGlobal.get('id')
       });
 
       const res = await request(server)
@@ -233,10 +233,11 @@ describe('/api/v1/products', () => {
           name: 'menu salade poulet frite',
           description: 'description product test',
           price: '9.90',
-          listProducts: [p1.get('productId'), p2.get('productId'), p3.get('productId')]
+          listProducts: [p1.get('id'), p2.get('id'), p3.get('id')]
         });
+      console.log('TCL: res.body', res.body);
       // on le recupère depuis la BDD
-      const menu = await Models.Product.findByPk( res.body.productId,
+      const menu = await Models.Product.findByPk( res.body.id,
         {include:{ model: Models.Product, through: 'Menu', as: 'products'}}
       );
 
@@ -278,7 +279,7 @@ describe('/api/v1/products', () => {
         description: 'description',
         price: '4.90',
         productType: 'DISH',
-        id: shopGlobal.get('id')
+        shopId: shopGlobal.get('id')
       });
       
       const p2 = await Models.Product.create({
@@ -286,7 +287,7 @@ describe('/api/v1/products', () => {
         description: 'description',
         price: '4.90',
         productType: 'DISH',
-        id: shopGlobal.get('id')
+        shopId: shopGlobal.get('id')
       });
 
       const res = await request(server)
@@ -298,10 +299,10 @@ describe('/api/v1/products', () => {
         .field('name','menu salade poulet frite')
         .field('description','description product test')
         .field('price','9.90')
-        .field('listProducts',[p1.get('productId'), p2.get('productId')]);
+        .field('listProducts',[p1.get('id'), p2.get('id')]);
 
       // on le recupère depuis la BDD
-      const menu = await Models.Product.findByPk( res.body.productId,
+      const menu = await Models.Product.findByPk( res.body.id,
         {include:{ model: Models.Product, through: 'Menu', as: 'products'}}
       );
 

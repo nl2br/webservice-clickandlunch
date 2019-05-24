@@ -201,7 +201,7 @@ describe('/api/v1/shops', () => {
         productType: 'DISH',
         shopId: shop.get('id')
       });
-      await shop.setProducts([p1.get('productId'),p2.get('productId')]);
+      await shop.setProducts([p1.get('id'),p2.get('id')]);
       const res = await request(server).get('/api/v1/shops/' + shop.get('id') + '/products');
       expect(res.status).toBe(200);
 
@@ -243,8 +243,8 @@ describe('/api/v1/shops', () => {
         productType: 'DISH',
         shopId: shop.get('id')
       });
-      await shop.setProducts([p1.get('productId'),p2.get('productId')]);
-      const res = await request(server).get('/api/v1/shops/' + shop.get('id') + '/products/' + p2.get('productId'));
+      await shop.setProducts([p1.get('id'),p2.get('id')]);
+      const res = await request(server).get('/api/v1/shops/' + shop.get('id') + '/products/' + p2.get('id'));
       expect(res.status).toBe(200);
       expect(res.body.name).toBe('yahourt 2');
       await shop.destroy();

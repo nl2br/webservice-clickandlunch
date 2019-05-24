@@ -273,7 +273,7 @@ class Shops {
    */
   static getShopProduct(req, res, next) {
     Models.Product.findOne({
-      where: { productId: req.params.productid, shopId: req.params.id },
+      where: { id: req.params.productid, shopId: req.params.id },
     })
       .then(result => {
         if (!result) {

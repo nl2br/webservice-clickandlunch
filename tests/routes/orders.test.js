@@ -51,8 +51,8 @@ describe('/api/v1/orders', () => {
     
       // create the products
       const id = shop.get('id');
-      product1 = await Models.Product.create({name: 'Milk shake Framboise', price: '9.90', id: id });
-      product2 = await Models.Product.create({name: 'Cake Miel Harissa', price: '9.90', id: id });
+      product1 = await Models.Product.create({name: 'Milk shake Framboise', price: '9.90', shopId: id });
+      product2 = await Models.Product.create({name: 'Cake Miel Harissa', price: '9.90', ShopId: id });
           
       // create the customer
       customer = await Models.User.create({
@@ -78,8 +78,8 @@ describe('/api/v1/orders', () => {
 
       // create the order
       let order = await Models.Order.create({date: Date.now(), orderNumber: '000001-0519', state: Models.Order.getOrderStates().DEFAULT, customerId: customer.get('userId'), shopId: shop.get('id')});
-      await Models.OrderDetail.create({orderId: order.get('orderId'), productId: product1.get('productId'), quantity: 1});
-      await Models.OrderDetail.create({orderId: order.get('orderId'), productId: product2.get('productId'), quantity: 1});
+      await Models.OrderDetail.create({orderId: order.get('orderId'), productId: product1.get('id'), quantity: 1});
+      await Models.OrderDetail.create({orderId: order.get('orderId'), productId: product2.get('id'), quantity: 1});
     });
 
     it.skip('Return all orders for a valid shop ID', async () => {
@@ -152,8 +152,8 @@ describe('/api/v1/orders', () => {
     
       // create the products
       const id = shop.get('id');
-      product1 = await Models.Product.create({name: 'Milk shake Framboise', price: '9.90', id: id });
-      product2 = await Models.Product.create({name: 'Cake Miel Harissa', price: '9.90', id: id });
+      product1 = await Models.Product.create({name: 'Milk shake Framboise', price: '9.90', shopId: id });
+      product2 = await Models.Product.create({name: 'Cake Miel Harissa', price: '9.90', shopId: id });
           
       // create the customer
       customer = await Models.User.create({
@@ -185,10 +185,10 @@ describe('/api/v1/orders', () => {
         .set('x-auth-token', tokenCustomer)
         .send({
           products: [{
-            id: product1.get('productId'),
+            id: product1.get('id'),
             quantity: 1
           },{
-            id: product2.get('productId'),
+            id: product2.get('id'),
             quantity: 1
           }]
         });

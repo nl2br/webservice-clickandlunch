@@ -3,7 +3,6 @@ module.exports = (sequelize, DataTypes) => {
   let OrderDetail = sequelize.define('OrderDetail', {
     orderId: {
       type: DataTypes.INTEGER,
-      primaryKey: true,
       allowNull: false,
       // references: {
       //   model: 'Order',
@@ -13,7 +12,6 @@ module.exports = (sequelize, DataTypes) => {
     },
     productId: {
       type: DataTypes.INTEGER,
-      primaryKey: true,
       allowNull: false,
       // references: {
       //   model: 'Product',
@@ -28,8 +26,6 @@ module.exports = (sequelize, DataTypes) => {
   },{
     tableName: 'orderdetail'
   });
-
-  OrderDetail.removeAttribute('id');
 
   OrderDetail.associate = (models) => {
     OrderDetail.belongsTo(models.Order, {
