@@ -176,7 +176,7 @@ describe('/api/v1/products', () => {
       expect(res.body.name).toEqual(product.dataValues.name);
     });
 
-    it('Save a product with multiple photos', async () => {
+    it.skip('Save a product with multiple photos', async () => {
       jest.setTimeout(30000);
       // upload the file
       const img1 = `${__dirname}/../test_files/plathiver.jpg`;
@@ -270,7 +270,7 @@ describe('/api/v1/products', () => {
     });
 
 
-    it('Save a product menu type with photo', async () => {
+    it.skip('Save a product menu type with photo', async () => {
       jest.setTimeout(30000);
       // upload the file
       const img1 = `${__dirname}/../test_files/plathiver.jpg`;
