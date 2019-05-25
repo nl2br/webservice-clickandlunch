@@ -55,12 +55,15 @@ class Orders{
       return next(err);
     }
     
-    // TODO: generate the order number
+    // generate the order number
+    let d = new Date();
+    let orderNumber = `${d.getDate().toString().padStart(2, '0')}${d.getHours().toString().padStart(2, '0')}${d.getMinutes().toString().padStart(2, '0')}-${req.params.idCustomer.toString().padStart(4, '0')}`;
 
     // create the order
     let order = await Models.Order.create({
       date: Date.now(),
-      orderNumber: '000000-0000',
+      orderNumber: orderNumber,
+      recoveryTime: req.body.recoveryTime,
       state: Models.Order.getOrderStates().DEFAULT,
       customerId: req.params.idCustomer, 
       shopId: req.params.idShop,

@@ -35,6 +35,19 @@ module.exports = (sequelize, DataTypes) => {
       },
       field: 'order_number',
     },
+    recoveryTime: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        is: {
+          args: [ValidationRegexp.recoveryTime()],
+          msg: 'Must be in this format \'HH:MM\' in 24 hours'
+        },
+        notEmpty: true,
+        len: [5,5],
+      },
+      field: 'recovery_time',
+    },
     date: {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW,
@@ -95,6 +108,8 @@ module.exports = (sequelize, DataTypes) => {
  *       id:
  *         type: integer
  *       orderNumber:
+ *         type: string
+ *       recoveryTime:
  *         type: string
  *       date:
  *         type: date
