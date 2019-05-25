@@ -7,6 +7,11 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       field: 'id',
     },
+    shopId: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      field: 'shop_id',
+    },
     deleted: {
       type: DataTypes.INTEGER,
       defaultValue: 0

@@ -16,23 +16,23 @@ class Auth {
    * @param {Object} res
    * @return {String} token + user informations
    */
-  static async authenticateUser(req, res) { // login
+  static async authenticateUser(req, res, next) { // login
     let user;
     // verify if user exist
-    try{
-      user = await Models.User.findOne({where:{email: req.body.email}});
-      console.log('TCL: Auth -> staticauthenticateUser -> user', user);
-      if(!user) return res.status(401).json({type: 'error', message: 'invalid login or password'});
-    }catch(ex){
-      res.status(500).send('Internal error');
+    user = await Models.User.findOne({where:{email: req.body.email}});
+    console.log('TCL: Auth -> staticauthenticateUser -> user', user);
+    if(!user) {
+      const err = new Error('invalid login or password');
+      err.status = 401;
+      return next(err);
     }
 
     // compare both password
-    try{
-      const valid = await bcrypt.compare(req.body.password,user.password);
-      if(!valid) return res.status(401).send({type: 'error', message: 'invalid login or password'});
-    }catch(ex){
-      res.status(500).send('Internal error');
+    const valid = await bcrypt.compare(req.body.password,user.password);
+    if(!valid) {
+      const err = new Error('invalid login or password');
+      err.status = 401;
+      return next(err);
     }
     
     // generate the token
@@ -52,13 +52,21 @@ class Auth {
    * @param {*} req 
    * @param {*} res 
    */
-  static async authenticateMe(req, res) {
+  static async authenticateMe(req, res, next) {
     const token = req.headers['x-auth-token'] ;
     console.log('TCL: Auth -> staticauthenticateMe -> token', token);
-    if (!token) return res.status(403).json({type: 'error', message: 'x-auth-token header not found.'});
+    if (!token) {
+      const err = new Error('x-auth-token header not found');
+      err.status = 403;
+      return next(err);
+    }
     
     jwt.verify(token, config.jwtPrivateKey, (error, result) => {
-      if (error) return res.status(403).json({type: 'error', message: 'Provided token is invalid.', error});
+      if (error) {
+        const err = new Error('Provided token is invalid');
+        err.status = 403;
+        return next(err);
+      }
       return res.json({
         type: 'success',
         message: 'Provided token is valid.',

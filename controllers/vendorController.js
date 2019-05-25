@@ -13,8 +13,9 @@ class Vendors {
    * @param {*} res 
    */
   static async getVendor(req, res) {
-    Models.Vendor.findOne({where:{vendorId: req.params.id}})
+    Models.Vendor.findOne({where:{id: req.params.id}})
       .then(async vendor => {
+        console.log('TCL: Vendors -> getVendor -> vendor', vendor);
         if(!vendor) return res.status(400).send({message: 'No vendor for the given id'});
         let user = await vendor.getUser();
         res.status(200).json({
@@ -23,7 +24,8 @@ class Vendors {
           lastname: user.dataValues.lastname,
           phoneNumber: user.dataValues.phoneNumber,
           email: user.dataValues.email,
-          role: req.body.role
+          role: req.body.role,
+          shopId: vendor.shopId
         });
       })
       .catch(error => {
@@ -44,31 +46,46 @@ class Vendors {
     if(!vendor) return res.status(400).send({message: 'User doesn\'t exist'});
 
     let user = await vendor.getUser();
-    try{
-      // create the user
-      await user.update({
-        firstname: req.body.firstname || user.dataValues.firstname,
-        lastname: req.body.lastname || user.dataValues.lastname,
-        phoneNumber: req.body.phoneNumber || user.dataValues.phoneNumber
-      })
-        .catch(err => {
-          throw err;
-        });
 
-      // send the response without password
-      return res
-        .status(200)
-        .json({
-          id: user.id,
-          firstname: user.firstname,
-          lastname: user.lastname,
-          phoneNumber: user.phoneNumber,
-          email: user.email,
-          role: req.body.role
+    // we want to update the vendor or the user
+    if(req.body.shopId){
+      try{
+        // update the vendor
+        await vendor.update({
+          shopId: req.body.shopId || null
         });
-    } catch (ex) {
-      return res.status(400).send({message : ex.message});
+  
+        return res
+          .status(200)
+          .json(vendor);
+      } catch (ex) {
+        return res.status(400).send({message : ex.message});
+      }
+    }else{
+      try{
+        // update the user
+        await user.update({
+          firstname: req.body.firstname || user.dataValues.firstname,
+          lastname: req.body.lastname || user.dataValues.lastname,
+          phoneNumber: req.body.phoneNumber || user.dataValues.phoneNumber
+        });
+  
+        // send the response without password
+        return res
+          .status(200)
+          .json({
+            id: user.id,
+            firstname: user.firstname,
+            lastname: user.lastname,
+            phoneNumber: user.phoneNumber,
+            email: user.email,
+            role: req.body.role
+          });
+      } catch (ex) {
+        return res.status(400).send({message : ex.message});
+      }
     }
+      
   }
  
 }
