@@ -21,9 +21,7 @@ if(config.use_env_variable){
       define: { 
         timestamps: true, 
         freezeTableName: true, 
-        underscored: true,
-        charset: 'latin1',
-        collate: 'latin1_swedish_ci'
+        underscored: true
       },
       timezone: 'Europe/Paris',
       logging: logConsoleSequelize
