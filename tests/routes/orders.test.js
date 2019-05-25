@@ -77,7 +77,7 @@ describe('/api/v1/orders', () => {
       tokenVendor = customer.generateAuthToken();
 
       // create the order
-      let order = await Models.Order.create({date: Date.now(), orderNumber: '000001-0519', state: Models.Order.getOrderStates().DEFAULT, customerId: customer.get('id'), shopId: shop.get('id')});
+      let order = await Models.Order.create({date: Date.now(), orderNumber: '000001-0519', recoveryTime: '12:45', state: Models.Order.getOrderStates().DEFAULT, customerId: customer.get('id'), shopId: shop.get('id')});
       await Models.OrderDetail.create({orderId: order.get('id'), productId: product1.get('id'), quantity: 1});
       await Models.OrderDetail.create({orderId: order.get('id'), productId: product2.get('id'), quantity: 1});
     });
@@ -184,6 +184,7 @@ describe('/api/v1/orders', () => {
         .post('/api/v1/orders/shops/' + shop.get('id') + '/customers/' + customer.get('id'))
         .set('x-auth-token', tokenCustomer)
         .send({
+          recoveryTime:'12:30',
           products: [{
             id: product1.get('id'),
             quantity: 1
@@ -193,7 +194,27 @@ describe('/api/v1/orders', () => {
           }]
         });
 
+      console.log('TCL: res', res.body);
       expect(res.status).toBe(201);
+    });
+
+    it('Should send an error on recoveryTime when Create an order for a given shop and a given customer', async () => {
+      const res = await request(server)
+        .post('/api/v1/orders/shops/' + shop.get('id') + '/customers/' + customer.get('id'))
+        .set('x-auth-token', tokenCustomer)
+        .send({
+          recoveryTime:'1:30',
+          products: [{
+            id: product1.get('id'),
+            quantity: 1
+          },{
+            id: product2.get('id'),
+            quantity: 1
+          }]
+        });
+
+      console.log('TCL: res', res.body);
+      expect(res.status).toBe(400);
     });
       
   });

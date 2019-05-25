@@ -80,6 +80,10 @@ module.exports = router;
  *         in: body
  *         required: true
  *         properties:
+ *           recoveryTime:
+ *             type: string
+ *             description: recovery time of the order HH:MM
+ *             required: true
  *           products:
  *             type: array
  *             items:

@@ -24,8 +24,13 @@ class ValidationRegex {
   static postalCode() {
     return /[0-9]{5}/;
   }
+
   static orderNumber() {
     return /[0-9]{6}[-][0-9]{4}/;
+  }
+
+  static recoveryTime() {
+    return /[0-9]{2}[:][0-9]{2}/;
   }
   
 }

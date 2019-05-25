@@ -35,6 +35,7 @@ const productOrder = Joi.object().keys({
 });
 
 const postOrdersSchema = Joi.object({
+  recoveryTime: Joi.required(),
   products: Joi.array().items(productOrder)
 });
 
