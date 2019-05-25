@@ -322,7 +322,7 @@ class Shops {
       // add the url from S3 to DB
       await Models.Photo.create({
         url: data.Location,
-        id: shop.get('id')
+        shopId: shop.get('id')
       });
       // for sending the photo's url
       include.push({model: Models.Photo});
