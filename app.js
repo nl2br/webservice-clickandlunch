@@ -19,7 +19,7 @@ const port = process.env.PORT || 3000;
 if (process.env.NODE_ENV === 'test' || process.env.NODE_ENV === 'testpostgres') {
   Db.sequelize.sync().then( () => {});
 }else{
-  Db.sequelize.sync().then( () => {
+  Db.sequelize.sync({forcec:true}).then( () => {
     server.listen(port, () => {
       console.log(`Listening on port ${port}...`);
     });
