@@ -35,7 +35,7 @@ describe('/api/v1/users', () => {
           role: 'CUSTOMER'
         });
       // on le recupère depuis la BDD
-      const user = await Models.User.findByPk(res.body.userId);
+      const user = await Models.User.findByPk(res.body.id);
       
       expect(res.status).toBe(201);
       expect(res.header).toHaveProperty('x-auth-token');
@@ -57,7 +57,7 @@ describe('/api/v1/users', () => {
           role: 'VENDOR'
         });
       // on le recupère depuis la BDD
-      const user = await Models.User.findByPk(res.body.userId);
+      const user = await Models.User.findByPk(res.body.id);
       
       expect(res.status).toBe(201);
       expect(res.header).toHaveProperty('x-auth-token');

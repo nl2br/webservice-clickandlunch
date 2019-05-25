@@ -6,12 +6,12 @@
 module.exports = (sequelize, DataTypes) => {
 
   let Photo = sequelize.define('Photo', {
-    photoId: {
+    id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
       allowNull: false,
-      field: 'photo_id'
+      field: 'id'
     },
     url: {
       type: DataTypes.STRING,
@@ -57,7 +57,7 @@ module.exports = (sequelize, DataTypes) => {
  * definition:
  *  Photo:
  *    properties:
- *      shopId:
+ *      id:
  *        type: number
  *      url:
  *        type: string

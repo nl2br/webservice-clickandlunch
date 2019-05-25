@@ -6,12 +6,12 @@
 module.exports = (sequelize, DataTypes) => {
 
   let ShopCategory = sequelize.define('ShopCategory', {
-    shopCategoryId: {
+    id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
       allowNull: false,
-      field: 'shop_category_id',
+      field: 'id',
     },
     name: {
       type: DataTypes.STRING,
@@ -57,7 +57,7 @@ module.exports = (sequelize, DataTypes) => {
  * definition:
  *  ShopCategory:
  *    properties:
- *      shopCategoryId:
+ *      id:
  *        type: number
  *      name:
  *        type: string

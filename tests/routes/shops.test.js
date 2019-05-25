@@ -155,7 +155,7 @@ describe('/api/v1/shops', () => {
         }
       });
       // puis on tente de récupérer les infos de ce shop
-      const res = await request(server).get('/api/v1/shops/' + shop.get('shopId'));
+      const res = await request(server).get('/api/v1/shops/' + shop.get('id'));
       expect(res.status).toBe(200);
       expect(res.body.name).toEqual(shop.dataValues.name);
     });
@@ -185,22 +185,24 @@ describe('/api/v1/shops', () => {
           crs: {type: 'name', properties: { name: 'EPSG:4326'}}
         }
       });
+      console.log('TCL: shops', shop);
+
       const p1 = await Models.Product.create({
         name: 'yahourt',
         description: 'description',
         price: '4.90',
         productType: 'DISH',
-        shopId: shop.get('shopId')
+        shopId: shop.get('id')
       });
       const p2 = await Models.Product.create({
         name: 'yahourt 2',
         description: 'description',
         price: '4.90',
         productType: 'DISH',
-        shopId: shop.get('shopId')
+        shopId: shop.get('id')
       });
-      await shop.setProducts([p1.get('productId'),p2.get('productId')]);
-      const res = await request(server).get('/api/v1/shops/' + shop.get('shopId') + '/products');
+      await shop.setProducts([p1.get('id'),p2.get('id')]);
+      const res = await request(server).get('/api/v1/shops/' + shop.get('id') + '/products');
       expect(res.status).toBe(200);
 
       expect(res.body).toHaveLength(2);
@@ -209,7 +211,7 @@ describe('/api/v1/shops', () => {
 
   });
   
-  describe('api get/shops/:shopId/products/:productId', () => {
+  describe('api get/shops/:id/products/:productId', () => {
 
     it('Get specific product for a given shop', async () => {
       const shop = await Models.Shop.create({
@@ -232,17 +234,17 @@ describe('/api/v1/shops', () => {
         description: 'description',
         price: '4.90',
         productType: 'DISH',
-        shopId: shop.get('shopId')
+        shopId: shop.get('id')
       });
       const p2 = await Models.Product.create({
         name: 'yahourt 2',
         description: 'description',
         price: '4.90',
         productType: 'DISH',
-        shopId: shop.get('shopId')
+        shopId: shop.get('id')
       });
-      await shop.setProducts([p1.get('productId'),p2.get('productId')]);
-      const res = await request(server).get('/api/v1/shops/' + shop.get('shopId') + '/products/' + p2.get('productId'));
+      await shop.setProducts([p1.get('id'),p2.get('id')]);
+      const res = await request(server).get('/api/v1/shops/' + shop.get('id') + '/products/' + p2.get('id'));
       expect(res.status).toBe(200);
       expect(res.body.name).toBe('yahourt 2');
       await shop.destroy();
@@ -277,7 +279,7 @@ describe('/api/v1/shops', () => {
           latitude: 9
         });
       // on le recupère depuis la BDD
-      const shop = await Models.Shop.findById(res.body.shopId);
+      const shop = await Models.Shop.findById(res.body.id);
 
       expect(res.status).toBe(201);
       expect(shop).not.toBeNull();
@@ -305,11 +307,11 @@ describe('/api/v1/shops', () => {
           longitude: 11,
           latitude: 9,
           // categories: ["1","2","3"]
-          categories: [category.get('shopCategoryId')]
+          categories: [category.get('id')]
         });
 
       // find it
-      const shop = await Models.Shop.findByPk(res.body.shopId, {
+      const shop = await Models.Shop.findByPk(res.body.id, {
         include: [ { model: Models.ShopCategory, through: 'ShopsCategory' } ]
       });
 
@@ -351,7 +353,7 @@ describe('/api/v1/shops', () => {
         .field('latitude',9);
       
       // search it
-      const shop = await Models.Shop.findById(res.body.shopId);
+      const shop = await Models.Shop.findById(res.body.id);
       // find photo
       let photo = await shop.getPhotos();
 
@@ -471,7 +473,7 @@ describe('/api/v1/shops', () => {
       });
 
       const res = await request(server)
-        .put('/api/v1/shops/' + shop.get('shopId'))
+        .put('/api/v1/shops/' + shop.get('id'))
         .send({name: 'your shop'});
 
       expect(res.status).toBe(200);
@@ -496,7 +498,7 @@ describe('/api/v1/shops', () => {
       });
 
       const res = await request(server)
-        .put('/api/v1/shops/' + shop.get('shopId'))
+        .put('/api/v1/shops/' + shop.get('id'))
         .send({
           name: 'your shop',
           longitude: 56,
@@ -525,7 +527,7 @@ describe('/api/v1/shops', () => {
       });
       
       const res = await request(server)
-        .put('/api/v1/shops/' + shop.get('shopId'))
+        .put('/api/v1/shops/' + shop.get('id'))
         .send({
           name: 'unvalid \'Shop',
           address: '12 allée des palmiers',
@@ -577,7 +579,7 @@ describe('/api/v1/shops', () => {
       });
 
       const res = await request(server)
-        .delete('/api/v1/shops/' + shop.get('shopId'))
+        .delete('/api/v1/shops/' + shop.get('id'))
         .send({deleted: 1});
 
       expect(res.status).toBe(200);
@@ -618,9 +620,9 @@ describe('/api/v1/shops', () => {
         }
       });
 
-      await shop1.addShopCategory([category.get('shopCategoryId')]);
+      await shop1.addShopCategory([category.get('id')]);
 
-      const res = await request(server).get('/api/v1/shops/p/1/category/' + category.get('shopCategoryId'));
+      const res = await request(server).get('/api/v1/shops/p/1/category/' + category.get('id'));
 
       expect(res.body.count).toBe(1);
 

@@ -43,7 +43,7 @@ class Users {
       switch (user.role) {
       case 'CUSTOMER':
         await Models.Customer.create({
-          customerId: user.userId
+          id: user.id
         })
           .catch(err => {
             throw err;
@@ -51,7 +51,7 @@ class Users {
         break;
       case 'VENDOR':
         await Models.Vendor.create({
-          vendorId: user.userId
+          id: user.id
         })
           .catch(err => {
             throw err;
@@ -64,7 +64,7 @@ class Users {
         .header('x-auth-token', token)
         .status(201)
         .json({
-          userId: user.userId,
+          id: user.id,
           firstname: user.firstname,
           lastname: user.lastname,
           phoneNumber: user.phoneNumber,

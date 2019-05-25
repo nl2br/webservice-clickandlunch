@@ -8,12 +8,12 @@ const ValidationRegexp = require('../utils/validationRegex');
 module.exports = (sequelize, DataTypes) => {
 
   let Shop = sequelize.define('Shop', {
-    shopId: {
+    id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
       allowNull: false,
-      field: 'shop_id',
+      field: 'id',
     },
     name: {
       type: DataTypes.STRING,
@@ -117,14 +117,14 @@ module.exports = (sequelize, DataTypes) => {
   // Class Method
   Shop.associate = function (models) {
     Shop.hasMany(models.Product, { // add foreign key to Product
-      foreignKey: 'shop_id'
+      foreignKey: models.Shop.id
     });
     Shop.hasMany(models.Photo, { // add foreign key to Photo
-      foreignKey: 'shop_id'
+      foreignKey: models.Shop.id
     });
     Shop.belongsToMany(models.ShopCategory, { 
       through: 'shopscategory',
-      foreignKey: 'shop_id'
+      foreignKey: models.Shop.id
     });
   };
 
@@ -157,7 +157,7 @@ module.exports = (sequelize, DataTypes) => {
  * definition:
  *  Shop:
  *    properties:
- *      shopId:
+ *      id:
  *        type: number
  *      name:
  *        type: string

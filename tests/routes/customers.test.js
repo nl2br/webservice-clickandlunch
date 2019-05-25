@@ -35,12 +35,12 @@ describe('/api/v1/customers', () => {
         role: 'CUSTOMER'
       });
 
-      let userId = user.get('userId');
+      let userId = user.get('id');
       let token = user.generateAuthToken();
 
       // assocaite the user to the customer table
       await Models.Customer.create({
-        customerId: userId
+        id: userId
       });
 
       const res = await request(server).get('/api/v1/customers/' + userId).set('x-auth-token', token);
@@ -62,13 +62,13 @@ describe('/api/v1/customers', () => {
         role: 'CUSTOMER'
       });
       await Models.Customer.create({
-        customerId: user.get('userId')
+        id: user.get('id')
       });
       
       let token = user.generateAuthToken();
 
       const res = await request(server)
-        .put('/api/v1/customers/' + user.get('userId'))
+        .put('/api/v1/customers/' + user.get('id'))
         .set('x-auth-token', token)
         .send({firstname: 'marilou'});
 

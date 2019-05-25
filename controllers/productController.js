@@ -52,14 +52,14 @@ class Products {
   }
 
   static getMenuProducts(menuId) {
-    const listProducts = Models.sequelize.query(`select menu.product_id, 
-      (select product.name from product where product.product_id = menu.product_id) product_name,
-      (select product.description from product where product.product_id = menu.product_id) description,
-      (select product.price from product where product.product_id = menu.product_id) price, 
-      (select product.product_type from product where product.product_id = menu.product_id) product_type
+    const listProducts = Models.sequelize.query(`select menu.product_id as id, 
+      (select product.name from product where product.id = menu.product_id) product_name,
+      (select product.description from product where product.id = menu.product_id) description,
+      (select product.price from product where product.id = menu.product_id) price, 
+      (select product.product_type from product where product.id = menu.product_id) product_type
       from product
-      inner join menu on menu.menu_id = product.product_id
-      where product.product_id = ?`, { 
+      inner join menu on menu.menu_id = product.id
+      where product.id = ?`, { 
       type: Models.sequelize.QueryTypes.SELECT,
       replacements: [menuId]
     });
@@ -129,7 +129,7 @@ class Products {
         // add the url from S3 to DB
         await Models.Photo.create({
           url: data.Location,
-          productId: product.get('productId')
+          productId: product.get('id')
         });
       }
       // for sending the photo's url
@@ -138,11 +138,11 @@ class Products {
 
     // get all product information for response to the client
     if(include.length){
-      product = await Models.Product.findByPk(product.get('productId'), {
+      product = await Models.Product.findByPk(product.get('id'), {
         include: include
       });
     }else{
-      product = await Models.Product.findByPk(product.get('productId'));
+      product = await Models.Product.findByPk(product.get('id'));
     }
 
     if(!product){
@@ -162,6 +162,7 @@ class Products {
    * @param {*} res 
    */
   static async postProductMenu(req, res, next) {
+    console.log('TCL: Products -> postProductMenu -> req.params', req.params);
 
     let menu = await Models.Product.create({
       name: req.body.name,
@@ -170,15 +171,17 @@ class Products {
       productType: 'MENU',
       shopId: req.params.id
     });
+    console.log('TCL: Products -> postProductMenu -> menu', menu);
 
     let include = [];
 
     // adding products of the menu
+    console.log('TCL: Products -> postProductMenu -> req.body.listProducts', req.body.listProducts);
     if(req.body.listProducts){
       let listProductsArray = req.body.listProducts.split ? req.body.listProducts.split(',').map(x => Number(x.replace(/["']+/g, ''))) : req.body.listProducts;
       for(let item of listProductsArray){
         await Models.Menu.create({
-          menuId:menu.get('productId'),
+          menuId:menu.get('id'),
           productId: item
         });
       }
@@ -189,11 +192,11 @@ class Products {
     if(req.files){
       for(let i = 0; i<req.files.length;i++){
         // upload the photo to S3
-        const data = await uploadFile(req.files[i], 'shop' + req.params.id + '/menu' + menu.get('productId'), 'product'+(i+1));
+        const data = await uploadFile(req.files[i], 'shop' + req.params.id + '/menu' + menu.get('id'), 'product'+(i+1));
         // add the url from S3 to DB
         await Models.Photo.create({
           url: data.Location,
-          productId: menu.get('productId')
+          productId: menu.get('id')
         });
       }
       // for sending the photo's url
@@ -202,11 +205,11 @@ class Products {
 
     // get all product information for response to the client
     if(include.length){
-      menu = await Models.Product.findByPk(menu.get('productId'), {
+      menu = await Models.Product.findByPk(menu.get('id'), {
         include: include
       });
     }else{
-      menu = await Models.Product.findByPk(menu.get('productId'));
+      menu = await Models.Product.findByPk(menu.get('id'));
     }
     if(!menu){
       const err = new Error('error on finding the product');

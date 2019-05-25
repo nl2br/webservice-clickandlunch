@@ -18,12 +18,12 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   let Order = sequelize.define('Order', {
-    orderId: {
+    id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
       allowNull: false,
-      field: 'order_id',
+      field: 'id',
     },
     orderNumber: {
       type: DataTypes.STRING,
@@ -75,7 +75,7 @@ module.exports = (sequelize, DataTypes) => {
     });
     Order.belongsTo(models.Customer, { // customer_id inserted into order
       foreignKey: 'customerId',
-      targetKey: 'customerId'
+      targetKey: 'id'
       // onDelete: 'CASCADE'
     });
   };
@@ -92,7 +92,7 @@ module.exports = (sequelize, DataTypes) => {
  * definition:
  *   Order:
  *     properties:
- *       orderId:
+ *       id:
  *         type: integer
  *       orderNumber:
  *         type: string

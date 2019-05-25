@@ -28,7 +28,7 @@ router.post('/', [inputValidation('post', 'customers')], asyncMiddleware(Users.p
 /**
  * Modify details for a given customer
  * @method put/customers/:id
- * @param {number} customerid id du customer
+ * @param {number} id id du customer
  */
 router.put('/:id', [auth, role('CUSTOMER', 'ADMIN')], Customers.putCustomer);
 
@@ -84,7 +84,7 @@ module.exports = router;
  *         description: Return saved User of type customer
  *         schema:
  *            properties:
- *               userId:
+ *               id:
  *                 type: number
  *               firstname:
  *                 type: string
@@ -123,7 +123,7 @@ module.exports = router;
  *         description: Return customer detail
  *         schema:
  *            properties:
- *               userId:
+ *               id:
  *                 type: number
  *               firstname:
  *                 type: string

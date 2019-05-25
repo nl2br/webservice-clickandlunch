@@ -1,10 +1,11 @@
 module.exports = (sequelize, DataTypes) => {
 
   let Vendor = sequelize.define('Vendor', {
-    vendorId: {
+    id: {
       type: DataTypes.INTEGER,
+      primaryKey: true,
       allowNull: false,
-      field: 'vendor_id',
+      field: 'id',
     },
     deleted: {
       type: DataTypes.INTEGER,
@@ -17,13 +18,13 @@ module.exports = (sequelize, DataTypes) => {
   Vendor.associate = function (models) {
 
     Vendor.belongsTo(models.User, {
-      foreignKey: 'vendorId',
-      targetKey: 'userId',
+      foreignKey: 'id',
+      targetKey: 'id',
       onDelete: 'CASCADE'
     });
 
     Vendor.belongsTo(models.Shop, { // add shop_id to vendor
-      foreignKey: 'shopId'
+      foreignKey: 'shop_id'
     });
 
   };
@@ -39,7 +40,7 @@ module.exports = (sequelize, DataTypes) => {
  * definition:
  *   Vendor:
  *     properties:
- *       vendorId:
+ *       id:
  *         type: integer
  *       firstname:
  *         type: string

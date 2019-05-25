@@ -46,6 +46,6 @@ module.exports = function(err, req, res, next){
 
   // add this line to include winston logging
   winston.error(`${logTime} - ${err.status || 500} - ${err.message} - ${req.originalUrl} - ${req.method} `);
-  return res.status(err.status).json({message: err.message});
+  res.status(err.status).json({message: err.message});
 
 };

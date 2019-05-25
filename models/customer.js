@@ -1,10 +1,11 @@
 module.exports = (sequelize, DataTypes) => {
 
   let Customer = sequelize.define('Customer', {
-    customerId: {
+    id: {
       type: DataTypes.INTEGER,
+      primaryKey: true,
       allowNull: false,
-      field: 'customer_id',
+      field: 'id',
     },
     deleted: {
       type: DataTypes.INTEGER,
@@ -17,14 +18,14 @@ module.exports = (sequelize, DataTypes) => {
   Customer.associate = function (models) {
 
     Customer.belongsTo(models.User, {
-      foreignKey: 'customerId',
-      targetKey: 'userId',
+      foreignKey: 'id',
+      targetKey: 'id',
       onDelete: 'CASCADE'
     });
 
     Customer.hasMany(models.Order, { // add foreign key to order
       foreignKey: 'customer_id',
-      sourceKey: 'customer_id'
+      sourceKey: 'id'
     });
 
   };
@@ -40,7 +41,7 @@ module.exports = (sequelize, DataTypes) => {
  * definition:
  *   Customer:
  *     properties:
- *       customerId:
+ *       id:
  *         type: integer
  *       firstname:
  *         type: string

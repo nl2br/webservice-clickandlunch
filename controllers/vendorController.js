@@ -18,7 +18,7 @@ class Vendors {
         if(!vendor) return res.status(400).send({message: 'No vendor for the given id'});
         let user = await vendor.getUser();
         res.status(200).json({
-          userId: user.dataValues.userId,
+          id: user.dataValues.id,
           firstname: user.dataValues.firstname,
           lastname: user.dataValues.lastname,
           phoneNumber: user.dataValues.phoneNumber,
@@ -59,7 +59,7 @@ class Vendors {
       return res
         .status(200)
         .json({
-          userId: user.userId,
+          id: user.id,
           firstname: user.firstname,
           lastname: user.lastname,
           phoneNumber: user.phoneNumber,

@@ -41,7 +41,7 @@ class Auth {
     res.json({
       success: true,
       message: 'Authentication successful!',
-      user: {id: user.userId, email: user.email, firstname: user.firstname, lastname: user.lastname},
+      user: {id: user.id, email: user.email, firstname: user.firstname, lastname: user.lastname},
       token: token
     });
   }

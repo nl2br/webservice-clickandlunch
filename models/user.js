@@ -5,12 +5,12 @@ const config = require('../config/config.json');
 module.exports = (sequelize, DataTypes) => {
 
   let User = sequelize.define('User', {
-    userId: {
+    id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
       allowNull: false,
-      field: 'user_id',
+      field: 'id',
     },
     firstname: {
       type: DataTypes.STRING,
@@ -78,7 +78,7 @@ module.exports = (sequelize, DataTypes) => {
   User.prototype.generateAuthToken = function() {
 
     const payload = {
-      id: this.userId,
+      id: this.id,
       email: this.email,
       role: this.role
     };
@@ -98,7 +98,7 @@ module.exports = (sequelize, DataTypes) => {
  * definition:
  *   User:
  *     properties:
- *       userId:
+ *       id:
  *         type: integer
  *       firstname:
  *         type: string

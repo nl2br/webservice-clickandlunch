@@ -35,7 +35,7 @@ router.post('/', Users.postUser);
 /**
  * Modify details for a given vendor
  * @method put/vendors/:id
- * @param {number} vendorid id du vendor
+ * @param {number} id id du vendor
  */
 router.put('/:id', [auth, role('VENDOR', 'ADMIN')], Vendors.putVendor);
 
@@ -82,7 +82,7 @@ module.exports = router;
  *         description: Return saved User of type vendor
  *         schema:
  *            properties:
- *               userId:
+ *               id:
  *                 type: number
  *               firstname:
  *                 type: string
@@ -121,7 +121,7 @@ module.exports = router;
  *         description: Return vendor detail
  *         schema:
  *            properties:
- *               userId:
+ *               id:
  *                 type: number
  *               firstname:
  *                 type: string

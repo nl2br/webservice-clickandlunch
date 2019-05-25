@@ -24,7 +24,7 @@ const getShopsByCategorySchema = Joi.object({
 });
 
 const getShopProductsSchema = Joi.object({
-  shopid: Joi.number().integer().required(),
+  id: Joi.number().integer().required(),
   productid: Joi.number().integer().required()
 });
 
@@ -81,7 +81,7 @@ module.exports = {
   'get/shops/p/:page': pageSchema,
   'get/shops/p/:page/category/:idCategory': getShopsByCategorySchema,
   'get/shops/:id/products': idSchema,
-  'get/shops/:shopid/products/:productid': getShopProductsSchema,
+  'get/shops/:id/products/:productid': getShopProductsSchema,
   'get/orders/customers/:id': idSchema,
   'post/orders/shops/:idShop/customers/:idCustomer': postOrdersSchema,
 };

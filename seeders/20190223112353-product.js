@@ -8,7 +8,7 @@ module.exports = {
         description: 'description salade chèvre',
         price: '4.90',
         productType: 'DISH',
-        shopId: 1,
+        id: 1,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -17,7 +17,7 @@ module.exports = {
         description: 'description salade papaye',
         price: '4.90',
         productType: 'DISH',
-        shopId: 1,
+        id: 1,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -26,7 +26,7 @@ module.exports = {
         description: 'description salade papaye et salade chèvre',
         price: '7.90',
         productType: 'MENU',
-        shopId: 1,
+        id: 1,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -35,7 +35,7 @@ module.exports = {
         description: 'description soupe de biche',
         price: '4.90',
         productType: 'DISH',
-        shopId: 2,
+        id: 2,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -44,7 +44,7 @@ module.exports = {
         description: 'description charcuterie de saison',
         price: '12.90',
         productType: 'DISH',
-        shopId: 2,
+        id: 2,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -53,7 +53,7 @@ module.exports = {
         description: 'description pizza du chef',
         price: '9.90',
         productType: 'DISH',
-        shopId: 3,
+        id: 3,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -62,7 +62,7 @@ module.exports = {
         description: 'description assiette gothique',
         price: '8.90',
         productType: 'DISH',
-        shopId: 4,
+        id: 4,
         createdAt: new Date(),
         updatedAt: new Date()
       },

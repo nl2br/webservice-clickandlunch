@@ -7,12 +7,12 @@ module.exports = (sequelize, DataTypes) => {
 
   // Model definition
   const Product = sequelize.define('Product', {
-    productId: {
+    id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
       allowNull: false,
-      field: 'product_id',
+      field: 'id',
     },
     name: {
       type: DataTypes.STRING,
@@ -112,7 +112,7 @@ module.exports = (sequelize, DataTypes) => {
  * definition:
  *   Product:
  *     properties:
- *       productId:
+ *       id:
  *         type: number
  *       name:
  *         type: string
@@ -132,6 +132,8 @@ module.exports = (sequelize, DataTypes) => {
  * definition:
  *   Menu:
  *     properties:
+ *       id:
+ *         type: number
  *       name:
  *         type: string
  *       description:
@@ -141,7 +143,7 @@ module.exports = (sequelize, DataTypes) => {
  *       productType:
  *         type: string
  *         enum: ['STARTER', 'DISH', 'DESSERT','DRINK','OTHER','MENU']
- *       shop_id:
+ *       shopId:
  *         type: integer
  *       listProducts:
  *         type: array

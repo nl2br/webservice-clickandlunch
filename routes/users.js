@@ -52,7 +52,7 @@ module.exports = router;
 //  *         description: Return saved User
 //  *         schema:
 //  *            properties:
-//  *               userId:
+//  *               id:
 //  *                 type: number
 //  *               firstname:
 //  *                 type: string
