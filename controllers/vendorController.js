@@ -40,15 +40,17 @@ class Vendors {
    * @param {*} res 
    */
   static async putVendor(req, res) {
+    console.log('TCL: Vendors -> putVendor -> putVendor', req.body, req.params);
     
     // verify if user exist
-    let vendor = await Models.Vendor.findOne({where:{vendorId: req.params.id}});
+    let vendor = await Models.Vendor.findOne({where:{id: req.params.id}});
     if(!vendor) return res.status(400).send({message: 'User doesn\'t exist'});
 
     let user = await vendor.getUser();
 
     // we want to update the vendor or the user
     if(req.body.shopId){
+      console.log('TCL: Vendors -> putVendor -> req.body.shopId', req.body.shopId);
       try{
         // update the vendor
         await vendor.update({
