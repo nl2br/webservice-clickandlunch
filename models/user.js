@@ -66,8 +66,16 @@ module.exports = (sequelize, DataTypes) => {
     deleted: {
       type: DataTypes.INTEGER,
       defaultValue: 0
-    }
-  },{
+    },
+    createdAt: {
+      field: 'created_at',
+      type: DataTypes.DATE,
+    },
+    updatedAt: {
+      field: 'updated_at',
+      type: DataTypes.DATE,
+    },
+  }, {
     tableName: 'user'
   });
 

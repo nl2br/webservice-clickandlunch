@@ -31,18 +31,26 @@ module.exports = (sequelize, DataTypes) => {
     deleted: {
       type: DataTypes.INTEGER,
       defaultValue: 0
-    }
+    },
+    createdAt: {
+      field: 'created_at',
+      type: DataTypes.DATE,
+    },
+    updatedAt: {
+      field: 'updated_at',
+      type: DataTypes.DATE,
+    },
   }, {
     tableName: 'photo',
   });
 
   Photo.associate = function(models) {
     Photo.belongsTo(models.Shop, { // add shop_id to Photo
-      foreignKey: 'shop_id',
+      foreignKey: models.Shop.id,
       onDelete: 'CASCADE' // when deleting a shop, delete all his photo
     });
     Photo.belongsTo(models.Product, { // add shop_id to Photo
-      foreignKey: 'product_id',
+      foreignKey: models.Product.id,
       onDelete: 'CASCADE' // when deleting a shop, delete all his photo
     });
   };

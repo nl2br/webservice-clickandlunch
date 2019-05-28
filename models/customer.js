@@ -10,7 +10,15 @@ module.exports = (sequelize, DataTypes) => {
     deleted: {
       type: DataTypes.INTEGER,
       defaultValue: 0
-    }
+    },
+    createdAt: {
+      field: 'created_at',
+      type: DataTypes.DATE,
+    },
+    updatedAt: {
+      field: 'updated_at',
+      type: DataTypes.DATE,
+    },
   }, {
     tableName: 'customer'
   });
@@ -24,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
     });
 
     Customer.hasMany(models.Order, { // add foreign key to order
-      foreignKey: 'customer_id',
+      foreignKey: models.Customer.id,
       sourceKey: 'id'
     });
 
