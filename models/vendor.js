@@ -15,7 +15,15 @@ module.exports = (sequelize, DataTypes) => {
     deleted: {
       type: DataTypes.INTEGER,
       defaultValue: 0
-    }
+    },
+    createdAt: {
+      field: 'created_at',
+      type: DataTypes.DATE,
+    },
+    updatedAt: {
+      field: 'updated_at',
+      type: DataTypes.DATE,
+    },
   }, {
     tableName: 'vendor'
   });
@@ -29,7 +37,7 @@ module.exports = (sequelize, DataTypes) => {
     });
 
     Vendor.belongsTo(models.Shop, { // add shop_id to vendor
-      foreignKey: 'shop_id'
+      foreignKey: models.Shop.id
     });
 
   };

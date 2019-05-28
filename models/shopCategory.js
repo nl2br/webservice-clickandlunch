@@ -25,7 +25,15 @@ module.exports = (sequelize, DataTypes) => {
     deleted: {
       type: DataTypes.INTEGER,
       defaultValue: 0
-    }
+    },
+    createdAt: {
+      field: 'created_at',
+      type: DataTypes.DATE,
+    },
+    updatedAt: {
+      field: 'updated_at',
+      type: DataTypes.DATE,
+    },
   }, {
     tableName: 'shopcategory'
   });
@@ -34,7 +42,7 @@ module.exports = (sequelize, DataTypes) => {
   ShopCategory.associate = function (models) {
     ShopCategory.belongsToMany(models.Shop, {
       through: 'shopscategory',
-      foreignKey: 'shop_category_id'
+      foreignKey: models.ShopCategory.id
     });
   };
 

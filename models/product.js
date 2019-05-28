@@ -53,7 +53,15 @@ module.exports = (sequelize, DataTypes) => {
     deleted: {
       type: DataTypes.INTEGER,
       defaultValue: 0
-    }
+    },
+    createdAt: {
+      field: 'created_at',
+      type: DataTypes.DATE,
+    },
+    updatedAt: {
+      field: 'updated_at',
+      type: DataTypes.DATE,
+    },
   }, {
     tableName: 'product'
   });
@@ -62,26 +70,26 @@ module.exports = (sequelize, DataTypes) => {
   Product.associate = function (models) {
 
     Product.belongsTo(models.Shop, { // add shop_id to product
-      foreignKey: 'shop_id',
+      foreignKey: 'shopId',
       onDelete: 'CASCADE' // when deleting a shop, delete all his product
     });
 
     Product.hasMany(models.Photo, { // add foreign key to Photo
-      foreignKey: 'product_id'
+      foreignKey: 'productId'
     });
 
     Product.belongsToMany(models.Product,{
       as: 'menus', 
-      foreignKey: 'product_id', 
+      foreignKey: 'productId', 
       through: 'Menu', 
-      otherKey: 'menu_id'
+      otherKey: 'menuId'
     });
 
     Product.belongsToMany(models.Product,{
       as: 'products', 
-      foreignKey: 'menu_id', 
+      foreignKey: 'menuId', 
       through: 'Menu', // {model: models.Menu ,unique:false, primaryKey:true}
-      otherKey: 'product_id'
+      otherKey: 'productId'
     });
 
     // addMenu

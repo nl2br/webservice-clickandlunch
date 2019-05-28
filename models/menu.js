@@ -18,7 +18,15 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       allowNull: false,
       field: 'product_id',
-    }
+    },
+    createdAt: {
+      field: 'created_at',
+      type: DataTypes.DATE,
+    },
+    updatedAt: {
+      field: 'updated_at',
+      type: DataTypes.DATE,
+    },
   }, {
     tableName: 'menu'
   });
