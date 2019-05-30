@@ -15,7 +15,6 @@ class Vendors {
   static async getVendor(req, res) {
     Models.Vendor.findOne({where:{id: req.params.id}})
       .then(async vendor => {
-        console.log('TCL: Vendors -> getVendor -> vendor', vendor);
         if(!vendor) return res.status(400).send({message: 'No vendor for the given id'});
         let user = await vendor.getUser();
         res.status(200).json({
@@ -40,7 +39,6 @@ class Vendors {
    * @param {*} res 
    */
   static async putVendor(req, res) {
-    console.log('TCL: Vendors -> putVendor -> putVendor', req.body, req.params);
     
     // verify if user exist
     let vendor = await Models.Vendor.findOne({where:{id: req.params.id}});
@@ -50,7 +48,6 @@ class Vendors {
 
     // we want to update the vendor or the user
     if(req.body.shopId){
-      console.log('TCL: Vendors -> putVendor -> req.body.shopId', req.body.shopId);
       try{
         // update the vendor
         await vendor.update({

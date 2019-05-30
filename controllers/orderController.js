@@ -90,6 +90,9 @@ class Orders{
       include: {model: Models.OrderDetail}
     });
 
+    //emit the order to the vendor
+    
+
     res.status(201).json(order);
   }
 
