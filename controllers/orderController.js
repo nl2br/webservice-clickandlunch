@@ -22,6 +22,13 @@ class Orders{
 
   }
 
+  /**
+   * Get all orders for a given id shop  
+   * @param {Object} req 
+   * @param {Object} res 
+   * @param {Object} next 
+   * @return {JSON} 
+   */
   static async getOrdersShop(req, res, next){
     // retrieve the order and their associated products for sending
     let order = await Models.Order.findAll({

@@ -1,6 +1,6 @@
-const _ = require("lodash");
-const Joi = require("joi");
-const Schemas = require("../schemas/schemas");
+const _ = require('lodash');
+const Joi = require('joi');
+const Schemas = require('../schemas/schemas');
 
 module.exports = (methodCall, controller) => {
 
@@ -55,9 +55,7 @@ module.exports = (methodCall, controller) => {
               }
             });
           }
-
         }
-
       }
     }
     next();

@@ -1,3 +1,6 @@
+/**
+ * Authorization middleware
+ */
 function role(...authorised) {
   const isAllowed = role => authorised.indexOf(role) > -1;
   
@@ -12,3 +15,4 @@ function role(...authorised) {
 }
 
 module.exports = role;
+

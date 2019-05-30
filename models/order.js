@@ -52,7 +52,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW,
     },
-    state: { // access Model.rawAttributes.states.values
+    state: { 
       type: DataTypes.ENUM, 
       values: Object.keys(States),
       allowNull: false
@@ -72,19 +72,7 @@ module.exports = (sequelize, DataTypes) => {
         msg: 'Please enter a shop id'
       },
       field: 'shop_id',
-    },
-    deleted: {
-      type: DataTypes.INTEGER,
-      defaultValue: 0
-    },
-    createdAt: {
-      field: 'created_at',
-      type: DataTypes.DATE,
-    },
-    updatedAt: {
-      field: 'updated_at',
-      type: DataTypes.DATE,
-    },
+    }
   }, {
     tableName: 'order'
   });
