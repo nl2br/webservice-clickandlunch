@@ -307,8 +307,8 @@ class Shops {
         coordinates: [req.body.longitude, req.body.latitude],
         crs: {type: 'name', properties: { name: 'EPSG:4326'}}
       },
-      longitude: req.body.longitude,
-      latitude: req.body.latitude
+      longitude: parseFloat(req.body.longitude),
+      latitude: parseFloat(req.body.latitude)
     });
 
     // for the final response
@@ -403,8 +403,8 @@ class Shops {
       phoneNumber: req.body.phoneNumber || shop.phoneNumber,
       email: req.body.email || shop.email,
       location: location,
-      longitude: req.body.longitude || shop.longitude,
-      latitude: req.body.latitude || shop.latitude
+      longitude: parseFloat(req.body.longitude) || shop.longitude,
+      latitude: parseFloat(req.body.latitude) || shop.latitude
     });  
 
     res.status(200).send(shop);
