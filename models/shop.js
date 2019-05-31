@@ -87,16 +87,14 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     latitude: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.FLOAT,
       allowNull: true,
-      defaultValue: null,
-      validate: { min: -90, max: 90 }
+      defaultValue: null
     },
     longitude: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.FLOAT,
       allowNull: true,
-      defaultValue: null,
-      validate: { min: -180, max: 180 }
+      defaultValue: null
     },
     location: {
       // OpenStreetMap est basé sur des mesures GPS 
