@@ -86,6 +86,18 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: true
       }
     },
+    latitude: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      defaultValue: null,
+      validate: { min: -90, max: 90 }
+    },
+    longitude: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      defaultValue: null,
+      validate: { min: -180, max: 180 }
+    },
     location: {
       // OpenStreetMap est basé sur des mesures GPS 
       // et est donc capable de détecter et de lire le système WGS84.
