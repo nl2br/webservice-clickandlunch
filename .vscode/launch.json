@@ -7,10 +7,20 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Launch Program test",
+      "name": "Debug MySQL",
       "program": "${workspaceFolder}\\app.js",
       "env": {
         "NODE_ENV": "development",
+        "PORT": "3000"
+      }
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug PostGres",
+      "program": "${workspaceFolder}\\app.js",
+      "env": {
+        "NODE_ENV": "developmentpg",
         "PORT": "3000"
       }
     }
