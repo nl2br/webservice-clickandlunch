@@ -11,7 +11,7 @@
     "server:reset": "set NODE_ENV=development&& sequelize db:drop && sequelize db:create && sequelize db:migrate && sequelize db:seed:all && nodemon app.js",
     "start": "node app.js",
     "debug": "set NODE_ENV=development&&  set PORT=3000 && node --inspect app.js",
-    "debugpg": "set NODE_ENV=developmentpg&&  set PORT=3000 && node --inspect app.js",
+    "debugpg": "set NODE_ENV=developmentpg&&  set PORT=3000 && node --inspect app.js"
   },
   "engines": {
     "node": "8.11.3"
