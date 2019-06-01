@@ -50,6 +50,7 @@ class Orders{
   }
 
   static async postOrder(req, res, next){
+
     if(!Number(req.params.idCustomer)){
       const err = new Error('idCustomer is needed and must be a number');
       err.status = 400;
@@ -91,7 +92,13 @@ class Orders{
     });
 
     //emit the order to the vendor
-    
+    const room = req.app.get('room');
+    const socketio = req.app.get('socketio');
+    socketio.to(room[req.params.idShop]).emit('message', 'receiving a new order');
+    socketio.to(room[req.params.idShop]).emit('order', order);
+
+    console.log('TCL: Orders -> postOrder -> room', room);
+    console.log('TCL: Orders -> postOrder -> socketio', socketio);
 
     res.status(201).json(order);
   }

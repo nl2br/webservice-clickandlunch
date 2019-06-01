@@ -10,11 +10,12 @@ const ValidationRegexp = require('../utils/validationRegex');
 module.exports = (sequelize, DataTypes) => {
 
   const States = Object.freeze({
-    DEFAULT: 'default',
-    ACCEPTED: 'accepted',
-    CANCELED: 'cancecled',
-    FINISHED: 'finished',
-    PAID: 'paid'
+    DEFAULT: 'DEFAULT',
+    ACCEPTED: 'ACCEPTED',
+    INPROGRESS: 'INPROGRESS',
+    CANCELED: 'CANCELED',
+    FINISHED: 'FINISHED',
+    PAID: 'PAID'
   });
 
   let Order = sequelize.define('Order', {
@@ -54,7 +55,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     state: { 
       type: DataTypes.ENUM, 
-      values: Object.keys(States),
+      values: ['DEFAULT', 'ACCEPTED', 'INPROGRESS','CANCELED','FINISHED','PAID'],
       allowNull: false
     },
     customerId: {
