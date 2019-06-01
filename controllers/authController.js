@@ -20,7 +20,6 @@ class Auth {
     let user;
     // verify if user exist
     user = await Models.User.findOne({where:{email: req.body.email}});
-    console.log('TCL: Auth -> staticauthenticateUser -> user', user);
     if(!user) {
       const err = new Error('invalid login or password');
       err.status = 401;
@@ -54,7 +53,6 @@ class Auth {
    */
   static async authenticateMe(req, res, next) {
     const token = req.headers['x-auth-token'] ;
-    console.log('TCL: Auth -> staticauthenticateMe -> token', token);
     if (!token) {
       const err = new Error('x-auth-token header not found');
       err.status = 403;

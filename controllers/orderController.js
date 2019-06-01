@@ -22,6 +22,13 @@ class Orders{
 
   }
 
+  /**
+   * Get all orders for a given id shop  
+   * @param {Object} req 
+   * @param {Object} res 
+   * @param {Object} next 
+   * @return {JSON} 
+   */
   static async getOrdersShop(req, res, next){
     // retrieve the order and their associated products for sending
     let order = await Models.Order.findAll({
@@ -43,6 +50,7 @@ class Orders{
   }
 
   static async postOrder(req, res, next){
+
     if(!Number(req.params.idCustomer)){
       const err = new Error('idCustomer is needed and must be a number');
       err.status = 400;
@@ -80,8 +88,25 @@ class Orders{
 
     // retrieve the order and their associated products for sending
     order = await Models.Order.findByPk(order.get('id'),{
-      include: {model: Models.OrderDetail}
+      include: [{
+        model: Models.OrderDetail,
+        attributes: ['productId','quantity'],
+        include: [{
+          model: Models.Product, 
+          attributes: ['name', 'price']
+        }] 
+      }]
     });
+    console.log('TCL: Orders -> postOrder -> order', order);
+
+    //emit the order to the vendor
+    const room = req.app.get('room');
+    const socketio = req.app.get('socketio');
+    socketio.to(room[req.params.idShop]).emit('message', 'receiving a new order');
+    socketio.to(room[req.params.idShop]).emit('order', order);
+
+    console.log('TCL: Orders -> postOrder -> room', room);
+    console.log('TCL: Orders -> postOrder -> socketio', socketio);
 
     res.status(201).json(order);
   }

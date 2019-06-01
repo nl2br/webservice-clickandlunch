@@ -1,5 +1,5 @@
 /**
- * Authorization middleware
+ * Authentication middleware
  */
 const jwt = require('jsonwebtoken');
 const config = require('../config/config.json');
@@ -19,3 +19,4 @@ module.exports = function (req, res, next) {
   }
   
 };
+

@@ -10,11 +10,12 @@ const ValidationRegexp = require('../utils/validationRegex');
 module.exports = (sequelize, DataTypes) => {
 
   const States = Object.freeze({
-    DEFAULT: 'default',
-    ACCEPTED: 'accepted',
-    CANCELED: 'cancecled',
-    FINISHED: 'finished',
-    PAID: 'paid'
+    DEFAULT: 'DEFAULT',
+    ACCEPTED: 'ACCEPTED',
+    INPROGRESS: 'INPROGRESS',
+    CANCELED: 'CANCELED',
+    FINISHED: 'FINISHED',
+    PAID: 'PAID'
   });
 
   let Order = sequelize.define('Order', {
@@ -52,9 +53,9 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW,
     },
-    state: { // access Model.rawAttributes.states.values
+    state: { 
       type: DataTypes.ENUM, 
-      values: Object.keys(States),
+      values: ['DEFAULT', 'ACCEPTED', 'INPROGRESS','CANCELED','FINISHED','PAID'],
       allowNull: false
     },
     customerId: {
@@ -72,19 +73,7 @@ module.exports = (sequelize, DataTypes) => {
         msg: 'Please enter a shop id'
       },
       field: 'shop_id',
-    },
-    deleted: {
-      type: DataTypes.INTEGER,
-      defaultValue: 0
-    },
-    createdAt: {
-      field: 'created_at',
-      type: DataTypes.DATE,
-    },
-    updatedAt: {
-      field: 'updated_at',
-      type: DataTypes.DATE,
-    },
+    }
   }, {
     tableName: 'order'
   });
