@@ -88,8 +88,16 @@ class Orders{
 
     // retrieve the order and their associated products for sending
     order = await Models.Order.findByPk(order.get('id'),{
-      include: {model: Models.OrderDetail}
+      include: [{
+        model: Models.OrderDetail,
+        attributes: ['productId','quantity'],
+        include: [{
+          model: Models.Product, 
+          attributes: ['name', 'price']
+        }] 
+      }]
     });
+    console.log('TCL: Orders -> postOrder -> order', order);
 
     //emit the order to the vendor
     const room = req.app.get('room');
