@@ -12,6 +12,12 @@ const asyncMiddleware = require('../middleware/async');
 const inputValidation = require('../middleware/inputValidation');
 
 /**
+ * Get order details for a given order id  
+ * @method get/orders/:id
+ */
+router.get('/:id', [auth, role('CUSTOMER', 'VENDOR', 'ADMIN'), inputValidation('get', 'orders')], asyncMiddleware(Orders.getOrderDetails));
+
+/**
  * Get all orders for a given id customer 
  * @method get/orders/customers/:id
  */
@@ -28,6 +34,12 @@ router.get('/shops/:id', [auth, role('VENDOR', 'CUSTOMER', 'ADMIN')], asyncMiddl
  * @method post/orders/shops/:idShop/customers/:idCustomer
  */
 router.post('/shops/:idShop/customers/:idCustomer', [auth, role('CUSTOMER', 'VENDOR', 'ADMIN'), inputValidation('post', 'orders')], asyncMiddleware(Orders.postOrder));
+
+/**
+ * Create a new order 
+ * @method put/orders/:id
+ */
+router.put('/:id', [auth, role('CUSTOMER', 'VENDOR', 'ADMIN'), inputValidation('post', 'orders')], asyncMiddleware(Orders.putOrder));
 
 module.exports = router;
 
