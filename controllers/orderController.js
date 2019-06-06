@@ -70,6 +70,9 @@ class Orders{
 
   }
 
+  /**
+   * Create an order and send it to the associated vendor via socketio
+   */
   static async postOrder(req, res, next){
 
     if(!Number(req.params.idCustomer)){
@@ -118,16 +121,12 @@ class Orders{
         }] 
       }]
     });
-    console.log('TCL: Orders -> postOrder -> order', order);
 
     //emit the order to the vendor
-    const room = req.app.get('room');
+    const vendors = req.app.get('vendors');
     const socketio = req.app.get('socketio');
-    socketio.to(room[req.params.idShop]).emit('message', 'receiving a new order');
-    socketio.to(room[req.params.idShop]).emit('order', order);
-
-    console.log('TCL: Orders -> postOrder -> room', room);
-    console.log('TCL: Orders -> postOrder -> socketio', socketio);
+    socketio.to(vendors[req.params.idShop]).emit('message', 'receiving a new order');
+    socketio.to(vendors[req.params.idShop]).emit('order', order);
 
     res.status(201).json(order);
   }
@@ -163,7 +162,16 @@ class Orders{
       shopId: order.shopId,
     });
 
-    console.log('TCL: Orders -> putOrder -> order', order);
+    //emit the order state to the customer
+    const customers = req.app.get('customers');
+    const socketio = req.app.get('socketio');
+    if(customers){
+      socketio.to(customers[order.customerId]).emit('state', {
+        message:'Status of your order has changed', 
+        state: order.state
+      });
+    }
+
     res.status(200).json(order);
   }
 

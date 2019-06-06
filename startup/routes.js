@@ -14,7 +14,7 @@ const authRouter = require('../routes/auth');
 const swaggerSpec = require('../config/swagger');
 
 // handling errors
-const error = require('../middleware/error');
+const errorHandler = require('../middleware/errorHandler');
 
 module.exports = function (app) {
   
@@ -57,6 +57,6 @@ module.exports = function (app) {
   });
 
   // handling express error
-  app.use(error);
+  app.use(errorHandler);
   
 };

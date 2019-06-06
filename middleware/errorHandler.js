@@ -1,3 +1,9 @@
+/**
+ * ErrorHandler
+ * Take an error object and give an appropriate response to the client.
+ * Log all the errors on error.log thanks to winston
+ */
+
 const winston = require('../config/winston');
 const Db = require('../models/index');
 

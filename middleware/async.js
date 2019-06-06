@@ -1,4 +1,9 @@
 
+/**
+ * asyncMiddleware
+ * Externalize try catch 
+ * is used on route function call
+ */
 module.exports = function (handler) {
   return async (req, res, next) => {
     try {
@@ -8,5 +13,8 @@ module.exports = function (handler) {
       console.log('EXPRESS HANDLER ERROR ASYNC/AWAIT');
       next(ex);
     }
-  }
-}
+  };
+};
+
+
+
