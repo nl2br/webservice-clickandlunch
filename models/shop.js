@@ -19,9 +19,12 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        is: ValidationRegexp.name(),
+        is: {
+          args: [ValidationRegexp.name()],
+          msg: 'Shop name must be in format like a-z A-Z À-ÿ 0-9 and - \' ", are accepted'
+        },
         notEmpty: true, // don't allow empty strings
-        len: [3,25] // only allow values with length between x and y
+        len: [3,150] // only allow values with length between x and y
       }
     },
     address: {

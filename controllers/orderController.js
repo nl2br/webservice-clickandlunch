@@ -54,7 +54,14 @@ class Orders{
     // retrieve the order and their associated products for sending
     let order = await Models.Order.findAll({
       where: {shopId: req.params.id},
-      include: {model: Models.OrderDetail}
+      include: [{
+        model: Models.OrderDetail,
+        attributes: ['productId','quantity'],
+        include: [{
+          model: Models.Product, 
+          attributes: ['name', 'price']
+        }] 
+      }]
     });
 
     if(!order){

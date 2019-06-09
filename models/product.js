@@ -18,7 +18,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        is: ValidationRegexp.name(), // allow letter uppper lower number space
+        is: {
+          args: [ValidationRegexp.name()],
+          msg: 'Product name must be in format like a-z A-Z À-ÿ 0-9 and - \' ", are accepted'
+        },
         notEmpty: true, // don't allow empty strings
         len: [3,100] // only allow values with length between x and y
       }
@@ -27,9 +30,12 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.TEXT,
       allowNull: true,
       validate: {
-        is: ValidationRegexp.description(), // allow letter uppper lower number space
+        is: {
+          args: [ValidationRegexp.description()],
+          msg: 'description name must be in format like a-z A-Z À-ÿ 0-9 and - \' ! ? ", are accepted'
+        }, // allow letter uppper lower number space
         notEmpty: true, // don't allow empty strings
-        len: [3,250] // only allow values with length between x and y
+        len: [3,500] // only allow values with length between x and y
       }
     },
     price: {

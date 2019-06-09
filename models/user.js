@@ -13,19 +13,25 @@ module.exports = (sequelize, DataTypes) => {
       field: 'id',
     },
     firstname: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: false,
       validate: {
-        is: ValidationRegexp.name(), // allow letter uppper lower number space
+        is: {
+          args: [ValidationRegexp.name()],
+          msg: 'Firstname must be in format like a-z A-Z À-ÿ 0-9 and - \' ", are accepted'
+        },
         notEmpty: true, // don't allow empty strings
         len: [3,100] // only allow values with length between x and y
       }
     },
     lastname: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: false,
       validate: {
-        is: ValidationRegexp.name(), // allow letter uppper lower number space
+        is: {
+          args: [ValidationRegexp.name()],
+          msg: 'Lastname must be in format like a-z A-Z À-ÿ 0-9 and ponctuation like : - \' ", are accepted'
+        },
         notEmpty: true, // don't allow empty strings
         len: [3,100] // only allow values with length between x and y
       }
@@ -34,8 +40,12 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        is: ValidationRegexp.phone()
+        is: {
+          args: [ValidationRegexp.phone()],
+          msg: 'Phone number must be in format like 0689898989, no space or +33689898989'
+        },
       },
+      
       field: 'phone_number',
     },
     email: {
@@ -87,6 +97,7 @@ module.exports = (sequelize, DataTypes) => {
 
     const payload = {
       id: this.id,
+      name: this.name,
       email: this.email,
       role: this.role
     };
